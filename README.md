@@ -1,5 +1,5 @@
 ## uBee512
-An emulator for the Microbee Z80 ROM, FDD and HDD based models
+An emulator for the Microbee Z80 ROM, FDD and HDD based models working towards a unified makefile for Windows, macOS and Linux
 
 ## Build
 
