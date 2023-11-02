@@ -1,0 +1,1624 @@
+13 February 2017 - uBee
+-----------------------
+uBee512 v6.0.0
+
+New for this release:
+* In full screen or a maximised window using OpenGL mode, preserve the
+  MicroBee display's 4:3 aspect ratio (especially on wide-screen 16:9
+  monitors)
+
+Changes:
+* Revise video output to only redraw those parts of the screen that have
+  changed, improving emulator performance.
+* Changes made to 'keystd.c' to lower 'stopshift' and 'makeshift' values to
+  work in Early Word (earlier version).
+* Windows binary packages now ships with SDL-1.2.15 (final) DLL which
+  replaces the older SDL-1.2.14 version.  The SDL (Windows) changelog is
+  here: https://www.libsdl.org/release/changes-1.2.html
+
+Fixed:
+* LibDsk build for Linux was using wrong build prefix so was being built
+  against an older LibDsk build.  Should now be LibDsk-1.4.2
+* In memmap.c comment out the printf("file=...") line in sram_load().
+* Fixed sram_save() in memmap.c to ignore an open new file error, now it
+  only warns if using verbose mode.
+
+16 December 2016 - uBee
+-----------------------
+uBee512 v5.8.0
+
+New for this release:
+* Added --cpm3 option for use with LibDsk's RCPMFS type.
+* Added detection for LibDsk's 'rcpmfs' type.  If detected and a common
+  Microbee format is also in use then reverse skewing is employed.  This
+  allows a host directory to behave like a disk image.
+* Added optional SRAM battery backup emulation for all ROM based and the 56k
+  models.  The backups are saved to the new 'sram' directory.  Each model
+  emulated has it's own unique backup file.
+* Added --sram-backup option to enable/disable battery backup emulation.
+* Added --sram-file option to specify an alternative CMOS file to use.
+* Added --sram-load option to enable/disable loading CMOS RAM.
+* Added --sram-save option to enable/disable saving CMOS RAM.
+* Enable OpenGL support for armv7l (in Raspian Feb 2016).
+* Added usage information to README for RCPMS and SRAM Battery Backup.
+
+Changes:
+* Compiled up against the LibDsk-1.4.2 library. See the LibDsk ChangeLog.
+* Added commented out --sram-backup=off option in 'ubee512rc.sample' to
+  disable the new battery backup emulation.
+* Added 'rcpm-dsxx' and 'rcpm-ss80' macros to 'ubee512rc.sample'
+* Major changes in 'ubee512rc.sample' for ROM and 56k model macros to use
+  unique SRAM backup file names for each macro.
+
+Fixed:
+* Fixed Makefile 'r' permissions for Unices installs.
+* Fixed a warning in 'options.c' concerning 'int x'.
+* Fixed a minor bug in crtc.c.
+* Fixed 'roms.alias.sample' to closely target various ROM based models.
+
+19 December 2015 - uBee
+-----------------------
+uBee512 v5.7.0
+
+New for this release:
+* Added support for Greybeard's CF8 mode when using IDE HDDs.
+* Added ability to use dynamically named RAW FDD and HDD images.
+* Added hard disk format HD2: (8MB) 246 cylinders, 2 heads, 32 sect/track.
+* Added hard disk format HD3: (32MB) 490 cylinders, 4 heads, 32 sect/track.
+* Added new RAW disk formats SS40S (S4S) and DS40S (D4S). These are single
+  density formats, 40T 128 b/s, 18 s/t. Also added to 'libdskrc.sample'
+* Added --sram option to set SRAM size for ROM model emulation.
+* Added '+regs' and '+memr' arguments to --debug option.
+* Added debug reporting of memory contents pointed to by 16 bit registers,
+  this is enabled by default but may be switched off with --debug=-memr
+* Added Windows 8.1 (W8.1) and Windows 10 (W10) to system detection.
+* Added 17 new/altered game entries to 'games.ini.sample'.
+
+Changes:
+* Changes to Serial port calculations to allow 4 and 6.750 MHz clocks.
+* Changes to --baud options to allow 38400 baud.
+* Reporting Z80 register values in disassembly is now optional, default is
+  on but may be switched off with --debug=-regs.
+* Built using latest z80ex 1.1.21 changes that fixes the version function
+  and makes use of some new call-back settings in the API.
+* Compiled up against the LibDsk-1.3.8 library which now provides IMD image
+  support.  See the LibDsk ChangeLog.  IMD support in LibDsk is new so has
+  not seen much testing to date but appears to work for read and write on
+  compressed IMD images.  Do not use on archived images (only on copies). 
+  If there are issues please use the ubee512-5.6.0 release.
+
+  To use IMD images specify the --format option to force LibDsk to handle
+  the disk image:
+
+  ubee512 --format=ds80 -a filename.imd
+
+* Changes made to the quickstart.txt file.
+
+Fixed:
+* Fixed the Premium Plus model to ignore the ROM2/ROM3 selection bits.
+* Fixed the 64k DRAM model DRAM bank select bits to act the same as on a
+  real 64k DRAM Microbee.  Thanks to wizged for research on a real 64k.
+* Fixed --snd-mute option, probably broken since 5.0.0.
+* Fixed (changes) to --sound=off option, releases before 5.0.0 had disabled
+  the SDL sound system but since 5.0.0 does nothing, the 'off' argument is
+  deprecated but if used will now have the same effect as --snd-mute=on.
+* Fixed disk read/write related bugs that prevented 128 byte sectors
+  working.  Also same bug had affected 1024 byte sectors but not noticed in
+  general use.  Physical shift values will now work upto integer size.
+* Fixed a problem when writing to CRTC 6545 display start high and low
+  registers 12 and 13 was not refreshing the display.  This had been a long
+  standing issue with some programs that changed these registers such as the
+  Net ROM under the IC model where rubbish characters remained on the top
+  line.
+* Fixed --bpr, --db-bpr options as had failed to take a single argument.
+* Fixed --db-bp-port, -db-bpclr-port and --db-bpr-port 'p,n' range values.
+* Fixed a segmentation fault in disk_create() when searching for a '.'
+  which is now ignored if next to a slash character on either side.
+* Fixed crash when doing a Power-cycle.
+* Fixed Tapfile DGOS name display to use space characters if white space
+  and to mask off high bit.
+* Fixed --debug option to use 'tstates' (and not 'tstate') argument as
+  described in help for the --debug option.
+* Minor changes to some functions in options.c to eliminate build warnings.
+
+28 February 2015 - uBee
+-----------------------
+uBee512 v5.6.0
+
+This is mainly an interim single bug fix release. The next major release
+will have many new features and more bug fixes.
+
+New for this release:
+* Added Raspberry Pi 'deb', 'rpm' and 'tgz' binary distribution builds.
+
+Changes:
+* Compiled up against the LibDsk-1.3.5 library which now provides write
+  support for CopyQM disk images along with many other changes since 1.2.1
+  released in 2008-01-23. See the LibDsk ChangeLog.
+
+Fixed:
+* Fixed a problem when writing to CRTC 6545 display start high and low
+  registers 12 and 13 was not refreshing the display.  This had been a long
+  standing issue with some programs that changed these registers such as the
+  Net ROM under the IC model where rubbish characters remained on the top
+  line.
+
+9 July 2013 - uBee
+------------------
+uBee512 v5.5.0
+
+New for this release:
+* Added --port58h option to enable 3rd party WD1002-5/WD2793 support for
+  dual drive interface selection using port 0x58.
+* Added --db-trace option for conditional tracing based on PC address range.
+* Added --db-trace-clr option to clear the value set with --db-trace.
+* Added --db-bpos option to break when the PC is outside an address range.
+* Added --db-bp-mem, --db-bp-meml, --db-bpclr-mem and --db-bpclr-meml
+  options for memory read/write breakpoints.
+* Added a step over parameter to the --db-step option that can be used for
+  stepping over a call/return.
+* Added 256TC v1.31 ROM Y2K century mod when --century=n is used.
+* Added HD18.ROM and MD5 to the 'roms.alias.sample' file.
+* Added some debug step macros to 'ubee512rc.sample'.
+* Added Windows 8 (W8) system detection.
+* Added Windows 8 conditionals to 'ubee512rc.sample' and 'games.ini.sample'.
+* Added Floppyio and CPM3 macros to 'ubee512rc.sample'.
+* Added North Star Horizon SD 'nshs' entry to 'libdskrc.sample'
+
+Changes:
+* When using console mode (EMUKEY+C) and debug mode is active emulation
+  continues in the background.
+* Changes to GUI to show new debug state conditions.
+* Changes to --db-bpclr (--bpclr) to allow optional clearing of all PC
+  break points except inside break points.
+* Changes to --db-bp (--bp) to now set 1 or more PC break points in the
+  one option declaration.
+* Changes to --db-bpr (--bpr) to now set 1 or more PC break points in the
+  one option declaration.
+* Changed 'hdd' macro in 'ubee512rc.sample' to use original Microbee
+  HD18.ROM.
+* Changes to OPT_RGB_NN_X options in 'ubee512rc.sample' to use new values.
+* Makefile uses new portable methods for static/dynamic libraries making it
+  easier to build.
+* Win32 binary now built with i586-mingw32msvc tool chain.
+* Win32 built using SDL-1.2.15, new DLL is supplied.
+  (See Windows notes: http://www.libsdl.org/release/changes-1.2.html)
+* Windows distribution has all text files using CRLF format with '.txt'
+  added.
+
+Fixed:
+* Changes to the CGA colour intensity values (crt.h) to match the values
+  defined in http://en.wikipedia.org/wiki/Color_Graphics_Adapter
+* Changes to confusing comments/structure for the col_table_p[]
+  definitions and the code required to access it.
+* Re-instated correct declaration for col_table_p[] by removing the
+ 'const' declaration as this structure can be set with options.
+* Fixed OPT_RGB_NN_X options to use the restructured table in crtc.c and
+  also the structure declaration used for it (broken in 5.0.0).
+* Fixed p1024k model PCG banks value to be 16 not 32.
+* Possible GCC sequence-point bug in osd.c fixed (see osd.c history).
+* Various compiler warning fixes.
+
+16 May 2012 - uBee
+------------------
+uBee512 v5.4.0
+
+New for this release:
+* Added Microbee Technology's p1024k/1024k (pplus) model emulation.
+* Added SPEED output value to --tapfile-list option.
+* Added DS8B (and D8B) Beeboard raw file format.
+* Added libdsk-1.2.1a-ubee.patch.zip patch to the patches directory. This
+  contains the existing Microbee Dreamdisk and a rpctios.c patch.
+
+Changes:
+* Added p1024k/1024k Premium Plus model entries to 'roms.alias.sample'.
+* Added 'p1024k.dsk' to 'disks.alias.sample'.
+* Changes made to --tapei-det option to take a percentage value to be used
+  for high and low threshold levels with simulated hysteresis on the tape
+  input of WAV files.
+* Changes to 'remote' type to allow the new USB Floppyio external floppy
+  interface to use full capabilities.
+* Added 'hs350', 'hs525' Honeysoft and 'ds8b' and some other formats to
+  libdskrc.sample.
+* The Slax build has been removed from the distribution packages.
+
+Fixed:
+* Building could break because some C source files had used SDL and GL in
+  the include paths, these have been removed, the include path is determined
+  by the Makefile.
+* Fixed remote 'serial' on Unix builds to allow serial to use full potential
+  speed (LibDsk library fix).
+* Fixed Floppy slowness problem on buffered LibDsk remote connections for
+  'hs350' and 'hs525' formats.
+* Fixed a DS80 format remote floppy access issue.
+* Fixed leading '/.' problem that caused code to crash in file specification.
+* Fixed game disk file names in ubee512rc.sample to match MSPP image names.
+
+8 June 2011 - uBee
+------------------
+uBee512 v5.3.1
+
+Fixed:
+* Fixed a problem where OSD dialogues failed to be updated correctly when
+  the CRTC changes resolution.
+* Fixed the SDL rendering warning message to appear at the correct size in
+  the centre of the display instead of down at the bottom where buttons were
+  overlaying the text.
+
+28 May 2011 - uBee
+------------------
+uBee512 v5.3.0
+
+New for this release:
+* Added TAP file support using live patching to allow Basic/Boot 8012/E012
+  and 8018/E018 ROM/RAM locations to read and write bytes to file.
+* Added --tapfile-list, --tapfilei, --tapfileo, --tapfilei-close,
+  --tapfileo-close options for TAP file support.
+* Added 'tapfile' argument to --modio arguments.
+* Added new configurable OSD schemes selectable by user.
+* Added --osd-consize to set the console dialogue size.
+* Added --osd-conpos to set the console dialogue position.
+* Added --osd-cursor to set the console cursor flash rate and type.
+* Added --osd-list to list all the built in OSD schemes supported.
+* Added --osd-scheme to allow a scheme to be selected.
+* Added --osd-setbtnm to set the colour values for OSD buttons.
+* Added --osd-setbtnt to set the colour values for OSD buttons text.
+* Added --osd-setdiam to set the colour values for OSD dialogue.
+* Added --osd-setdiat to set the colour values for OSD dialogue text.
+* Added --osd-setwidi to set the colour values for OSD widget icons.
+* Added --osd-setwidm to set the colour values for OSD widget.
+* Added --osd-setwidt to set the colour values for OSD widget.
+* Added osd_scheme.ini.sample configuration file.
+
+Changes:
+* Changes made to emulator hook function.c file to allow single OUT byte
+  functions on the existing emulator port.
+* Changes made to tape_command() to only set tape status and report 'Tape
+  rewind.' if a tape input file is open.
+* New default OSD scheme.
+* Changes made to the 'ubee512rc.sample' file to include OSD examples.
+
+30 March 2011 - uBee
+--------------------
+uBee512 v5.2.0
+
+New for this release:
+* Added sn76489an Digital Complex Sound Generator (DCSG) Programmable Sound
+  Generator IC emulation.  
+* Added the EA Compumuse board emulation as a parallel port peripheral
+  device, this project was described in the August, 1983 issue and is based
+  on the TI 76489 sound synthesiser IC.
+* Added arguments 'sn76489' and 'sn76489init' to the --hardware option to
+  enable SN76489 sound IC emulation for the Premium model.
+* Added the Compumuse parallel port device argument of 'compumuse' to the
+  --parallel-port option to select the new device emulation.
+* Added options --compumuse-init and --compumuse-clock for configuring the
+  Compumuse peripheral device.
+* Added --disk-create option for the creation of disk images.
+
+Changes:
+* The dynamic creation of '.temp' disk images now attempts to use LibDsk if
+  compiled in, if not available or it fails the built in disk image creation
+  is attempted.  LibDsk allows other disk formats and types to be created.
+
+Fixed:
+* Fixed creation of '.temp' file images by writing out the full size as
+  determined by the raw format extension as the files were not growing as
+  expected.
+* Fixed --db-dump* options to output all ASCII characters if in the range of
+  32-126.
+* Fixed call to dsk_xwrite() by passing '0' instead of '(int)NULL' for the
+  last parameter.
+
+25 November 2010 - uBee
+-----------------------
+uBee512 v5.1.0
+
+Changes:
+* A new 8x8 (Uni1-VGA8) font has replaced the 8x11 OSD font allowing extra
+  lines to be displayed in the console.
+* Added official distribution information to the about box.
+
+Fixed:
+* Fixed a problem where the emulator crashes on a 'Power Cycle' when a tape
+  input file is specified.
+* Fixed a problem when disabling turbo mode taking a long time to return to
+  normal emulation speed.
+
+7 September 2010 - uBee
+-----------------------
+uBee512 v5.0.0
+
+New for this release:
+* The new sound driver is now the default with the older code having been
+  removed altogether.  The new code produces excellent sound quality and has
+  less drop outs.
+* Added an audio DAC parallel port device argument of 'dac' to the
+  --parallel-port option to select the new 8 bit DAC emulation.
+* Added EMUKEY+PAGEDOWN hot key to emulate a Microbee 'power cycle'. This
+  action has also been added to the OSD menu.
+* Added --powercyc option to perform a 'power cycle'.
+* Added joystick Hat events to generate pseudo button numbers.
+* Added --js-hat and --js-hatb options to set joystick hat parameters.
+* Added --js-kkb option to make defining mapped joystick keys easier.
+* Added --js-shift option to set the new joystick SHIFT button feature.
+* Added joystick SHIFT button functionality that effectively doubles the
+  number of button actions to 255-511.
+* Added 'hd-teac' and 'hd-mscribe' hard disk formats to the
+  'libdskrc.sample' file.
+* Added Swedish PC85 ROM set (PC85S) aliases to 'roms.alias.sample'
+
+Changes:
+* Changed --js-ACTION options to take multiple button values.
+* Joystick shifted button numbers 256-511 can now be specified.
+* Added axis and Hat button numbers when using --modio=+joystick argument.
+* New default joystick buttons are used and enabled by default.  See
+  'joystick.c' or 'games.ini.sample' for the joystick layout:
+
+  JS E|O         : Up                (128|144).
+  JS F|P         : Right             (129|145).
+  JS G|Q         : Down              (130|146).
+  JS H|R         : Left              (131|147).
+  JS K|L|T|U|X   : Fire           (0|1|0|1|11).
+  JS A|I         : Player 1              (4|8).
+  JS C|J         : Player 2              (5|9).
+  JS B|M|N|V|W   : Spare           (6|2|3|2|3).
+
+  JS Shift       : Shift is button 'D'     (7).
+  JS Shift+A     : Mute sound on/off       (4).
+  JS Shift+B     : Full screen on/off      (6).
+  JS Shift+C     : Pause emulator on/off   (5).
+  JS Shift+Up    : increases sound volume.
+  JS Shift+Down  : decreases sound volume.
+  JS Shift+Right : increases window size.
+  JS Shift+Left  : decreases window size.
+
+* The BeeThoven device no longer requires an 'OUT 1,3' before using it.
+* Improvements in speed made to CRTC functions.
+* Major changes to the 'games.ini.sample' and 'ubee512rc.sample' scripts to
+  make setting up the joystick easier and more flexible.  Emulator commands
+  now make use of a Joystick shift button.
+* Changes made to the 'ubee512rc.sample' file.
+
+Fixed:
+* Changes made to --varuset option so that 'varname', 'varname=' and
+  'varname=value' all work.
+* Fixed --setvar option when attempting to set a variable that had no '='
+  character.  The variable was being set but could not be located without it
+  so now one is appended if missing.  '--setvar myvar' will get set and
+  found.
+* Changes made to --setvar option to first check for an existing variable by
+  the same name and removing it before setting the new variable.
+* The --js-axis option was doing nothing and has been fixed.
+* Fixed hard disk image type '.hd0' to have 306 cylinders, not 305.
+
+1 July 2010 - uBee
+------------------
+uBee512 v4.7.0
+
+New for this release:
+* Added BeeThoven emulation. The Microbee BeeThoven peripheral is based on a
+  General Instruments AY-3-8910 Programmable Sound Generator chip.
+* Added BeeTalker emulation. The Microbee BeeTalker peripheral is based on a
+  General Instruments SP0256-AL2 speech synthesiser chip.
+* Added --parallel-port option to connect addon parallel port peripherals.
+* Added --sdl-putenv option to allow SDL environment variables to be set. 
+  This can be used to change the behaviour of SDL.  The variables supported
+  depends on the SDL version and the SDL documentation should be consulted.
+* Added the current SDL-1.2.14 DLL to the Windows distribution packages.
+
+Changes:
+* Improvements to speaker sound synchronising with the Z80 when using the
+  BeeThoven or BeeTalker peripheral.
+* Changes to the printer port, this can now be set to peripheral devices. A
+  printer (to file) is now just another peripheral that can be connected.
+* OpenGL video support handling has changed on Windows systems when
+  SDL-1.2.14 or later is detected.  As SDL has fixed some OpenGL bugs in
+  that release some of the existing work arounds are now bypassed at run
+  time.  Older SDL versions should operate as before.  Improvements on
+  Windows systems may be noticeable.
+* Added some SDL environment variables examples in ubee512rc.sample.
+* Added --parallel-port=joystick to games.ini.sample.
+* Added the required SP0256 ROM alias entry to roms.alias.sample.
+* Changes to the volume coding required the default volume percentage to be
+  increased from 15% to 45% to compensate.
+* Build platform for Linux binaries upgraded to Ubuntu 10.04 Lucid Lynx.
+
+Fixed:
+* Lock keys up/down bug is now fixed in SDL-1.2.14 when the SDL environment
+  variable SDL_DISABLE_LOCK_KEYS is set to "1".  This is done internally by
+  the emulator when SDL-1.2.14 is detected.  Games such as Micro Defender
+  should now work.
+* SDL-1.2.14 has some issues with false mouse movement events when the mouse
+  cursor is disabled.  This has been worked around, this has also fixed some
+  existing issues with the mouse cursor in full screen mode.  Full screen
+  mode can now start-up with the mouse cursor disabled.
+* On Unix builds the time in milliseconds was not being calculated correctly
+  as a 64 bit value.
+* The mouse double click detection had the wrong size timer variable which
+  had the potential to cause problems.
+
+1 June 2010 - uBee
+------------------
+uBee512 v4.6.0
+
+New for this release:
+* Added Quickload mechanism for 8-bit systems. Options --ql-list, --ql-load,
+  --ql-x, --qla-arc, --qla-dir, --qla-list and --qla-load are used to
+  support this new feature.
+* Disassembly of Z80 code now makes use of the z80ex_dasm library code.
+* Added Z80 instruction t-states to disassembly output.
+* Added --debug-open and --debug-close debug file capture options.  When
+  enabled all commands in the debug group will be captured to a file with
+  time and date stamping.
+* Added --dump-header option to enable/disable the header when memory
+  dumping.
+* Added --dump-lines option to determine the default number of lines for
+  a memory dump.
+* Added --dasm-lines option to determine the default number of lines for
+  disassembly.
+* Added --find-count option to determine the maximum number of matches for
+  the new --db-find* options.
+* Added --reset option to reset the emulator.
+* Options --bp, --bpr, --bpclr, --bpc now have a corresponding prefixed
+  '--db-' name for consistency with the new '--db-' options.
+* Added --db-bp-port option to set a port r/w break point.
+* Added --db-bpclr-port option to clear a port r/w break point.
+* Added --db-bpr-port option. to set a repeatable port r/w break point.
+* Added --db-bp-rst option to set a Z80 RST n break point.
+* Added --db-bpclr-rst option to clear an RST n break point.
+* Added --db-bpr-rst option. to set a repeatable Z80 RST n break point.
+* Added --db-break (--break) option to stop Z80 code execution (pause).
+* Added --db-cont (--cont) option to continue Z80 code execution (pause off).
+* Added --db-dasm option to disassemble Z80 code between start and finish
+  addresses.
+* Added --db-dasml option to disassemble Z80 code at starting address for a
+  specified number of lines.
+* Added --db-dump option to dump memory between start and finish addresses.
+* Added --db-dumpb option to dump bank memory between start and finish
+  offsets for main and video banks.
+* Added --db-dumpl option to dump memory at starting address for a specified
+  number of lines.
+* Added --db-dumplb option to dump bank memory at starting offset for a
+  specified number of lines.
+* Added --db-dumpp option to dump current state of i/o ports.
+* Added --db-dumpr option to dump current value of all Z80 registers using
+  'all' output settings.
+* Added --db-fillb option to fill a type of banked memory with a specified
+  type, bank and value.  types are attribute, colour, main memory, PCG, and
+  screen.  A video type is also provided to fill all video RAM.
+* Added --db-fillm option to fill memory between start and finish addresses
+  with a specified value.
+* Added --db-findb option to find occurrences of a sequence of bytes, words
+  and ASCII stings in banked memory starting at a specified bank and offset.
+* Added --db-findm option to find occurrences of a sequence of bytes, words
+  and ASCII stings in memory between a specified start and finish address.
+* Added --db-go option to execute code at a given Z80 address.
+* Added --db-loadb option to load banked memory from a file.
+* Added --db-loadm option to load a file into memory.
+* Added --db-move option to move (copy) memory from source to destination
+  addresses for a specified amount.
+* Added --db-popm option to restore state of memory from an earlier
+  --db-pushm option.
+* Added --db-popr option to restore state of Z80 registers from an earlier
+  --db-pushr option.
+* Added --db-portr option to read a Z80 port with optional A or B register.
+* Added --db-portw option to write a value to a Z80 port.
+* Added --db-pushm option to save state of memory between a specified start
+  and finish address.
+* Added --db-pushr option to save state of Z80 registers.
+* Added --db-saveb option to save banked memory to a file.
+* Added --db-savem option to save memory between start and finish addresses
+  to a file.
+* Added --db-setb option to set bank memory location(s).
+* Added --db-setm option to set memory location(s).
+* Added --db-setr option to set a Z80 register value.
+* Added --db-step option to step for a specified number of lines or to
+  start/stop continuous stepping.
+* Added 'off', 'debug10', 'debug20', 'piopoll' and 'tstate' arguments to
+  the --debug option.
+* Added 'all' argument to --modio arguments and use prefixing.
+* Added EMUKEY+L for quick repeats of --db-dasml
+* Added --edasm option which can be used as an alias for the --pak0 option.
+* Added binary number output to debugging functions.
+* Added 'UBEE_MODEL' and 'UBEE_RAM' variable.
+* Added Windows 7 (W7) to options_init() system detection.
+
+Changes:
+* The 256TC key code has been improved allowing faster key entry and
+  eliminating lost key presses.
+* When using 'roms.md5.auto' and the 'roms.alias' files the ROMs directory
+  will automatically be re-scanned for MD5s when a ROM file can not be
+  located before retrying again.
+* Changes to the option module to allow run time only options.
+* Changed all prefixed (+abcd) type arguments to use '+' and '-' prefixes. 
+  The new '-' prefix has the opposite affect to '+' where this is supported. 
+  The arguments are now also checked for errors.
+* Changed 'clear' and 'none' arguments to 'all' for --regs, --keystd-mod,
+  --osd, --status and --output options. These use the new +/- prefixes.
+* --pak(n) options can now also specify 4K ROMs for A and B.
+* The 2mhz model can now load 4K EPROM images by default.
+* Changes to vdu_init() function to clear the colour RAM with 0s to prevent
+  the checker board pattern on start-up. This is only a temporary work
+  around and the real solution may need some type of 6545 initialisation
+  delay to make it work like a real model.
+* Changes to make the console much more responsive when emulator is paused.
+* Configuration files may now use trailing '\' line append characters.
+* Improvements made to detect errors in option argument conversions.
+* Improvements made to --help option to provide better information.
+* Changes made to the 'ubee512rc.sample', 'games.ini.sample' and
+  'roms.alias.sample' configuration files.
+
+Fixed:
+* The Teleterm model is now working after some changes and bug fixes to the
+  TC key and PIO interrupt code.
+* 256TC code that used TC key interrupts should work much better.
+* Fixed a regression bug introduced in v4.0.0 that had originally been fixed
+  earlier in v2.8.0 concerning calling the rtc_poll() function. The 256TC
+  boot ROMs now updates the time again.
+* Fixed --varuset option as was incorrectly removing a variable entry
+  resulting in segmentation error when creating a new variable.
+* Fixed -if-* compare options as an incorrect result was being returned in
+  some circumstances.
+* Fixed a problem loading a Basic ROM image on the '2mhz' model when a 16K
+  image was not available and 4K images were available instead.
+* The --modio reporting on a port access should now show the correct Z80 PC
+  address where the i/o instruction occurred instead of after completion.
+* Fixed bug in ubee512 API that was causing or had the potential for HOSTDIR
+  and HOST2CPM tools to crash.
+
+6 April 2010 - uBee
+-------------------
+uBee512 v4.5.0
+
+New for this release:
+* Added automatic creation of the ROMs MD5 file (roms.md5.auto) for ROMs
+  found in the default location.  Users should rename the old 'roms.md5'
+  file to 'roms.md5.user' if a manually created MD5 file is required.
+* Added --md5-create option to force the creation of the 'roms.md5.auto'
+  file to replace the existing one.  Normally 'roms.md5.auto' will only be
+  created when it is not found or a later ubee512 version is run for the
+  first time.
+* Added --bpclr option to clear a debugging break point.
+* Added SLAX package to the distribution packages.
+
+Changes:
+* Removed roms.md5 from the distribution as this file is now auto generated.
+* Changes to roms.alias.sample (notes)
+* Added 'remote' disk type macros to ubee512rc.sample.
+
+Fixed:
+* Fixed problems with sector ID, read and write functions failing because of
+  unsupported functions in the driver type in use.  The changes will make
+  use of an alternative function appropriate for the driver to be used
+  instead.  This has fixed issues when using the 'raw' and 'remote' driver
+  as an input and possibly other driver types when using the LibDsk
+  interface.
+* Fixed an issue when attempting to use LibDsk's 'remote' driver.  The fix
+  should allow the file name specification to work when it does not point to
+  an actual file, this should also apply to the 'rcpmfs' driver. (not tested)
+* Fixed account creation to correctly report when a ROMs alias configuration
+  file has been created.
+
+14 August 2009 - uBee
+---------------------
+uBee512 v4.4.0
+
+New for this release:
+* Added PC85B model for Standard PC85 models that use a combination of 8/16K
+  Pak ROMs.
+
+Changes:
+* Changes to roms.alias.sample, roms.md5, and ubee512rc.sample to
+  accommodate the PC85B model.  Existing installations will need the working
+  versions of these files updated.
+
+Fixed:
+* Fixed --pak and --pakx index bug, incorrect index was being used.
+
+7 August 2009 - uBee
+--------------------
+uBee512 v4.3.0
+
+New for this release:
+* Added Dreamdisk model emulation.
+* Added '2mhzdd' model parameter for 2MHz Dreamdisk model.
+* Added 'dd' model parameter for 3.375MHz Dreamdisk model.
+
+Changes:
+* Changes to libdskrc.sample to include the Dreamdisk formats.
+* Inclusion of patches for LibDsk and z80ex.
+* The --side1as0 option is now only used when formatting a disk.
+* roms.alias, roms.md5 and disk.alias updated to reflect Dreamdisk
+  model addition.
+
+Fixed:
+* Fixed --hddx-close options, incorrect index was being used.
+
+22 July 2009 - uBee
+-------------------
+uBee512 v4.2.0
+
+New for this release:
+* Added Microbee hard disk emulation.
+* Added WD1002-5 Winchester/floppy card emulation.
+* Added options --hdd0 to --hdd6 for WD1002-6 Winchester/floppy card.
+* Added options --hdd3-close, --hdd4-close, --hdd5-close, --hdd6-close.
+* Added hard disk image type '.hd0' (305 cylinders, 4 heads, 17 sect/track)
+* Added Microbee mouse emulation and option --mouse.
+* Added '+mouse' argument to --status option.
+* Added Microbee mouse emulated status 'm'.
+* Added --bootkey option to pass a key (scan code) to boot ROMs.
+* Added --bpr option for repeatable break point action in debug mode.
+* Added '+pio' argument to --regs option.
+
+Changes:
+* Changed --verbose option to take an optional level argument.
+* Changed middle mouse button to switch Microbee mouse mode on/off.
+* Changes made to ubee512rc.sample and roms.alias files.
+* Enumerated all the options in options.c (source code improvement)
+
+Fixed:
+* Prevent loading the fall back disk if any IDE hard drives used.
+
+8 July 2009 - uBee
+------------------
+uBee512 v4.1.0
+
+New for this release:
+* Added models 'scf' and 'pcf' (Standard/Premium Compact Flash CB)
+* Added more DRAM banks to bring up to 2MB when using xCF model.
+* Added --ide-a0, --ide-a1, --ide-b0 and --ide-b1 IDE HDD emulation and
+  drive options.
+* Added hard disk image type '.hd1' (80 cylinders, 4 heads, 63 sect/track)
+* Added '+ide' argument to --modio option.
+* Added --rom256k override option for 3rd party models.
+* Added --cfmode option to force start-up mode when emulation CF model.
+* Added --cpu-delay option to determine the method used for delays when
+  controlling emulation speed.
+* Added time and date uBee512 environment variables.
+* Added 'make-cf-roms.sh' script to Unix disributions.
+
+Changes:
+* Removed the older CPU persist method for PIO polling as it became
+  redundant after the last release.
+* Removed the minimize button from the Menu dialogue.
+* Improvements made to printer strobe timing.
+* Improvements made to logging including PC reporting.
+* Changed +paknet argument to +roms.
+* Changes to ubee512rc.sample to use time and date stamping.
+* A lot of code tidying up.
+
+Fixed:
+* Fixed an account creation problem where the directories failed to be
+  created on Unix like platforms. This bug was introduced in v3.1.0.
+* Fixed a couple of Endian issues for tape in/out for Big Endian HW (PPC).
+  Tape wav files now save and load correctly.
+* Fixed an Endian problem in function.c causing the uBee512 CP/M tools to
+  fail on Big Endian HW (PPC)
+* Fixed z80api_execute_complete() function as was not completing on all
+  dd/fd/cb/ed prefixed opcodes. Used by the Z80 code debugging module.
+* Fixed uBee512 environment variables name matching.
+* Printer now emulates strobe signal only if a printer file is specified.
+* DIP disk images required host Endian additions.
+* The 256TC and BN60 boot ROMs now boot if a fast clock rate is specified.
+
+10 June 2009 - uBee
+-------------------
+uBee512 v4.0.0
+
+New for this release:
+* Added the z80ex Z80 emulator and is now the default.
+* Completely overhauled the memory and ports management system, there is no
+  longer any banked memory swapping, this has greatly reduced host CPU time
+  for some Microbee systems and other code.
+* Will now compile and work on Mac OS X Intel and PPC models.  The PPC's Big
+  Endian architecture has not been fully tested.
+* Added full screen, sound, volume+, volume- and tape buttons to OSD menu
+  and removed Cancel.
+
+Changes:
+* Recoded various source modules to make use of new Z80 APIs. The new method
+  allows other Z80 emulators to be added.
+* Serial, parallel printer, and other PIO interrupts have been improved.
+* Changes made to PIO SW serial resulting in better performance.
+* The Vertical blanking period has been increased to 15% to produce better
+  sound with z80ex and when MWB v6.30e is used.
+* Changed the --version option to also report the Z80 emulator in use.
+* Double left button mouse click no longer toggles full screen mode when the
+  OSD has the focus.
+* Changes to ubee512rc to include a 'darwin' start-up conditional.
+* Changes and additions to roms.alias file.
+* Changed games.ini.sample to create the temporary games image in the
+  default disks location.
+
+Fixed:
+* Fixed MD5 file matching to keep trying other matching MD5 entries when
+  the file name is not found.
+* Fixed segmentation error when creating a '.temp' file and the creation of
+  the file fails for any reason.
+* Fixed mouse cursor positioning when switching between full screen and
+  window displays.
+* Fixed incorrect disassembly of IX and IY instructions.
+* Fixed the standard PC85 model's Shell garbled text problem by presetting
+  some RAM locations. (this is actually a Shell bug)
+* z80ex handles maskable interrupts better and has fixed some issues.
+* z80ex fixes some instructions and passes all the 'zexall.com' Z80
+  exerciser program tests. (use -x500 to increase testing speed)
+* GUI status line is now updated after an OSD console command is entered.
+
+22 April 2009 - uBee
+--------------------
+uBee512 v3.1.0
+
+New for this release:
+* Added an early OSD GUI system that can be enhanced over future releases.
+  The GUI provides a resizeable buffered console dialogue.  OSD dialogues
+  can be dragged and minimised, background emulation continues and the keys
+  input focus can be switched between emulation or OSD in the normal way.
+* Added replacement OSD reset and exit dialogues.  The new dialogues no
+  longer requires the display to switch resolutions and are now consistent
+  between different system builds.
+* Added an OSD console where all output text can be directed (see --output).
+  The OSD console also allows user input to execute options as the emulator
+  is running.
+* Added MD5 support for use in 'roms.alias' and 'disks.alias' files.
+* Added EMUKEY+C hot key to enter a 'stdout' version of the OSD console.
+  This halts the emulator whilst in this mode and allows pasting input which
+  the OSD console is currently unable to do.
+* Added options support while the emulator is running.  Most of the options
+  available in start-up mode are supported.  Some of these can be used to
+  permit media, tape, printer, serial, etc. to be changed.
+* Added MD5 code to check ROMs.  This is used to apply patches for some
+  known bad ROMs and to optionally fix some Y2K related display issues in
+  256TC boot ROMs.
+* Added check for a known bad 256TC v1.20 ROM (very damaged, no patching).
+* Added optional administration sections 'global-start-runmode' and
+  'global-end-runmode' for configuration files when in run mode.
+* Added --verbose option to switch on additional emulator reporting.
+* Added --tapei-det option to set an optional input level detection value
+  for input from WAV files.
+* Added --osd option to configure OSD operation.
+* Added --prefix option to specify the installation path prefix on Unix
+  systems.  This allows installations contained on portable media to be used.
+* Added --account option to specify an alternative uBee512 account location.
+* Added --hwflashr option to set the video hardware flashing rate to 20, 40,
+  80, 160, 320, 640, 1280 or 2560 milliseconds.
+* Added --hardware option to disable emulation of various hardware.
+* Added --century option to change century dates where appropriate.
+* Vertical sync frequency is now calculated from current CRTC 6545 values.
+* Added --a-close, --b-close, --c-close, and --d-close options to close disk
+  drives that have an open image/disk.
+* Added --print-close and --printa-close options to close open printer
+  files.
+* Added --tapei-close and --tapeo-close options to close open input and
+  output wav files used by the tape port.
+* Added --coms-close option to close open serial communications ports.
+* Added --options-warn to issue a warning or produce an error when an
+  option is encountered that is not supported in run mode.
+* Added --keystd-mod option for setting standard keyboard behaviour flags.
+* Added --runsecs option to set number of seconds to run before exiting.
+* Added --output option to set text output devices.
+* Added --mon-bgi-b, --mon-bgi-g, --mon-bgi-r, --mon-fgi-b, --mon-fgi-g and
+  --mon-fgi-r options to set dual intensity monochrome RGB values.  See
+  changes below.
+* Added colour, amber, green, black, white, and user to the single
+  character --monitor option parameters of c,a,g,b,w and u.
+* Added 'clear' argument to --regs option.
+* Added UBEE_USERHOME local variable containing the user's home path on
+  Unices, or the directory containing the executable on Windows systems.
+* Added Windows OSVERSIONINFOEX dwMajorVersion and dwMinorVersion members
+  as variables UBEE_SYS_MAJOR_VAL and UBEE_SYS_MINOR_VAL to mingw build.
+* Added defining of internal variables depending on build options. If LibDsk
+  is compiled in UBEE_LIBDSK=1 and if OPENGL is compiled in UBEE_OPENGL=1.
+* Added generic RPM and Slackware binary tgz distribution packages.
+* Added a portable Windows/Unix distribution package. Can be run from a
+  flash drive on Unices (including live CDs) and Windows machines.
+
+Changes:
+* The 'roms.alias' and 'disks.alias' files now supports optional MD5
+  entries.  The 'roms.alias' file is preconfigured for ROMs for all models
+  where ROMs are available. A 'roms.md5' and 'disks.md5' file in the
+  emulator directory is used for matching MD5s to a file name.
+* Changed start up to not report additional information unless requested
+  with the the new --verbose option.
+* The dual intensity monochrome (--hint) has now been replaced by a --dint
+  option.  This feature had been incorrectly emulated. The new method also
+  includes changes to the ubee512rc.sample file.  Obsolete options
+  --mon-fgl-x have been removed and will be ignored.  A message will be
+  reported if any of these are used.
+* Removed --mon-fgl-b, --mon-fgl-g and --mon-fgl-r options as these are now
+  obsolete. A special error message will be reported if any of these are
+  used.  Use the new --mon-bgi-x and --mon-fgi-x options shown above.
+* Removed the --psec option. Sector probing is always used now. Using this
+  option reports a message.
+* Changed the cursor blinking modes to use the correct blink rate.
+* Changed the way video hardware flashing works, now also emulates early
+  Premium (main board v3) flash method.  The --hwflash option now takes
+  'off', 'on', 'v3' and 'v4' as arguments.
+* Added code to handle CTRL+SHIFT+KEY combinations. This is enabled by
+  default (use --keystd-mod to disable) and prevents the shift/invert action
+  for these keys when emulating standard keys (6545).  This is required by
+  some systems for extended function keys to work.
+* Changed create_account() function to install libdskrc to the 'share'
+  directory on Unix systems and create a '.libdskrc' link to it from the
+  user's home account making the Unix layout the same as Windows.
+* Changed --config option to no longer cause the emulator to terminate if
+  the specified file does not exist.  A message will be output and no
+  configuration file will be used.
+* Changed -f, --fullscreen and -t, --turbo options to now have support for
+  optional on/off arguments.
+* Added a customised getopt.c source as suppression of messages direct to
+  stderr and repeated calls to getopt_long() was required.
+* Changed standard PC and PC85 models to default to monochrome.
+* Constant used for the vertical blanking period has changed from 12/100 to
+  10/100 of the VSYNC period.
+* Changes to the debugging section makes the display more responsive and
+  allows emulator commands to now work without delay while debugging.
+* Makefile is now much improved and uses more conventional methods.
+* Added conditional build compilation options for OpenGL, LibDsk, debugging
+  and 'MZ80 C' to sources and Makefile.
+* Changes to ubee512rc file for the [arcade1] entry for the file name.
+* Changed --tapevol option to now use a percentage value.
+
+Fixed:
+* Fixed the disk write protection when a write protected disk is attempted
+  to be written to.  The OS system will no longer hang and should report an
+  error message.
+* Fixed a problem with the internal DSK disk image handler as could not
+  access mixed 512x10 and 1024x5 formatted tracks correctly.
+* Fixed debug option parameters for step and trace.
+* Fixed sound volume set option(s), was unable to set any level.
+* Fixed command line to report errors correctly on Windows build.
+* Fixed a display refresh problem introduced in v3.0.0/1 when running
+  standard ROM models, monochrome mode and Telcom versions 1.1 or 1.2.  The
+  top display line was incorrect, see vdu_colcont_w() function notes.
+* Fixed a display refresh problem introduced in v2.8.0. This problem was
+  noticeable in Telcom v3 on PJB system disk and some other applications.
+* Fixes to stop OpenGL functions being called when using SDL video mode
+  affecting the status line.
+* Fixed FDC head positioning commands (type-I) to be acted upon even if no
+  disk/image. This needed to be fixed to allow disk/image changing to work
+  with options now supported while emulator is running.
+* Fixed modio.keytc reporting in keytc_r() function.
+* Fixed patches for bad telcom 3.21 ROMs.  Now passes ROM checks for ROM A,
+  ROM B, and Telcom.
+* Fixed GUI status for the current printer status.
+* Fixed swap_endian() function, was just returning the same value.
+* Fixed games.ini.sample section for froger-j.bee game.
+
+13 October 2008 - uBee
+----------------------
+uBee512 v3.0.1
+
+Fixes:
+* Fixed a bug when toggling full screen mode under Unices when using SDL
+  video rendering failed to switch modes and would freeze.
+
+13 October 2008 - uBee
+----------------------
+uBee512 v3.0.0
+
+New for this release:
+* Ubuntu Debian binary package added to the distribution packages.
+* Added OpenGL textured video rendering mode, SDL remains the default mode. 
+  To use OpenGL mode specify '--video-type=gl' on the command line or set
+  the required system's video type by changing the assignment inside the new
+  sample configuration file.  See the README file if OpenGL results in a
+  white display.
+* The OpenGL mode permits 4:3 and other aspect ratios in a window, full
+  screen and maximised modes fill completely.
+* Added --gl-filter_fs, --gl-filter_max and --gl-filter_win options to
+  select soft or sharp filtering modes in OpenGL mode.
+* Added --gl-aspect-bee option to set the Microbee aspect ratio.
+* Added --gl-aspect-mon option to override the monitor aspect ratio.
+* Added --gl-max option to enable/disable maximised window on start up. This
+  currently does not work for Windows. Maximised windows can be set after
+  starting the emulator.
+* Added --gl-vsync option to enable/disable vertical sync swap buffers every
+  n'th retrace.
+* Added --gl-winpct option to set the initial window width by percentage.
+* Added --gl-winpix option to set the initial window width by pixels.
+* Added EMUKEY+F hot key to toggle the current filter mode when in OpenGL
+  mode.
+* Added EMUKEY+KP1 to EMUKEY+KP9 hot keys to select 10-90% width windows
+  when in OpenGL mode.
+* Added EMUKEY+KP_PERIOD to use the Microbee's 6545 screen width for the
+  window width when in OpenGL mode.
+* Added window resize feature using mouse to set window size when in OpenGL
+  mode.
+* Added 'gl' parameter to the --video-type option to select OpenGL mode.
+* Added internal variables that can be created and accessed using options.
+* Added scripting language options for uBee512 configuration files.  The
+  options relevant are described below:
+* Added --varset and --varuset options to set and unset variables.
+* Added --exit to allow emulation to exit during start up.
+* Added --echo and --echoq to send string and/or variables to stdout.
+* Added --if-end to terminate a test condition.
+* Added --if-else to divert on a --if-test = false condition.
+* Added --if-egt to test if string is equal to or greater than.
+* Added --if-elt to test if string is equal to or less than.
+* Added --if-eq to test if string is equal to.
+* Added --if-gt to test if string is greater than.
+* Added --if-lt to test if string is less than.
+* Added --if-negt to test if string is not equal or greater than.
+* Added --if-nelt to test if string is not equal or less than.
+* Added --if-neq to test if string is not equal to.
+* Added --if-ngt to test if string is not greater than.
+* Added --if-nlt to test if string is not less than.
+* Added --if-set to test if a variable has been set.
+* Added --if-nset to test if a variable has not been set.
+* Added --if-system to test for underlying system type.
+* Added --if-true and --if-false to set the condition to true or false.
+* Added --if-cmpmode to set the method used to compare values.
+* Added preconfigured variables UBEE_VERSION, UBEE_HOST, UBEE_SYS_MAJOR and
+  UBEE_SYS_MINOR to the existing UBEE512 (ubee512) variable.  These are all
+  created using the --varset method so this also means they can be removed
+  with --varuset.
+* Added joystick C_WINI and C_WIND commands for increasing/decreasing window
+  size.
+* Added joystick C_GLFILT command for toggling of OpenGL filter mode, and
+  C_VSIZE1 command for video resizing.
+* Added joystick C_MWHEEL command to select mouse wheel association.
+* Added +video and +options to the --modio option arguments.
+
+Changes:
+* Changed --snd-freqlow default to 20Hz to improve re-sync on quiet periods.
+* Some improvements made to the audio holdoff code.
+* Recoded the vdu_colcont_w() function to test RGB intensity bits and VDU
+  PCG/colour RAM selection bits separately, this prevents a change in either
+  leading to unnecessary time consuming updates.
+* Changed version checking to skip a new version install if a later version
+  ID string is found. This allows older version binaries to run without
+  modifying the version ID. This will only work with emulator versions
+  3.0.0 and onwards.
+* Changes made to ubee512rc and games.ini.sample files making use of the
+  new scripting language options added to this release.
+* Comment lines in configuration files may now have leading white space.
+
+Fixes:
+* Fixed issue when changing screen sizes from within a Microbee program that
+  could possibly cause the emulator to crash under certain circumstances.
+* Added code to correctly handle double quoted command line arguments
+  when using win32 before being processed by getopt_long().
+
+3 September 2008 - uBee
+-----------------------
+uBee512 v2.8.0
+
+New for this release:
+* SDL video rendering has seen some major changes, SW and HW video surfaces
+  are now supported along with 8, 8gs (grey scale), 16 and 32 bits per pixel
+  modes.
+* Added --video-type option to select SW and HW video rendering modes.
+* Added --video-depth option to select the colour depth.
+* Added --mouse-wheel option to associate actions for wheel scroll events. 
+  The default action controls the volume level.
+* Added --lockfix-win32 and --lockfix-x11 options. These allow the LOCK key
+  work around code to be enabled or disabled for Win32 and x11 systems. (see
+  changes below)
+* Added mapping of joystick buttons to commands.  Allows the joystick to
+  pause emulation, switch full screen mode, etc.  Used in the
+  games.ini.sample file.
+* Added --js-clist option to list the commands available for mapping to
+  a joystick.
+* Added --lcons option to set the list start point for --lcon and --lconw.
+* Added uBee512 API functions to access arrays of strings set with
+  --file-list and --file-list-q options.
+* Added --gui-persist option to set persist times in milliseconds for values
+  that appear on the status line.
+* Added EMUKEY+UP and EMUKEY+DOWN volume control hot keys with the volume
+  level displayed on the status line as a persist value '[vol nn%]'
+* Added EMUKEY+P emulator pause hot key toggle and status display '[PAUSED]'
+  when the emulator is paused.
+* Added command repeat for EMUKEY and joystick activated commands when keys
+  and buttons are held down.
+* Added --cmd-repeat1 and --cmd-repeat2 options to set command repeat
+  delays for EMUKEY and joystick activated commands.
+* Added emulation of the RTC_A_UIP bit and implemented the Periodical
+  interrupt for all 16 divider rates to the RTC module.
+* Added display of '[DEBUG]' to status line when emulator is in debug mode.
+* Added +vol argument parameter to --status options to always display.
+
+Changes:
+* The existing LOCK key fix code is now able to be enabled or disabled for
+  Win32 and x11 systems. The Win32 defaults to enabled (as before). x11 now
+  defaults to disabled.  It appears as if x11 is set up differently between
+  implementations for how the LOCK key should return the status value.  If
+  the lock key no longer operates as expected under x11 then try enabling
+  the old work around code with --lockfix-x11=on.
+* Standard colour model PROM (IC 7) values are now used.
+* Changed the default colour monitor type to RGBrgb for standard colour.
+* More host CPU time saved that should further improve sound quality.
+* Writing to video memory now checks if the current and new values are
+  different, no rewriting of the same data results in reduced host CPU time. 
+* Reduced overhead time for Alpha+ models when flashing video attributes are
+  not enabled.
+* Linux default frame rate changed to 50 FPS. Performance is very good.
+* Modified --file-list and --file-list-q options to allow repeated use to
+  build up an array of file strings for CP/M application use.
+* New version of UBSCRIPT.COM (v1.1.0) takes advantage of the modified
+  --file-list options. This now allows ample capability to upload all the
+  required files for a CP/M application.
+* New version of HOST2CPM.COM (v1.2.0) copies files to the host system using
+  lower case file names. Upper case can be forced by appending a '-U' switch.
+* Added joystick settings to all games in games.ini.sample where practical
+  and made changes to the documentation, revised and fixed many of the game
+  entries using the improved --files-list option.
+* Changed --snd-volume, --vol to now take a percentage integer value.
+  Default is now set to 15%.
+* Changes to icon BMP format to allow RGB and RGBA pixel data.
+* Improvements made to the RTC emulation module.
+* Changed --js-kset option to now also be the current joystick key set.
+* Debug stepping now has reduced host CPU time when not doing anything.
+* Removed the 'use_audio' conditional compilation. Is always built in now.
+
+Fixed:
+* Standard BG colour intensity was not updating after a write to the colour
+  port in vdu_colcont_w() function.
+* Fixed --col-type option to set the colour type only if emulating a
+  non-alpha+ model.
+* Fixed standard colour bit order for background colours to convert from
+  RGBrgb to BGRbgr order.
+* rtc_poll() was not being called in pio_polling() function unless
+  modelx.piob7 == MODPB7_RTC. The RTC is now polled if RTC emulation is
+  enabled so that the RTC registers are kept updated.
+* New version of UBSCRIPT.COM fixes a key issue in MW BASIC when starting a
+  MWB program from the command line. This was making BASIC programs not
+  return the correct result on the first key check and causing help screens,
+  etc. to be skipped. (This appears to be a bug in MW BASIC)
+
+16 July 2008 - uBee
+-------------------
+uBee512 v2.7.1
+
+Fixed:
+* Makefile was broken due to an icon creation problem and is now fixed.
+* Added ubee512-logo.png and ubee512-logo.ico files where these were missing
+  in the distributions.
+
+10 July 2008 - uBee
+-------------------
+uBee512 v2.7.0
+
+New for this release:
+* Added a configs directory (Windows build only) containing default
+  configuration (sample) files.
+* Added disks.alias.sample and roms.alias.sample aliases files.  These
+  files are used to automatically create default alias files in the home
+  account.  These provide a more portable method of configuring default ROMs
+  and disks for each model.
+* Added --alias-disks and --alias-roms options to enable/disable the use
+  of disk and ROMs alias files.
+* Added --col-type option to select early colour circuit monitor types.
+* Added a new games.ini.sample file to configs directory.
+* Added FDC Index pulse emulation, correct emulation of this is required for
+  Premium BN60 and 256TC v1.2 Boot/Net ROMs.
+* Added option --z80div to set the number of Z80 blocks executed per Z80
+  frame.
+* Added --maxcpulag option that sets the maximum Z80 CPU lag time allowed.
+* Added --config option to allow alternative configuration files to be used.
+* File path slash characters can be specified as either forward or back type
+  with the emulator converting where required if this feature is enabled. 
+  This makes configuration files more portable between systems.
+* Added --slashes option to enable/disable conversion of file path slashes.
+  Default is enabled.
+* Added code to the sound module that prevents sound gaining in time due to
+  integer remainder losses from division operations.  This can be enabled
+  by using the --snd-alg1 option.
+* Added EMUKEY+S sound mute hot key toggle and status display 'M' if muted.
+* Added +mute argument parameter to --status options.
+* Added --snd-freq option to set the sound sampling rate.
+* Added --snd-freqadj option to adjust the sound card sampling rate by a
+  percentage value.
+* Added --snd-freqlow option to set the lowest sound frequency.
+* Added --snd-holdoff option to set the hold-off delay.
+* Added --snd-samples option to set the SDL callback data size.
+* Added --snd-hq option as a quick method to set high quality audio settings.
+* Added --snd-mute for temporarily muting sound output.
+* Added --snd-volume option for consistency with the other commands. This is
+  the same as the --vol option.
+* Added --dstep option to support 48tpi DD disks (DS40) in 96tpi DD drives.
+* Added --dstep-hd option to support 48tpi DD disks (DS40) in 96tpi HD drives.
+* Added --js-axis to enable/disable conversion of joystick analogue axis
+  values to buttons.
+* Added --js-axisb to set the joystick button base value.
+* Added --js-axisl to set the joystick axis level thresh hold detection
+  level. (Use joystick calibration before using this)
+* Added --file-x options allowing CP/M applications to accept parameters
+  from the command line.  How these are used is entirely dependent on the
+  CP/M application accessing these values.  This distribution includes some
+  new CP/M tools that make use of these options and the options described
+  here will be related to those programs.
+* Added --file-app option determines an application name.
+* Added --file-exec option determines the execution address of a m/c program.
+* Added --file-list and --file-list-q options determines a list of files to
+  be up loaded.
+* Added --file-load option determines the load address of a m/c program.
+* Added --file-run option determines a program or ccp command to run.
+* Added --file-exit option to enable/disable the EXITEMU.COM being generated
+  by the new UBSCRIPT.COM support program.
+* New UBSCRIPT.COM and VSCREST.COM CP/M support programs have been added to
+  the tools images.  These allow the dynamic creation of scripts from within
+  the uBee512 CP/M environment.
+* Configuration file parameters can now use environment variables that are
+  portable between Windows and Unix systems.
+* Added predefined built-in variable(s) accessible from configuration file
+  and command line options.
+* Creation of raw disk images when '.temp' is appended to a raw disk file
+  name. Will be over written next time started with same file name.
+* Added a default 'files' directory for holding Microbee programs.
+* Added +ubee512 argument to the --modio option to report excessive lost
+  time during the Z80 CPU emulation.
+* Added PC85_BASIC_A.ROM and PC85_BASIC_B.ROM entries.
+* Added --lconw option to list section names in config file in wide format.
+* Added --video option to enable/disable video output on start-up.
+* Added --clock-def option to be used by uBee512 API functions.
+* Added --exit-check option to allow quick exits with no checking.
+  Z80 program.
+* Added --args-error=options to disable some argument option errors.
+* Added video, sound mute and CPU clock functions.
+
+Changes:
+* New versions of HOST2CPM, CPM2HOST and HOSTDIR now handle hyphen
+  characters correctly in file names and the use of double quotation
+  characters is now much improved. Please update existing versions for
+  trouble free operation when using the new games.ini.sample script.
+* Changes to various areas has resulted in much improved sound quality.
+* Current and default directories are now used in that order, see the
+  information at the end of the --help output for the new rules.
+* Win32 version now uses a video frame rate of 50 FPS. Unices stays at 30.
+* Sound hold off now uses 50mS, previously used 75mS.  Newly introduced
+  sample rate frequency adjustment value is set to -2.5%
+* Changed the number of Z80 CPU blocks executed per Z80 frame from 1 to 25.
+  This increases polling of peripherals and can be configured as required.
+* CPU time greatly reduced when display is not being updated by eliminating
+  writes to the SDL screen.  This may also result in improved sound quality.
+* CRTC 6545 status now returns the correct duty cycle for Vertical blanking.
+  'Defender' and many other games that rely on this are now emulated
+  correctly.
+* Win32 and Unices now use 1024 as default for the SDL sound callback data
+  size. Previous values were 128 for Win32 and 512 for Unices.  There is now
+  an option available to override the default value.
+* The Z80 CPU constant used for fine tuning the clock speed and calculation
+  code has been removed. Any problems with sound can be corrected by using
+  the new --snd-freqadj option instead.
+* 512k and 256k models now default to monochrome mode. Use the --col option
+  for pre 2.7.0 emulation if is colour required.
+* The --nodisk option now stays in affect until any key is pressed. It now
+  also prevents the Index pulse being returned.
+* A PIO polling persist duration added when Z80 emulation commences, this
+  permits some Boot/Net ROMs to start correctly.
+* Improved error reporting when a file that requires R/W access is read only
+  or the file is not found.
+* Windows build uses the latest stable SDL version of 1.2.13. Was 1.2.11.
+* The ubee512rc.sample file has been revised. Contains ROM configurations
+  for all models and examples of how to use environment variables.
+* The ubee512rc configuration file is now created from the ubee512rc.sample
+  file (now located in configs directory in Windows) if not found.
+* The libdskrc configuration file is now created from the libdskrc.sample
+  file (now located in configs directory in Windows) if not found.
+* Windows and Unices account creation now share similar methods.
+* Made Hat motion reportable if +joystick used in --modio option.
+* A lot of cleaning up of the code.
+
+Fixed:
+* Corrected a 'speed up' issue noticed on Win32 systems when dragging the
+  program window and releasing was causing the emulator to catch up all the
+  lost time.
+* On Win32 some sound systems (or drivers) resulted in a very slow and
+  distorted sound problem, this has been fixed by increasing the callback
+  sample size value.  See the new --snd-samples option above.
+* Joystick 12 button limitation, now is 128 buttons as originally intended.
+* rom1.bin was being loaded in to complete a 16K load if the 1st ROM in
+  the list was less than 16K in size.
+* Application icon transparency working for Windows build.
+* Added an SDL_FreeSurface() call before creating a new screen surface.
+
+14 May 2008 - uBee
+------------------
+uBee512 v2.6.0
+
+New for this release:
+* Joystick emulation added.  Emulates the standard Microbee Joystick. The
+  joystick is also able to be mapped to Microbee keys permitting games and
+  other applications to use joystick controls.
+* Added joystick select and enable option --js.
+* Added Microbee joystick options: --js-clear, --js-mbee, --js-up,
+  --js-right, --js-down, --js-left, --js-fire, --js-play1, --js-play2,
+  and --js-spare.
+* Added joystick to keys mapping options: --js-klist, --js-kbd, --js-kk,
+  --js-kb, --js-kset and --js-ksel.
+* Added EMUKEY+J+K (or EMUKEY+J <K>) hot keys to select a joystick key map
+  set. K is 'A'-'Z'.  First 26 sets are selectable from keyboard, 256 sets
+  are available in total.
+* Added EMUKEY+J+0 (EMUKEY+J <0>) disables Microbee and keyboard mapping for
+  joystick.  EMUKEY+J+1 (EMUKEY+J <1>) enables Microbee joystick.
+* Z80 CPU speed improvements to better regulate the execution rate rather
+  than just per each Z80 code frame executed.  This improves sound quality
+  but may vary between installations.
+* Full screen toggle using the mouse now requires a double clicking action.
+* Added --dclick option to set double click speed for mouse events.
+* Added --status option to customize the status line in the title bar.
+* Additional status information displayable now includes joystick, tape in,
+  title, sys, serial, print, short/long drive and others.
+* Added --title option to set a custom title name.
+* Added --spad option to set padding between status information.
+* Added --basram option to use SRAM instead of ROM at 0xA000-0xBFFF.
+* Added --pakram option to allow a PAK location to use SRAM instead of ROM
+  at 0xC000-0xDFFF.
+* Added --netram option to use SRAM instead of ROM at 0xE000-0xEFFF.
+* Added PAK1-PAK7 ROM PAKs for 2mhz model emulation.  Use OUT 10,n followed
+  by an EDASM command to select.
+* All PAKs are now preloaded when emulator starts up.
+* Added function_joystick() functions.
+
+Fixed:
+* File name matching in win32 fixed in a function that returns the next
+  directory entry. Was only able to match file names that used all lower
+  case. CP/M support program HOST2CPM should now work.
+* Options --rom2 and --rom3 overrides did not load any ROM images.
+* Teleterm model keys are now associated with the Teleterm keyboard.
+* Added two missing compile conditionals '#ifdef USE_LIBDSK' around where
+  disk.dg.dg_secsize is used in fdc.c. Needed when compiling with LibDsk
+  disabled.
+* Fixed an endianess issue in function_stdio() function for the 'putchar
+  function'.
+* PIO potential mode set problem discovered when adding joystick code.
+
+30 March 2008 - uBee
+--------------------
+uBee512 v2.5.0
+
+New for this release:
+* Added configuration file settings allowing global declaration and use
+  of customised sections.
+* Added user's monochrome configuration type 'u' to the --monitor option.
+* Added --mon-fg-x, --mon-bg-x, and --mon-fgl-x options for a user
+  configurable monochrome monitor.
+* Added --basic, --basica, --basicb,--basicc, --basicd, options to override
+  default BASIC in ROM based models.
+* Added --pak, --pak0 to --pak7 options to override PAK ROMs in ROM based
+  models.
+* Added --netrom option to override net ROM in ROM based models.
+* Added --rom1, --rom2, --rom3 options to override ROMs in DRAM models.
+* Added --charrom option to override the default character ROM.
+* Added --colprom option to override early colour internal PROM values.
+* Added --sys option to define the system name,  this will be appended to
+  some files so that different operating systems using the same model can
+  still have unique names for certain files.
+* Added 48 --rgb-nn-x options to custom configure the alpha+ colours.
+* Added --lcon option to list section names in the configuration file.
+* Added --lmodel option to list the available models.
+* Modified --fullscreen option to now have a toggling action.
+* Character ROM may now be a 2K (2716) or 4K (2732) image type.
+* Added Teleterm model emulation option in addition to the existing 256TC
+  Telecomputer emulation. (Teleterm model requires testing)
+
+Fixed:
+* 2mhz model now only able to access the first 2K of character ROM.
+
+19 February 2008 - uBee
+-----------------------
+uBee512 v2.4.0
+
+New for this release:
+* LibDsk has been added allowing direct floppy access, various disk image
+  formats DSK, EDSK, TD0, CopyQM, etc. Other disk drivers under Windows and
+  Unices are also possible.
+* Added --side1as0 option to allow disks in LibDsk to correctly read side 1
+  when the sector header contains side 0. Microbee DS80 and DS40 formats can
+  have this problem depending on the format program that was used.
+* Added a sector size probing option --psec to access protected floppy disks
+  and edsk images.
+* Added emulation of the FDC write track command.  Format and Init programs
+  now work when using LibDsk.
+* Added +fdc_wtd and +fdc_wth write track debug output options.
+* Model information and drive status now appears in the program's title bar.
+* Added A libdskrc file containing common Microbee formats for LibDsk.
+* Re-instated the alpha+ --vdu option functionality.  Default is 2K for VDU
+  memory (no banking), 8K banked can be selected.
+* Re-instated the paging of the text output for the --help option in Windows
+  as default buffers in the console are not large enough.
+
+Fixed:
+* Alpha+ VDU colour bank selection issue resolved by defaulting to 2K of VDU
+  RAM instead of 8K.
+* FDC status results.
+
+25 January 2008 - uBee
+---------------------
+uBee512 v2.3.0
+
+New for this release:
+* Added --hint option to allow half intensity monochrome for alpha+ models.
+* Added Z80 code built in debugging.  The --debug option is now only used
+  for Z80 debugging.  Debugging allows disassembly in trace and single
+  stepping modes, z80 break points can be specified with --bp and --bpc
+  options. Uses keys to control debugging.
+* Added --modio option that takes parameters determining what modules should
+  report I/O access.
+* Added --regs option that takes parameters determining what registers are
+  to be dumped when pressing the EMUKEY+R keys.
+* Added --dump option to specify a Z80 memory dump address.  EMUKEY+D,
+  EMUKEY+1, EMUKEY+2, EMUKEY+3, EMUKEY+4 and EMUKEY+5 can then be used
+  to dump memory to stdout.
+* Added preliminary support for direct floppy access for Unices.  Windows is
+  to be investigated for a later release. (See the Direct Floppy Access
+  section in the README file).
+* EMUKEY keys (HOME or ALT)  now acts as a control key allowing more
+  emulator functionality from the keyboard.
+* The tape rewind key is now EMUKEY+T.
+* Emulation of typical RAM and DRAM memory patterns found on start up on
+  Microbees.
+* Removed the --standard option and replaced with new --col and --mono
+  options that allow enabling/disabling colour emulation for standard
+  models.
+* The Z80 ports emulation is now greatly improved,  the interpretation for
+  each port is now determined by the model emulated.
+* Added printf, hex and decimal output functions to the stdio group.
+* Added many new functions to the status group.
+* The default size of the PCG RAM emulated is now 16K for the 256TC and
+  Premium model,  upgraded Premium models are 32K, standard is 2K.
+* The alpha+ --vdu option functionality has been removed, it remains as an
+  option but does nothing.
+
+Fixed:
+* A major banking issue fixed that prevented the 256TC model working
+  correctly when the second 128K of DRAM was accessed.
+* DRAM block selection has been corrected when selected with ROMs also in
+  the memory map for all 128K and above models.
+* The memmap.c and vdu.c modules have seen  major changes to fix the above
+  problems and improvements in other areas.
+* Incorrect test of BIG_ENDIAN format in mz80.h has been fixed.  Unix
+  systems use this to define the byte order, and not as a true/false.  The
+  mz80context should now be correct for Little endian hosts.
+* z80context initialization problem fixed.
+* Removed the "invalid Z80 code" workaround during initial start up as the
+  problem causing it has now been fixed (see z80context bug above), faster
+  start up may now be noticeable.
+* ROM Basic 5.22e problem of coloured mosaic characters remaining on the
+  screen after booting has been solved and the problem fixed.
+* The --pcg option now works correctly when PCG is less than 32K, any
+  multiple of 2K between 2 and 32 can now be specified.
+* Removed VDU memory clearing code from the VDU reset function.
+* All DRAM models (except 256TC) now have ROM1 size changed so that 16K ROMS
+  can be loaded instead of just 8K.  Relaxed the rules in the loading
+  section of the code on what size is allowed.
+* Some boolean results in the function module did not use the endian
+  functions that would result in 1 returned as some other non zero value on
+  big Endian platforms.
+
+14 December 2007 - uBee
+-----------------------
+uBee512 v2.2.0
+
+New for this release:
+* Old colour circuit emulation added and is now the default for colour
+  models except for Premium and 256TC models. Some values still require
+  further investigation to be emulated fully.
+* Added emulator functions that allow Z80 programs to have access to
+  some emulator control and host file system functions.
+* CP/M program tools added:
+  - CP/M to host (cpm2host) and a host to CP/M (host2cpm) file copying
+    program.  These can be used for transferring files between the host and
+    CP/M disk images.
+  - A host directory listing program (hostdir).
+  - Emulation control (exitemu and reset) programs, allowing the emulator
+    to exit or reset from within the emulator under a CP/M system command.
+* Revised Premium/256TC model colours to be more inline with the standard
+  CGA colours and hopefully a closer match to the Premium colours.
+* Disk images can be made write protected by adding a trailing underscore
+  character to the image name.
+* Added a --hwflash option for Premium (alpha+) models.  Only the 256TC and
+  upgraded Premimum disk models have hardware flashing enabled by default.
+* Added documentation on how to create disk images from Microbee disks.
+* No loading of the fallback boot disk if emulating a machine of less than
+  128K memory.
+* Changes so that parallel printer still operates even if no --print
+  options are specified.
+* Added 'ubee512_ver.id' file to home account to allow later versions to
+  upgrade all the required account files for Unix systems.
+
+Fixed:
+* The DS80 'DSK' format did not work. This format has now been fixed and
+  tested.
+* Mouse button click causing mbox to be brought into context and a button
+  pressed/released caused undesired screen size change actions fixed.
+* Changed all 128, 64, and 56K disk models to default to --piob7=PUP as
+  tbasicc.com failed to work with --piob7=vsync.
+
+30 October 2007 - uBee
+----------------------
+uBee512 v2.1.0
+
+New for this release:
+* Teleterm 256TC model now tested and working.
+* Added --lpen option to enable 6545 light pen key emulation for 256tc.
+  By default the 256tc model does not have lpen key emulation now.
+* Added left mouse button click to toggle full screen mode.
+* Added middle mouse button click to reset.
+* Added right mouse button click to exit.
+* Added CPU speed change emulation on port 0x09 input and a --speedsel
+  option to enable/disable.
+* Added alarm flag and interrupt set for Real Time Clock (RTC).
+* vsync signal implemented for PIO port B with interrupt.
+* Added --piob7 option to determine PIO port B bit 7 use,  options of pup,
+  rtc, vsync, and net are provided. the net option is not implemented.
+* Added SDL version to the --version output option.
+* Added --clock option. (to use instead of --xtal)
+* Each DRAM model now has unique file name for the optional ROM 2 & 3 images.
+* Better account creation for Unices when upgrading to later versions. Any
+  missing or new directories will be created.
+* Added missing key combination of 'SHIFT 0' by providing a 'SHIFT INSERT'
+  for the standard keyboard.
+* The help option output is now organised into sections.
+* M+RESET keys will not request a confirmation (for jumping into Monitor)
+* Bad Telcom v3.2.1 ROM image check and patch.
+
+Fixed:
+* The FDC FDC_READADDR command now works for all disk formats that some system
+  code depended on (i.e. 256TC).
+* Fixed problem of 10 sector/track disks where sector numbers are 21-30.
+* RTC AM/PM hours were not returned correctly when set to AM/PM mode.
+* RTC Alarm times were not returned correctly.
+* RTC file image should now have values saved in the format the same as that
+  found inside of a RTC IC.
+* Microbee DS80, D80 format fixed,  had wrong data track offset value.
+* Model not found exited with segmentation fault.
+* Incorrect table ordering of p256k, 256k, and p128k, 128k models.
+* Network ROM bank selection problem corrected for ROM based models.
+* Reversed the full and half intensity colours as these were in the reversed
+  order,  re-adjusted the intensity levels.
+* Dark grey colour now produces dark grey and not black.
+
+18 October 2007 - uBee
+----------------------
+uBee512 v2.0.0
+
+New for this release:
+* Now emulates all Microbee Z80 FDD and ROM based models!
+* Teleterm 256TC model emulation added.
+* Real Time Clock (RTC) emulation added.
+* Added 'rtc' directory, each model emulated has it's own RTC RAM image
+  saved to this directory.
+* Each FDD model now has a preferred default boot disk image file name.  If
+  not found then will try to use 'boot.dsk'.
+* Every FDD model now has a preferred default boot ROM image name.  If not
+  found then will try to use 'rom1.bin' except for 56K and 256TC models.
+* p256 and 256K (64K to 256K DRAM upgrade) model emulations added.
+* Confirmation exit and reset windows added for Unices.
+* Added --rtc option.  RTC is default for 256TC, and all models with 256K or
+  more memory.
+* Added --nodisk option to force 256TC boot ROM Menu to appear.
+* The '.dsk' image should now be fully implemented.
+* Microbee LINE FEED moved from KP_ENTER to PAGEUP, BREAK from KP_PLUS to
+  PAUSE/BREAK and F1 (tape) to HOME keys.  This is for consistency with the
+  Teleterm 256TC keys emulation.
+* Z80 PIO emulation improvements.
+* APC model name changed to 56K.
+
+6 October 2007 - uBee
+---------------------
+uBee512 v1.4.0
+
+New for this release:
+* Display aspect ratio much improved,  a display aspect ratio of 2:1 is now
+  the default, --aspect option added to change to 1:1 ratio (old ratio).
+* ROM based (tape machines) models emulation.  Each ROM model can
+  be configured to determine what BASIC, PAK and NET ROMs to use.
+* Model option to target specific Z80 model Microbees.  The boot ROM
+  for disk emulated models can be configured for each model.
+* Added specific disk emulations for 128K, 64K, 56K models.
+* Close window box made operational,  exit and reset now prompts user to
+  confirm the requested actions. (in Windows only)
+* Added --pcg option to select amount of PCG RAM for emulation (Premium).
+* Added --vdu option to select amount of VDU RAM for emulation (Premium).
+  This now defaults to 2K allowing some incorrectly coded programs to work.
+* Added --mmode option to force the ROM's monitor mode to start.
+* Changes to Windows port for console output, a --conio option for verbose
+  reporting is provided.
+* Windows binary releases now includes an installer executable,  this will
+  add icons to the start menu and optionally to the desktop.
+* Windows install location is now determined by the user for both the
+  binary installer and ZIP file releases.
+* Optimised binary code generation and greatly reduced executable sizes.
+* Improved error reporting.
+* Added alternative shortened 3 character file name extensions for raw
+  images.
+* Other '.dsk' image formats including 3.5" Microbee Modular images should
+  now be possible.
+
+Fixed:
+* Windows port now starts up correctly without a back ground command prompt
+  window appearing unless an error condition or if an information output
+  option is used.
+* Fixed bug preventing '.DSnn' and '.SSnn' raw images from being opened.
+
+1 September 2007 - uBee
+-----------------------
+uBee512 v1.3.0
+
+New for this release: 
+* PIO with interrupts allowing serial and printer peripherals to be
+  implemented.
+* RS232 Serial communications for TX/RX allowing uBee512 to communicate to
+  another instance of uBee512, modems, serial printers, or to a real
+  Microbee, etc. via the PCs RS232 or USB-SERIAL virtual com ports.
+* Parallel printer output to file(s) options.
+* Added a --tapevol cammand line option to set the volume level produced in
+  tape wave files.
+
+Fixed:
+* No fixes for this release.
+
+22 August 2007 - uBee
+---------------------
+uBee512 v1.2.0
+
+New for this release: 
+* Tape in and Tape out from/to wave file options.
+* Tape output sample frequency option.
+
+Fixed:
+* --version option on Windows caused program to crash, FreeBSD likely too,
+  The Linux build did not have this problem.
+
+18 August 2007 - uBee
+---------------------
+uBee512 v1.1.0
+
+What's new in v1.1.0: 
+* Emulation 'hacking' options. (See EMULATION HACKING section)
+* Volume setting option.
+* Sound method options.
+* More raw disk image types.
+* Help option.
+* Command line options are now checked for correctness.
+* Windows console output now sent to the console and not files.
+* Emulation speed accuracy improved.
+* 2 MHz Microbee emulation.
+* 1 bug fix where image D: stopped image B: working.
+
+See the README file for the full feature list.
+
+Fixed:
+- Drive B image was not responding if a drive D image was specified.
+
+11 August 2007 - uBee
+---------------------
+Bug fix release: v1.0.1
+Wrong default disk image type was set for boot. Was boot.dip, changed to
+boot.dsk.
+
+10 August 2007 - uBee
+---------------------
+Release uBee512 v1.0.0 sources and Windows binaries on sourceforge:
+https://sourceforge.net/projects/ubee512/
+
+3 July 2007 - uBee
+------------------
+Added an 'in (c)' also known as 'in (hl),(c)' to the makez80.c file.  This
+instruction is an undocumented Z80 instruction but quite valid I believe. The
+instruction is similar to the 'in a,(c)' instruction but no value is
+returned except for the flags.  This was added for some Z80 code I wrote
+that used it.
+
+26 June 2007 - uBee
+-------------------
+Discovered there was a much later version of MZ80.  The latest version is
+now being used v3.4.  Previously v2.7 had been used.  The newer version of
+makez80 insists that an emit parameter is provided otherwise you you end up
+compiling with the old mz80.asm still! The new version fixes the cycle count
+returned and appears to be quicker as eluded to in the change history.
+
+Also found that some applications that did not work previously do now with
+the newer version.
+
+5th June 2007 - uBee
+--------------------
+Welcome to the "uBee512" Microbee Premium disk model emulator. This is a
+fork of the nanowasp v0.22 project and commenced on the 5th of June 2007.
+
+The new project includes a large amount of additions and improvements over
+v0.22 of nanowasp. The new fork is "uBee512".

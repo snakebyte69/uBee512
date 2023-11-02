@@ -1,0 +1,7 @@
+cp reset.azm m:
+m:
+z80mr reset
+load reset
+cp reset.com b:
+b:
+

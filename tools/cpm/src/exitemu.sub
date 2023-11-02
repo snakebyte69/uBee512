@@ -1,0 +1,7 @@
+cp exitemu.azm m:
+m:
+z80mr exitemu
+load exitemu
+cp exitemu.com b:
+b:
+

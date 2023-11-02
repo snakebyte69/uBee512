@@ -1,0 +1,249 @@
+uBee512 Tools
+=============
+This image contains CP/M tools to be used with the uBee512 emulator from
+version 2.8.0 and onwards.  The programs will not work on a real Microbee.
+
+uBee512 Tools License
+---------------------
+These tools are "Freeware".  The software comes with absolutely no warranties
+and are to be used at your own risk.  The code is provided "as-is".
+
+The source/scripts and binary code are allowed to be modified for personal use
+only,  these must not be used in any other projects in original or modified
+form without written permission from the author.
+
+Tools Overview
+==============
+
+CPM2HOST
+--------
+Copies files from a CP/M drive(s) to a host destination.  The program can
+take multiple source arguments on the one command line.
+
+HOST2CPM
+--------
+Copies files from a host system to a CP/M drive destination.  The program can
+take multiple source arguments on the one command line.  Only files that
+satisfy CP/M's file format will be copied,  this includes: 8.3 file names and
+the legal characters allowed.  Only one dot per file name is allowed and this
+can not have more the 3 characters following it.  All files that don't conform
+will be skipped.  The main intention is to only copy existing CP/M files.
+
+HOSTDIR
+-------
+Displays a list of files on a host system. The program can take multiple
+directory path arguments on the one command line.
+
+RESET
+-----
+Resets the emulator in the same way as the reset key on a Microbee.
+
+EXITEMU
+-------
+Exit the emulator.
+
+VSCREST
+-------
+Video, sound and CPU restore.  This is normally used by game scripts after
+loading of programs has taken place.
+
+UBSCRIPT
+--------
+Uses uBee512 command line options to create a CP/M submit file.  This will
+then create another submit and a MWB loader file that will execute Microbee
+Machine languange, MWB, CP/M commands, submit files, etc.
+
+Copy and Directory Programs
+===========================
+The CPM2HOST, HOST2CPM, and HOSTDIR programs all share a common method
+of operation.  The programs may be used with command line parameters or by
+not entering any parameters placing the program into Interactive mode.
+
+Wildcards for the 'HOST' side uses Unix style of matching for both Windows
+and Unices systems,  the 'CPM' side uses standard CP/M wildcard matching.
+
+If you want refer to all files on the 'HOST' side use '*' and not '*.*',
+the later will not match files that do not contain a '.' character.
+
+Interactive mode
+----------------
+In Interactive mode a prompt will be provided allowing the parameters to be
+entered and acted on,  the program's prompt will return at the completion
+of the command.  To exit Interactive mode and back to CP/M the -e option is
+specified.
+
+The Interactive mode is mainly intended for Unix users.  CP/M converts
+command parameters to upper case and as Unix is case sensitive for file
+names a method was required that does not alter the case of the parameters.
+
+Command line usage
+------------------
+Although CP/M converts all the parameters to upper case these programs then
+convert all these back to lower case.  This is more likely to be useful
+for Unix host systems.  For Windows users it will make no difference.
+
+If the command line method must be used then forcing of upper case characters
+is possible for the host parameter by using the ''' character. This is NOT
+required for Windows hosts:
+
+'n
+The following (n=0-9) characters will be forced to upper case.  A value of
+10 is used if n=0.  Only single digits quantaties are allowed.
+
+'c
+The (c) character is forced to upper case.
+
+''
+Inserts a single (') character into the parameter.
+
+Examples using the hostdir command:
+
+Unix directory:
+home/Joe/Blogs/MYFILES
+
+Requires the following command line:
+$ hostdir /home/'joe/'blogs/'7myfiles
+
+Unix directory:
+/home/Joe/Blogs/ALL_MY_TEST_FILES
+
+Requires the following command line:
+$ hostdir /home/'joe/'blogs/'0all_my_tes'7t_files
+
+Parameter quoting
+-----------------
+If any spaces exist in file names then double quotes ('"') may be used around
+the parameter (or part of) in question.  This is required if for example
+"Program files" is part of the file name path.
+
+Program usage
+-------------
+The copy and directory programs provide usage information built in and can
+be displayed with the -h option:
+
+>progname -h
+
+UBSCRIPT AND SUPPORT PROGRAMS
+=============================
+UBSCRIPT uses uBee512 command line options to create a submit file that uses
+the HOST2CPM program to upload a file(s) from the host system.  A LOADER.MWB
+file will be created for any programs that need to be run under Microworld
+BASIC. Submit, command, BAS, CCP direct commands are also handled.
+
+The submit file created by the UBSCRIPT program will typically require the
+presence of SUPERSUB.COM, BASIC.COM, HOST2CPM and VSCREST programs.
+
+The emulator must be started with some options so that UBSCRIPT knows what it
+has to do, the options available for use are:
+
+--file-list=file
+or
+--file-list=file_list1 --file-list=file_list2 ...
+
+A list of files seperated by spaces is required for each --file-list used.
+The sumbit file created by UBSCRIPT will contain entry(s) to run HOST2CPM with
+these parameters.  The last file in the list (if absolute, i.e. no wildcards)
+will be used as the application to be run if --file-app is not specified.
+
+The --file-list option may be repeated as required with a sperate submit entry
+created for each occurence.  This is required where the full command line
+would exceed the CP/M maximum of 127 characters.
+
+--file-list-q=file 
+
+Same as --file-list option except the string will have double quotation marks
+appended to the start and end.  This allows paths to contain spaces and remain
+as one parameter to the HOST2CPM program. It is useful when only one file is
+to be passed to the HOST2CPM program.
+
+--file-run=program
+
+The name of the program that will be run.  If this option is not specfied then
+the last file specified by the --file-list option will be used instead. If a
+CCP command is required then this option must be used.
+
+--file-app=application name
+
+Tells UBSCRIPT what program to be used for MWB and SUB applications,  by
+default BASIC.COM, MBASIC.COM and SUPERSUB.COM will be used.
+
+--file-load=address
+
+Specifies the load address for a machine language program to be used in the
+LOADER.MWB file created by UBSCRIPT.  Don't specify this command for any other
+file types.
+
+A LOADER.MWB file will be created if the file load and exec locations are
+the same address as shown below.  Line 100 is used to overcome a problem when
+stating BASIC with a file where the first key check does not appear to work
+correctly causing code to be run when tested.  Line 110 is used to restore
+video, sound and set the Z80 emulation speed back to normal.
+
+100 A1$=KEY$
+110 OUT 255,224:OUT 255,0:OUT 255:0
+120 RUNM "FILENAME.EXT" LOADADDR
+
+Alternatively the --file-exec option may be used and leave this option unused
+or set as address 0.
+
+--file-exec=address
+
+This is used in conjunction with the --file-load option. It is only required
+if the execution address is different to the load address.
+
+A LOADER.MWB file will be created as follows (lines 100 and 110 explained
+earlier):
+
+100 A1$=KEY$
+110 OUT 255,224:OUT 255,0:OUT 255:0
+120 LOADM "FILENAME.EXT" LOADADDR
+130 U = USR(EXEADDR)
+
+--file-exit=on or off
+
+This option may be used to prevent 'exitemu' being placed into the
+UBSCRIPT.SUB file by specifying off.
+
+Using UBSCRIPT is simple, it only requires a single parameter to tell it which
+drive to place the dynamically created files.  A RAM drive is suitable for
+this or a temporary disk image can also be quickly created by the emulator
+on start up.
+
+>ubscript m:
+
+Then the UBSCRIPT.SUB file can be run with:
+
+>supersub m:ubscript
+
+Automated disk boot image
+-------------------------
+A disk image containing an operating system and the required support programs
+can be created to make the process easy.  This example uses drive B: as the
+temporary drive.
+
+Create a disk image with a Microbee CP/M system,  a 128K DRAM Premium system
+is good for this purpose as it boots fast compared to some others,  SHELL.SYS
+is not required, the disk will require CCP.SYS and INIT.COM.
+
+Place these files on the disk:
+
+CCP.SYS         CP/M console command processor.
+INIT.COM        Microbee Init and Configure program.
+SUPERSUB.COM    A public domain version of submit.com
+HOST2CPM.COM    uBee512 support utility.
+EXITEMU.COM     uBee512 support utility.
+UBSCRIPT.COM    uBee512 support utility.
+VSCREST.COM     uBee512 support utility.
+BASIC.COM       Premium v6.30 BASIC.
+STDBASIC.COM    Microbee standard disk BASIC.
+MBASIC.COM	MS Basic.
+
+Boot the new disk image and run the INIT program.  Set the initial command:
+
+Select 5 (Configure)
+Select 5 Shell selection
+Select 2 to set CP/M CCP
+Select 4 and enter: UBSCRIPT B:;SUPERSUB B:UBSCRIPT
+Press ENTER to return to the main menu
+Select 7 to save changes to drive A:
+

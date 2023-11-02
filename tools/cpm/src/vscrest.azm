@@ -1,0 +1,128 @@
+;**************************************************************************
+;*                                  vscrest                               *
+;*                                                                        *
+;*                 uBee512 Emulator support utility for CP/M              *
+;*                               (C) uBee 2008                            *
+;**************************************************************************
+;
+; Description: Restores the video, sound and sets normal CPU speed.
+;       Usage: vscrest
+;
+; Revision history (most recent at top)
+; =====================================
+; v1.0.0 - 21 June 1008, uBee
+; Create initial program
+;
+; build using:
+; z80mr vscrest
+; load vscrest
+;
+; define BDOS functions
+BDOS	equ	000005h		;entry address to BDOS
+PRNSTR	equ	9		;print string function
+;
+; define the uBee512 interface port
+UBEE512	equ	255
+;
+; define characters
+LF	equ	10		;line feed character
+CR	equ	13		;carriage return character
+CLS	equ	26		;clear the screeen character
+;
+; define the minimum version required
+VER1	equ	2
+VER2	equ	7
+VER3	equ	0
+;
+	org	0100h		;start of TPA
+;
+;	set up new stack
+	ld	(oldstk),sp	;save current stack address
+	ld	sp,newstk	;set up new stack
+;
+; check we are running on the emulator
+	ld	a,UBEE512	;uBee512 emulator functions
+	ld	c,a
+	ld	b,100
+emulp1:	dec	b
+	jr	z,notemu
+	in	a,(c)		;uBee512 emulator read port
+	jr	nz,emulp1
+	ld	hl,name
+emulp2:	in	a,(UBEE512)	;uBee512 emulator read port
+	cp	(hl)
+	jr	nz,notemu
+	inc	hl
+	or	a
+	jr	nz,emulp2
+;
+; check the emulator version is correct
+	ld	a,000h		;status function group
+	out	(c),a
+	ld	hl,f_stat	;pointer to information structure
+	out	(c),l		;LSB of function structure
+	out	(c),h		;MSB of function structure
+	ld	a,(v1)
+	cp	VER1
+	jr	c,notver
+	jr	nz,rest
+	ld	a,(v2)
+	cp	VER2
+	jr	c,notver
+	jr	nz,rest
+	ld	a,(v3)
+	cp	VER3
+	jr	c,notver
+	jr	rest
+
+notver:	ld	de,vermsg	;not correct version message
+	call	prnmsg
+	jp	exit
+
+notemu:	ld	de,emumsg	;not correct emulator message
+	call	prnmsg
+	jp	exit
+
+; restore the video, sound and CPU speed
+rest:	ld	de,clsmsg	;clear screen message
+	call	prnmsg
+	ld	a,UBEE512	;uBee512 emulator functions
+	ld	c,a
+	ld	a,0e0h		;basic functions group
+	out	(c),a
+	ld      a,0
+	out	(c),a		;pass a NULL pointer
+	out	(c),a		;pass a NULL pointer
+	jp	exit
+;
+; print message
+prnmsg:	ld	c,PRNSTR	;print string function
+	call	BDOS
+	ret
+;
+; get old stack and exit
+exit:	ld	sp,(oldstk)	;get old stack address
+	ret			;exit this program
+
+f_stat:	dw	00000h		;sub-function (get version)
+v1:	dw	00000h		;ver 1
+v2:	dw	00000h		;ver 2
+v3:	dw	00000h		;ver 3
+
+name:	db	'ubee512',0	;emulator ID string
+
+vermsg: db	'Not the correct uBee512 emulator version!'
+	db	cr,lf,'$'
+
+emumsg: db	'Must be run under the uBee512 emulator!'
+	db	cr,lf,'$'
+
+clsmsg: db	cls,'$'
+;
+; reserve memory for stack
+oldstk	defs	2		;save old stack address
+	defs	64		;reserve for stack
+newstk	equ	$
+
+	end
+

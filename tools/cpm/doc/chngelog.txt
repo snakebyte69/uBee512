@@ -1,0 +1,33 @@
+uBee512 Tools ChangeLog
+=======================
+uBee512 v2.8.0 - 27 August 2008, uBee
+-------------------------------------
+  UBSCRIPT v1.1.0
+- Added multiple file_list argument support.
+- Added 'A1$=KEY$' to loader as BASIC (v6.30) when started with a file
+  does not appear to return correctly on the first key check.
+- Incorrect minimum version was set to 2.2.7, changed to 2.8.0.
+- Added version reporting.
+
+  CPM2HOST v1.2.0
+- File names are now converted to lower case when copied to the host system.
+  Upper case may be forced by appending a '-u' switch.
+
+uBee512 v2.7.0 - 3 July 2008, uBee
+-----------------------------------
+  HOST2CPM, CPM2HOST, HOSTDIR v1.1.0
+- Rebuilt with include file PARMFUNC.INC split up. STARTVER.INC now
+  contains the version checking code, UBEEFUNC.INC contains types.
+- ScanForSwitches function now passes on any unmatched options as normal
+  parameters, scanning ends when no options are found or non match.
+- ParamCount and ParamStr functions now handle '-' characters correctly
+  in file names.  Double quotes are now handled better.
+
+  UBSCRIPT, VSCREST v1.0.0
+- Initial release.
+
+uBee512 v2.2.0 - 13 Dec 2007, uBee
+----------------------------------
+  HOST2CPM, CPM2HOST, HOSTDIR, RESET, EXITEMU v1.0.0
+- Initial release.
+

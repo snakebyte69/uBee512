@@ -1,0 +1,17 @@
+* uBee: Project creator and maintainer.
+  - All coding except where stated below and various GPL compatible code, in
+    which case credit is given in the source file concerned.
+
+* workerbee:
+  - Added sn76489an Digital Complex Sound Generator (DCSG) Programmable
+    Sound Generator IC emulation (v5.2.0)
+  - Compumuse peripheral incorporating the sn76489an emulation. (v5.2.0)
+  - Added BeeThoven and BeeTalker emulation. (v4.7.0)
+  - Dreamdisk emulation including LibDsk patches, various improvements to
+    the FDC code in general (v4.3.0)
+  - Changes to mimic the Microbee's VDU memory power-up pattern (v4.0.0)
+  - Fix to make FDC write protection work correctly (v3.1.0)
+
+* brobinson:
+  - Additional debug options and changes to how debug functions. See 5.5.0
+    history notes in z80debug.c.
