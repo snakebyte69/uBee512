@@ -1,0 +1,1295 @@
+#===============================================================================
+# This is a sample configuration file only.  Copy it to the ubee512 directory
+# using the name 'ubee512rc' and modify to suit your requirements.
+#
+# Selecting another configuration file is possible by using the --config
+# option as the first option on the command line, or disable the use of the
+# default configuration file by specifying '--config=none'.
+#
+# Comments lines are preceded by '#' or ';' and must be the first non-space
+# character on the line. Blank lines are ignored.
+#
+# Definition entries
+# ------------------
+# A definition name must be surrounded with square bracket characters '['
+# and ']'. All lines below this are part of the definition until a new
+# definition name or the end of file is reached.  A maximum of 5000
+# definitions are allowed.
+#
+# A definition's contents can NOT reference any other definitions.  The
+# command line options may include any number of references to definitions
+# contained in the file and may be mixed with options.
+#
+# Values contained in the [global-start] and [global-end] sections are
+# always referenced but their use is optional.  It is not the intention that
+# these be called directly by the user.  The [global-start] section is
+# applied before any command line options or customised sections are
+# processed.  The [global-end] section allows options to override what
+# resulted from a command line or a customised section.  i.e. the --model
+# option sets default values and the [global-end] section can globally
+# override the settings if this is required on a global basis.
+#
+# Names used for a definition entry must be unique.  If any command line
+# option parameters that contains a space before it matches the definition
+# name then it will be treated as file definition instead.
+#
+# Specifying options
+# ------------------
+# Options may be divided up and placed onto new lines to make for easier
+# reading.
+#
+# Quoting parameters
+# ------------------
+# Double quotes '"' may be used around an entry causing it to be treated as
+# one option/parameter.
+#
+# Path slashes
+# ------------
+# Either '/' or '\' characters in file paths may be used for portability.
+# The emulator will figure out which ones to use.  The default for this
+# example file is to use the Windows '\' character.  The conversion of the
+# slash charaters is optional and can be disabled with '--slash=off', when
+# disabled '\' characters will be seen as an escape sequence under Unix
+# systems.
+#
+# Escape characters
+# -----------------
+# Simple escape charaters are possible using '\' characters under Unix like
+# systems when path slash conversion is disabled (--slash=off)
+#
+# Files to be opened
+# ------------------
+# Existing files will first be searched for in the current directory, if the
+# path is not found a second search in the default directory will take
+# place. For the second search the file path specified will be appended to
+# the default directory path.  The second search is not carried out if a
+# '\', '.\', or '..\' are the first characters of the path or a ':'
+# character is used under Windows.
+#
+# Files to be created
+# -------------------
+# Files to be created will be placed into the default directory unless a
+# path to another location is specified by using a '\', '.\', or '..\' as
+# the first characters of the path or a ':' character is used under Windows.
+#
+# Environment variables
+# ---------------------
+# Environment variables may be specified in any of the parameters to any
+# options. The method used is portable between systems.  To reference an
+# application or system environment variable enclose the name with '@'
+# characters. i.e: @ENVVAR@
+#
+# To set uBee512 environment variables using options:
+#  --if-system=win
+#    --varset="UBEE_COM1=1"
+#  --if-end
+#  --if-system=linux
+#    --varset="UBEE_COM1=/dev/ttyS0"
+#  --if-end
+#
+# The above method has the advantage that the required system dependent
+# variables can all be contained in the one configuration file.
+#
+# Setting a system environment variable is dependent on the host shell, here
+# are the most common shells and methods used:
+#
+# Windows:
+# set ENVVAR=value
+#
+# bash, sh:
+# export ENVVAR=value
+#
+# csh, tsh:
+# setenv ENVVAR value
+#
+# uBee512 installed location
+# --------------------------
+# This example file uses 'UBEE512' to refer to the installed location of the
+# emulator.
+#
+# For Windows users this might be:
+# c:\Program files\ubee512
+#
+# For Unix users this is typically:
+# /home/username/.ubee512
+#
+# Usage examples
+# --------------
+# >ubee512 arcade1 joy
+# >ubee512 hs350f
+# >ubee512 hs350f joy -f
+#===============================================================================
+
+#===============================================================================
+# Place your global start preferences in this section.
+#
+# Do NOT change the entry name, the emulator will look for 'global-start'
+# automatically on startup.
+#===============================================================================
+[global-start]
+
+# set the video type to be used based on the host system.
+--if-system=win
+   --if-system=w10
+      --video-type=hw
+   --if-end
+   --if-system=w8.1
+      --video-type=hw
+   --if-end
+   --if-system=w8
+      --video-type=hw
+   --if-end
+   --if-system=w7
+      --video-type=hw
+   --if-end
+   --if-system=vista
+      --video-type=hw
+   --if-end
+   --if-system=xp
+      --video-type=hw
+   --if-end
+   --if-system=w2000
+      --video-type=hw
+   --if-end
+   --if-system=me
+      --video-type=hw
+   --if-end
+   --if-system=w98
+      --video-type=hw
+   --if-end
+--if-else
+   --if-system=linux
+      --video-type=gl
+   --if-end
+   --if-system=freebsd
+      --video-type=gl
+   --if-end
+   --if-system=darwin
+      --video-type=hw
+   --if-end
+--if-end
+
+# set some built in system dependent variables for Windows
+--if-system=win
+   --varset="UBEE_FDRV=ntwdm"
+   --varset="UBEE_FD350=a:"
+   --varset="UBEE_FD525=b:"
+   --varset="UBEE_FD0=a:"
+   --varset="UBEE_FD1=b:"
+   --varset="UBEE_FD2=c:"
+   --varset="UBEE_FD3=d:"
+   --varset="UBEE_COM1=1"
+   --varset="UBEE_COM2=2"
+   --varset="UBEE_REM1=COM1:"
+   --varset="UBEE_FIO1=COM3:"
+--if-end
+
+# set some built in system dependent variables for Unix systems
+--if-system=unix
+   --varset="UBEE_FDRV=floppy"
+   --varset="UBEE_FD350=/dev/fd0"
+   --varset="UBEE_FD525=/dev/fd1"
+   --varset="UBEE_FD0=/dev/fd0"
+   --varset="UBEE_FD1=/dev/fd1"
+   --varset="UBEE_FD2=/dev/fd2"
+   --varset="UBEE_FD3=/dev/fd3"
+   --if-system=linux
+      --varset="UBEE_COM1=/dev/ttyS0"
+      --varset="UBEE_COM2=/dev/ttyS1"
+      --varset="UBEE_REM1=/dev/ttyS0"
+      --varset="UBEE_FIO1=/dev/ttyACM0"
+   --if-end
+   --if-system=freebsd
+      --varset="UBEE_COM1=/dev/cuaa0"
+      --varset="UBEE_COM2=/dev/cuaa1"
+      --varset="UBEE_REM1=/dev/cuaa0"
+      --varset="UBEE_FIO1=/dev/cuaa0"
+   --if-end
+--if-end
+
+# set the default model to be emulated
+--model=p512k
+
+# To use the old OSD scheme or another uncomment this line and change name.
+;--osd-scheme=old
+
+# A fix for the LOCK_KEYs up/down bug seen in SDL versions prior to 1.2.14
+# is implemented internally in uBee512. The fix only works for SDL version
+# 1.2.14 and later?  See SDL_keyboard.c for more information.  Recognised
+# values are "1", "2" and "3", "1"=uses both "2" and "3", "2"=CapsLock,
+# "3"=NumLock.  The default value will be "1". Any other value will disable
+# the fix.  Un-comment to disable the fix or to modify the behaviour.
+;--sdl-putenv=SDL_DISABLE_LOCK_KEYS=0
+
+# Some other interesting SDL environment variables.  Un-comment each one to
+# try.  Please read the SDL documentation about SDL enviroment variables. 
+# There is no guarantee they will work between SDL versions.
+# http://www.libsdl.org/cgi/docwiki.cgi/SDL_envvars
+;--sdl-putenv=SDL_VIDEO_CENTERED=center
+;--sdl-putenv=SDL_VIDEO_WINDOW_POS=150,50
+
+# create a date/time stamp variable @TD@
+--varset="TD=@DD@@mm@@YY@-@HH@@MM@@SS@"
+
+# SRAM battery backup emulation. Un-comment this line to disable it.
+;--sram-backup=off
+
+# Set a default printer output file. Un-comment this to enable.
+;--print=default.prn
+
+# Set century to 20 to correct some known ROM images once loaded. Un-comment
+# this to enable.
+;--century=0x20
+
+# Set --verbose reporting at start up. On Windows this causes a console to
+# be launched so is not recommeded unless you need to check things. 
+# Un-comment this to enable.
+;--verbose
+
+# Force 5:4 monitors (i.e 1280x1024) when in OpenGL and full screen mode to
+# stretch to the maximum screen dimensions. From version 4.5.0 this will
+# make full screen stretching behave like earlier versions for 5:4 aspect
+# ratio monitors. Un-comment this to enable.
+;--gl-fs-stretch=1.25
+
+# set all alpha+ colours to these values (same as default).
+# change --if-false to --if-true to use these options.
+--if-false
+   --rgb-00-r=0   --rgb-00-g=0   --rgb-00-b=0
+   --rgb-01-r=170 --rgb-01-g=0   --rgb-01-b=0
+   --rgb-02-r=0   --rgb-02-g=170 --rgb-02-b=0
+   --rgb-03-r=170 --rgb-03-g=85  --rgb-03-b=0
+   --rgb-04-r=0   --rgb-04-g=0   --rgb-04-b=170
+   --rgb-05-r=170 --rgb-05-g=0   --rgb-05-b=170
+   --rgb-06-r=0   --rgb-06-g=170 --rgb-06-b=170
+   --rgb-07-r=170 --rgb-07-g=170 --rgb-07-b=170
+   --rgb-08-r=85  --rgb-08-g=85  --rgb-08-b=85
+   --rgb-09-r=255 --rgb-09-g=85  --rgb-09-b=85
+   --rgb-10-r=85  --rgb-10-g=255 --rgb-10-b=85
+   --rgb-11-r=255 --rgb-11-g=255 --rgb-11-b=85
+   --rgb-12-r=85  --rgb-12-g=85  --rgb-12-b=255
+   --rgb-13-r=255 --rgb-13-g=85  --rgb-13-b=255
+   --rgb-14-r=85  --rgb-14-g=255 --rgb-14-b=255
+   --rgb-15-r=255 --rgb-15-g=255 --rgb-15-b=255
+--if-end
+
+# Set the user configurable monochrome monitor colour for foreground and
+# background.  The dual density values may also be set. Change --if-false to
+# --if-true to use these options. Use --monitor=user when it is required and
+# --dint=on for dual intensity. This example uses Yellow on Blue.
+--if-false
+   --mon-bg-r=0    --mon-bg-g=0    --mon-bg-b=168
+   --mon-bgi-r=84  --mon-bgi-g=84  --mon-bgi-b=252
+   --mon-fg-r=252  --mon-fg-g=252  --mon-fg-b=84
+   --mon-fgi-r=252 --mon-fgi-g=252 --mon-fgi-b=150
+--if-end
+
+#===============================================================================
+# Place your global end preferences in this section.
+#
+# Do NOT change the entry name, the emulator will look for 'global-end'
+# automatically at the end of all other options.
+#
+# Note: if the last option specified to this point is missing it's argument
+# then the first option here becomes the argument!  This is not a bug but
+# simply the way the option parsing works.
+#===============================================================================
+[global-end]
+
+# Open a Quickload ZIP file if 32K or less RAM model.
+# To enable quickload ZIP file uncomment --if-true and comment out --if-false
+--if-false
+;--if-true
+   --if-elt @UBEE_RAM@,32
+      --qla-arc=quickload.zip
+   --if-end
+--if-end
+
+#===============================================================================
+# Some useful entries when using this script.
+#
+# --lcons=5 determines where the --lcon and --lconw options start to list
+# entries. Without this the starting point is 1.  This is used to skip
+# displaying entries intended for script administration.
+#===============================================================================
+[list]
+--lcons=5
+--lconw
+
+[listall]
+--lconw
+
+#===============================================================================
+# Emulate the 256TC Telecomputer model.
+#===============================================================================
+[256tc]
+--model=256tc
+--title="256TC Telecomputer"
+
+#===============================================================================
+# Emulate an upgraded Premium/Standard 128K to 512K model.
+#===============================================================================
+[p512k]
+--model=p512k
+--title="Premium 512K"
+
+[512k-col]
+--model=512k
+--col
+--title="Standard Colour 512K"
+
+[512k]
+--model=512k
+--title="Standard 512K"
+
+#===============================================================================
+# Emulate an upgraded Premium/Standard 64K to 256K model.
+#===============================================================================
+[p256k]
+--model=p256k
+--title="Premium 256K"
+
+[256k-col]
+--model=256k
+--col
+--title="Standard Colour 256K"
+
+[256k]
+--model=256k
+--title="Standard 256K"
+
+#===============================================================================
+# Emulate a Premium/Standard 128K model.
+#===============================================================================
+[p128k]
+--model=p128k
+--title="Premium 128K"
+
+[128k-col]
+--model=128k
+--col
+--title="Standard Colour 128K"
+
+[128k]
+--model=128k
+--title="Standard 128K"
+
+[sbc-col]
+--model=128k
+--col
+--title="SBC Colour 128K"
+
+[sbc]
+--model=128k
+--title="SBC 128K"
+
+#===============================================================================
+# Emulate a Premium/Standard 64K model.
+#===============================================================================
+[p64k]
+--model=p64k
+--title="Premium 64K"
+
+[64k-col]
+--model=64k
+--col
+--title="Standard Colour 64K"
+
+[64k]
+--model=64k
+--title="Standard 64K"
+
+[ciab-col]
+--model=64k
+--col
+-a ciab.ss80
+--title="CIAB Colour"
+
+[ciab]
+--model=64k
+-a ciab.ss80
+--title="CIAB"
+
+#===============================================================================
+# Emulate the APC model booting a 56K CP/M system with colour or monochrome.
+#===============================================================================
+[56k-col]
+--model=56k
+--col
+--title="56K Colour"
+--sram-file=56k-col.ram
+
+[56k]
+--model=56k
+--title="56K"
+
+[apc-col]
+--model=56k
+--col
+--title="APC Colour"
+--sram-file=apc-col.ram
+
+[apc]
+--model=56k
+--title="APC"
+--sram-file=apc.ram
+
+#===============================================================================
+# Emulate uBee's CP/M 3 system on the Premium Plus 1024K
+#===============================================================================
+[cpm3]
+--title="uBee's Microbee CP/M 3"
+--status=-all+title+model+d
+--model=p1024k
+--sys=cpm3
+#-a microbee_cpm3_61k_ss80.dsk
+-a microbee_cpm3_61k_ds80.dsk
+#-a microbee_cpm3_61k_ds84.dsk
+#-a microbee_cpm3_61k_ds82.dsk
+#-a microbee_cpm3_61k_ds40.dsk
+--coms=@UBEE_COM1@ --baud=4800
+
+#===============================================================================
+# Emulate series 1 models.
+#===============================================================================
+[kit]
+--model=2mhz
+--title="KIT 32k"
+--status=-model+title
+--sram-file=s1-2mhz-32k.ram
+
+[kit8k]
+--model=2mhz
+--title="KIT 8k"
+--status=-model+title
+--sram=8
+--sram-file=s1-2mhz-8k.ram
+
+[kit16k]
+--model=2mhz
+--title="KIT 16k"
+--status=-model+title
+--sram=16
+--sram-file=s1-2mhz-16k.ram
+
+[2mhz]
+--model=2mhz
+--title="2MHZ 32k"
+--status=-model+title
+--sram-file=s1-2mhz-32k.ram
+
+[ic]
+--model=ic
+--title="IC 32k"
+--status=-model+title
+--sram-file=s1-ic-32k.ram
+
+[ic-col]
+--model=ic
+--col
+--title="IC 32k (Colour)"
+--status=-model+title
+--sram-file=s1-ic-col.ram
+
+[ic8k]
+--model=ic
+--title="IC 8k"
+--status=-model+title
+--sram=8
+--sram-file=s1-ic-8k.ram
+--pak0=none
+
+[ic16k]
+--model=ic
+--title="IC 16k"
+--status=-model+title
+--sram=16
+--sram-file=s1-ic-16k.ram
+--pak0=none
+
+#===============================================================================
+# Emulate Series 2 Models.
+# Experimenter, Educator, Personal Communicator.
+#===============================================================================
+[experimenter]
+--model=pc
+--title="Series 2 Experimenter 8k"
+--status=-model+title
+--sram=8
+--sram-file=s2-experimenter.ram
+--pak0=none
+
+[educator]
+--model=pc
+--title="Series 2 Educator 16k"
+--status=-model+title
+--sram=16
+--sram-file=s2-educator.ram
+--pak0=none
+
+[pc]
+--model=pc
+--title="Series 2 Personal Communicator 32k"
+--status=-model+title
+--sram-file=s2-pc.ram
+
+[pc-col]
+--model=pc
+--col
+--title="Series 2 Personal Communicator 32k (Colour)"
+--status=-model+title
+--sram-file=s2-pc-col.ram
+
+#===============================================================================
+# Emulate Series 3 Models.
+# Educator, Communicator, PC85.
+#===============================================================================
+[pc85-educ]
+--model=pc85
+--title="Series 3 Educator 16k"
+--status=-model+title
+--sram=16
+--sram-file=s3-educator.ram
+--pak5=none
+# Not clear if this was released with a networking ROM.
+#--netrom=none
+
+[pc85-com]
+--model=pc85
+--title="Series 3 Communicator 32k"
+--status=-model+title
+--sram-file=s3-communicator.ram
+--pak5=none
+
+[pc85]
+--model=pc85
+--title="Series 3 PC85 32k"
+--status=-model+title
+--sram-file=s3-pc85.ram
+
+[pc85-col]
+--model=pc85
+--col
+--title="Series 3 PC85 32k (Colour)"
+--status=-model+title
+--sram-file=s3-pc85-col.ram
+
+[pc85b]
+--model=pc85b
+--title="Series 3 PC85b 32k"
+--status=-model+title
+--sram-file=s3-pc85b.ram
+
+[pc85b-col]
+--model=pc85b
+--col-type=0
+--title="Series 3 PC85b 32k (Colour)"
+--status=-model+title
+--sram-file=s3-pc85b-col.ram
+
+#===============================================================================
+# Emulate Series 3 Swedish Models.
+# PC85.
+#===============================================================================
+[pc85s]
+--model=pc85
+--title="PC85S"
+--status=-model+title
+--charrom=PC85S_CHAR.ROM
+--basica=PC85S_BASIC_A.ROM
+--basicb=PC85S_BASIC_B.ROM
+--pak0=PC85S_PAK0.ROM
+--pak1=PC85S_PAK1.ROM
+--pak2=PC85S_PAK2.ROM
+--pak3=PC85S_PAK3.ROM
+--pak4=PC85S_PAK4.ROM
+--pak5=PC85S_PAK5.ROM
+--netrom=PC85S_NETWORK.ROM
+--sram-file=s3-pc85s.ram
+
+[pc85s-col]
+--model=pc85
+--col
+--title="Colour PC85S"
+--status=-model+title
+--charrom=PC85S_CHAR.ROM
+--basica=PC85S_BASIC_A.ROM
+--basicb=PC85S_BASIC_B.ROM
+--pak0=PC85S_PAK0.ROM
+--pak1=PC85S_PAK1.ROM
+--pak2=PC85S_PAK2.ROM
+--pak3=PC85S_PAK3.ROM
+--pak4=PC85S_PAK4.ROM
+--pak5=PC85S_PAK5.ROM
+--netrom=PC85S_NETWORK.ROM
+--sram-file=s3-pc85s-col.ram
+
+#===============================================================================
+# Premium Series Models.
+# PC85.
+#===============================================================================
+[ppc85]
+--model=ppc85
+--title="Premium PC85"
+--status=-model+title
+
+#===============================================================================
+# Emulate the Teleterm model.
+#===============================================================================
+[tterm]
+--model=tterm
+--title="Teleterm"
+--status=-model+title
+
+#===============================================================================
+# Emulate Dreamdisk models.
+#===============================================================================
+[2mhzdd]
+--model=2mhzdd
+--title="2MHz Dreamdisk"
+--status=-model+title
+
+[dd]
+--model=dd
+--title="Dreamdisk"
+--status=-model+title
+
+[dd-col]
+--model=dd
+--col
+--title="Dreamdisk"
+--status=-model+title
+
+#===============================================================================
+# Emulate Microbee HDD models.
+#===============================================================================
+[hdd]
+--model=p128k
+--rom1=HD18.ROM
+--hdd1=hdd_128k_sys_cpm221.hd0
+--title="Microbee HDD"
+--status=+title
+
+#===============================================================================
+# Emulate CF (Compact Flash) models.
+#===============================================================================
+[pcf]
+--model=pcf
+--ide-a0=cfboot
+--title="Premium CF"
+--status=+title
+
+[scf]
+--model=scf
+--ide-a0=cfboot
+--title="Standard CF"
+--status=+title
+
+[scf-col]
+--model=scf
+--col
+--ide-a0=cfboot
+--title="Standard CF"
+--status=+title
+
+#===============================================================================
+# Boot a copy protected Honeysoft 3.5" or 5.25" floppy disk.  The 5.25"
+# example assumes an 80T High density drive is being used.
+#
+# This example demonstrates the use of built in environment variables.  The
+# Windows method requires the 'ntwdm' floppy driver to be installed and is
+# useable only on W2000/XP/Vista machines. (See the README file for more
+# information)
+#===============================================================================
+[hs350f]
+--model=128k
+--col
+--type=@UBEE_FDRV@ --format=ss80 -a @UBEE_FD350@
+--title="Honeysoft"
+--status=+title
+
+[hs525f]
+--model=128k
+--col
+--type=@UBEE_FDRV@ --format=ds40 --dstep-hd -a @UBEE_FD525@
+--title="Honeysoft"
+--status=+title
+
+#===============================================================================
+# Boot a copy protected Honeysoft 3.5" disk image.
+#
+# This will try to find the hs1-ss80.dsk in the UBEE512\disks\games directory.
+#===============================================================================
+[hs350i]
+--model=128k
+--col
+-a games\hs1-ss80.dsk
+--title="Honeysoft"
+--status=+title
+
+#===============================================================================
+# Arcade #1
+#
+# This will try to find the file in the UBEE512\disks\games directory.
+#===============================================================================
+[arcade1]
+--model=p128k
+-a games\arcade_1_ds80.dsk
+--title="Arcade #1"
+--status=+title
+
+#===============================================================================
+# Games #1
+#
+# This will try to find the file in the UBEE512\disks\games directory.
+#===============================================================================
+[games1]
+--model=p128k
+-a games\games_1_ds80.dsk
+--title="Games #1"
+--status=+title
+
+#===============================================================================
+# Games #2
+#
+# This will try to find the file in the UBEE512\disks\games directory.
+#===============================================================================
+[games2]
+--model=p128k
+-a games\games_2_ds80.dsk
+--title="Games #2"
+--status=+title
+
+#===============================================================================
+# Games #3
+#
+# This will try to find the file in the UBEE512\disks\games directory.
+#===============================================================================
+[games3]
+--model=p128k
+-a games\games_3_ds80.dsk
+--title="Games #3"
+--status=+title
+
+#===============================================================================
+# Games #4
+#
+# This will try to find the file in the UBEE512\disks\games directory.
+#===============================================================================
+[games4]
+--model=p128k
+-a games\games_4_ds80.dsk
+--title="Games #4"
+--status=+title
+
+#===============================================================================
+# Fast development environment.
+#
+# This will try to find the images in the UBEE512\disks\dev directory.
+#===============================================================================
+[dev]
+--model=p512k
+--turbo --clock=20
+--sound=normal
+--vblank=1
+--print=dev.prn
+--tapei=devi.wav
+--coms=@UBEE_COM1@
+--title="Development"
+--status=+title
+-a myboot-ds80.dsk
+-b mywork1-ds80.dsk
+-c mywork2-ds80.dsk
+
+#===============================================================================
+# Floppy drives
+#
+# This example demonstrates the use of environment variables.  See the [hs350f]
+# section earlier for information about the variables.
+#===============================================================================
+# These are for CP/M drive A:
+[fda-ss80]
+--type=@UBEE_FDRV@ --format=ss80 -a @UBEE_FD350@
+
+[fda-ds40]
+--type=@UBEE_FDRV@ --format=ds40 -a @UBEE_FD525@
+
+[fda-ds80]
+--type=@UBEE_FDRV@ --format=ds80 -a @UBEE_FD350@
+
+[fda-ds84]
+--type=@UBEE_FDRV@ --format=ds84 -a @UBEE_FD350@
+
+# These are for CP/M drive B:
+[fdb-ss80]
+--type=@UBEE_FDRV@ --format=ss80 -b @UBEE_FD350@
+
+[fdb-ds40]
+--type=@UBEE_FDRV@ --format=ds40 -b @UBEE_FD525@
+
+[fdb-ds80]
+--type=@UBEE_FDRV@ --format=ds80 -b @UBEE_FD350@
+
+[fdb-ds84]
+--type=@UBEE_FDRV@ --format=ds84 -b @UBEE_FD350@
+
+# These are for CP/M drive C:
+[fdc-ss80]
+--type=@UBEE_FDRV@ --format=ss80 -c @UBEE_FD350@
+
+[fdc-ds40]
+--type=@UBEE_FDRV@ --format=ds40 -c @UBEE_FD525@
+
+[fdc-ds80]
+--type=@UBEE_FDRV@ --format=ds80 -c @UBEE_FD350@
+
+[fdc-ds84]
+--type=@UBEE_FDRV@ --format=ds84 -c @UBEE_FD350@
+
+# These are for CP/M drive D:
+[fdd-ss80]
+--type=@UBEE_FDRV@ --format=ss80 -d @UBEE_FD350@
+
+[fdd-ds40]
+--type=@UBEE_FDRV@ --format=ds40 -d @UBEE_FD525@
+
+[fdd-ds80]
+--type=@UBEE_FDRV@ --format=ds80 -d @UBEE_FD350@
+
+[fdd-ds84]
+--type=@UBEE_FDRV@ --format=ds84 -d @UBEE_FD350@
+
+#===============================================================================
+# Remote drives.
+#
+# Access to floppy disks on a Microbee computer over a serial port.  These
+# examples use 19200 baud.
+#
+# Requires running FDS.COM on the Microbee computer.
+#===============================================================================
+# These are for CP/M drive A: and Microbee drive A:
+[rem-ds40-aa]
+--format=ds40 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ss80-aa]
+--format=ss80 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ds80-aa]
+--format=ds80 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ds82-aa]
+--format=ds82 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ds84-aa]
+--format=ds84 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,a:
+
+# These are for CP/M drive A: and Microbee drive B:
+[rem-ds40-ab]
+--format=ds40 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ss80-ab]
+--format=ss80 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ds80-ab]
+--format=ds80 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ds82-ab]
+--format=ds82 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ds84-ab]
+--format=ds84 --type=remote -a serial:@UBEE_REM1@,19200-crtscts,b:
+
+# These are for CP/M drive B: and Microbee drive A:
+[rem-ds40-ba]
+--format=ds40 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ss80-ba]
+--format=ss80 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ds80-ba]
+--format=ds80 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ds82-ba]
+--format=ds82 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,a:
+
+[rem-ds84-ba]
+--format=ds84 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,a:
+
+# These are for CP/M drive B: and Microbee drive B:
+[rem-ds40-bb]
+--format=ds40 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ss80-bb]
+--format=ss80 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ds80-bb]
+--format=ds80 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ds82-bb]
+--format=ds82 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,b:
+
+[rem-ds84-bb]
+--format=ds84 --type=remote -b serial:@UBEE_REM1@,19200-crtscts,b:
+
+#===============================================================================
+# Reverse CP/M File System (RCPMFS).
+#
+# Access to host sytem directories acting as CP/M drives
+#===============================================================================
+# These are for CP/M drive A: and Microbee drive A:
+[rcpm-ds40]
+--format=ds40 --type=rcpmfs
+
+[rcpm-ds80]
+--format=ds80 --type=rcpmfs
+
+[rcpm-ss80]
+--format=ss80 --type=rcpmfs
+
+[rcpm-ds82]
+--format=ds82 --type=rcpmfs
+
+[rcpm-ds84]
+--format=ds84 --type=rcpmfs
+
+#===============================================================================
+# Floppyio remote drives.
+#
+# Access to floppy disks on a Floppyio unit over a USB/RS232 serial port. 
+# These examples use 19200 baud.  For USB (ACM) devices the serial rate has
+# no impact (runs at maximum speed) but something must be specified.
+#===============================================================================
+# These are for CP/M drive A: and Floppyio drive A:
+[fio-ds40-aa]
+--format=ds40 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ss80-aa]
+--format=ss80 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ds80-aa]
+--format=ds80 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ds82-aa]
+--format=ds82 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ds84-aa]
+--format=ds84 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,a:
+
+# These are for CP/M drive A: and Floppyio drive B:
+[fio-ds40-ab]
+--format=ds40 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ss80-ab]
+--format=ss80 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ds80-ab]
+--format=ds80 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ds82-ab]
+--format=ds82 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ds84-ab]
+--format=ds84 --type=remote -a serial:@UBEE_FIO1@,19200-crtscts,b:
+
+# These are for CP/M drive B: and Floppyio drive A:
+[fio-ds40-ba]
+--format=ds40 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ss80-ba]
+--format=ss80 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ds80-ba]
+--format=ds80 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ds82-ba]
+--format=ds82 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,a:
+
+[fio-ds84-ba]
+--format=ds84 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,a:
+
+# These are for CP/M drive B: and Floppyio drive B:
+[fio-ds40-bb]
+--format=ds40 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ss80-bb]
+--format=ss80 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ds80-bb]
+--format=ds80 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ds82-bb]
+--format=ds82 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,b:
+
+[fio-ds84-bb]
+--format=ds84 --type=remote -b serial:@UBEE_FIO1@,19200-crtscts,b:
+
+#===============================================================================
+# Printer file using current date and time.
+#===============================================================================
+[print]
+--print=@TD@.prn
+
+#===============================================================================
+# Tape output file using current date and time.
+#===============================================================================
+[tapeo]
+--tapeo=@TD@.wav
+
+#===============================================================================
+# Joystick keys (USB Game Pad)
+#
+# Set up all the required joystick key mappings.
+#===============================================================================
+[joy]
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Various joystick set-up values.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# comment this out if not using the joystick shift commands.
+--varset=use_shift_commands="1"
+
+# convert analog and hat movements to button values using these base numbers.
+--js-axisb=30
+--js-hatb=40
+
+# set the joystick SHIFT button and base number for shifted buttons.
+--if-set=use_shift_commands
+   --js-shiftbtn=7
+   --js=shiftb=64
+--if-end
+
+# enable joystick emulation on the parallel port and use joystick 0.
+--parallel-port=joystick
+--js=0
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Define the joystick 'action' variables.
+#
+# Only the first two group of variables defined here are likely to need any
+# modifying to suit the user's preference.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# the values here can have more than one button associated with each action
+# and may be changed to suit the user's preference.
+--varset=JS_UP=30,40
+--varset=JS_RIGHT=31,41
+--varset=JS_DOWN=32,42
+--varset=JS_LEFT=33,43
+--varset=JS_FIRE=0,1,10,11
+--varset=JS_SPARE=6,7
+--varset=JS_PLAYER1=4,8
+--varset=JS_PLAYER2=5,9
+
+# some additional button variables to be associated with joystick key
+# mappings.
+--varset=JS_BOMB=2
+--varset=JS_HYPERSPACE=3
+--varset=JS_ENTERKEY=10
+
+# repeated buttons with alternative action names, these should not require
+# any changes.
+--varset=JS_MOVE=@JS_UP@
+
+--varset=JS_POKER_HANDLE=@JS_DOWN@
+--varset=JS_RELEASE=@JS_DOWN@
+
+--varset=JS_BET=@JS_FIRE@
+--varset=JS_DIG=@JS_FIRE@
+--varset=JS_FORWARD=@JS_FIRE@
+--varset=JS_LEFT_FIRE=@JS_FIRE@
+--varset=JS_LEFT_FLIPPER=@JS_FIRE@
+--varset=JS_JUMP=@JS_FIRE@
+
+--varset=JS_PAYROLL=@JS_SPARE@
+--varset=JS_RESTART=@JS_SPARE@
+--varset=JS_SHIELD=@JS_SPARE@
+
+--varset=JS_SMART_BOMB=@JS_BOMB@
+--varset=JS_CREDIT=@JS_BOMB@
+--varset=JS_HOVER=@JS_BOMB@
+--varset=JS_RIGHT_FIRE=@JS_BOMB@
+--varset=JS_RIGHT_FLIPPER=@JS_BOMB@
+--varset=JS_THRUST=@JS_BOMB@
+--varset=JS_SPARE=@JS_BOMB@
+
+# emulator command button variables (axisb (30)+64 & hatb (40)+64)
+--varset=JS_VOL_INCREASE=94,104
+--varset=JS_VOL_DECREASE=96,106
+--varset=JS_WIN_INCREASE=95,105
+--varset=JS_WIN_DECREASE=97,107
+--varset=JS_MUTE=68
+--varset=JS_PAUSE=69
+--varset=JS_FULLSCREEN=70
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Clear and reconfigure all the (microbee) joystick buttons. These should
+# not require any changes.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+--js-clear
+--js-up=@JS_UP@
+--js-right=@JS_RIGHT@
+--js-down=@JS_DOWN@
+--js-left=@JS_LEFT@
+--js-fire=@JS_FIRE@
+--js-spare=@JS_SPARE@
+--js-play1=@JS_PLAYER1@
+--js-play2=@JS_PLAYER2@
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Set mapped joystick to key values.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# The following are set as the default 'key set B' values for actions to be
+# associated with joystick shift buttons and made active.
+--if-set=use_shift_commands
+   --js-kkb="C_VOLU,  @JS_VOL_INCREASE@"
+   --js-kkb="C_VOLD,  @JS_VOL_DECREASE@"
+   --js-kkb="C_WINI,  @JS_WIN_INCREASE@"
+   --js-kkb="C_WIND,  @JS_WIN_DECREASE@"
+   --js-kkb="C_MUTE,  @JS_MUTE@"
+   --js-kkb="C_PAUSE, @JS_PAUSE@"
+   --js-kkb="C_FSTOG, @JS_FULLSCREEN@"
+   --js-kset=B
+
+# set up the same values in addition to some others that are ONLY activated
+# --with a js-kset=n option if used later on.
+   --js-kkb="C_VOLU,  @JS_VOL_INCREASE@"
+   --js-kkb="C_VOLD,  @JS_VOL_DECREASE@"
+   --js-kkb="C_WINI,  @JS_WIN_INCREASE@"
+   --js-kkb="C_WIND,  @JS_WIN_DECREASE@"
+   --js-kkb="C_MUTE,  @JS_MUTE@"
+   --js-kkb="C_PAUSE, @JS_PAUSE@"
+   --js-kkb="C_FSTOG, @JS_FULLSCREEN@"
+
+   --js-kkb="1,       @JS_PLAYER1@"
+   --js-kkb="2,       @JS_PLAYER2@"
+   --js-kkb="tab,     @JS_HYPERSPACE@"
+   --js-kkb="cr,      @JS_ENTERKEY@"
+--if-end
+
+#===============================================================================
+# BeeThoven, BeeTalker and DAC macros
+#===============================================================================
+[bh]
+--parallel-port=beethoven
+
+[bt]
+--parallel-port=beetalker
+
+[dac]
+--parallel-port=dac
+
+#===============================================================================
+# Some handy debugging macros that may be used from within the OSD console
+# or ALT+C console modes.  See the --db-step option help to see what each
+# one does.
+#===============================================================================
+[s]
+--db-step=1
+
+[o]
+--db-step=o
+
+[c]
+--db-step=0
+
+[regs]
+--db-dumpr
+
+[x]
+--db-step=x
+
+[t]
+--db-step=c
+
+#===============================================================================
+# Some macros that may be useful
+#===============================================================================
+[reset-clear]
+--if-elt @UBEE_RAM@,56
+   --db-fillm=0,0xdfff,0
+   --reset
+--if-else
+   --db-fillb=mem,all,0
+   --reset
+--if-end
+
+#===============================================================================
+# Macros to save and restore the 32k/56k SRAM (emulates battery backup)
+# Each model will have it's own RAM file name.
+#===============================================================================
+[save-ram]
+--if-elt @UBEE_RAM@,56
+   --if-elt @UBEE_RAM@,32
+      --db-savem=0x0000,0x7fff,@UBEE512@/files/@UBEE_MODEL@_@UBEE_RAM@k.ram
+   --if-else
+      --db-savem=0x0000,0xdfff,@UBEE512@/files/@UBEE_MODEL@_@UBEE_RAM@k.ram
+   --if-end
+--if-else
+   --echo "This macro only intended for ROM or 56K models"
+--if-end
+
+[load-ram]
+--if-elt @UBEE_RAM@,56
+   --db-loadm=0x0000,@UBEE512@/files/@UBEE_MODEL@_@UBEE_RAM@k.ram
+   --reset
+--if-else
+   --echo "This macro only intended for ROM or 56K models"
+--if-end
+
+#===============================================================================
+# Example of using port break point detection.
+#
+# - enable debugging
+# - set port write break point on port 2.
+# - set port read break point on port 2.
+# - poke some code into screen memory near the end.
+#   ld   a,12h    ;0x3e,0x12
+#   out  (02h),a  ;0xd3,0x02
+#   nop           ;0x00
+#   in   a,(02h)  ;0xdb,0x02
+#   nop           ;0x00
+#   jp   0f7f0h   ;0xc3,0xf0,0xf7
+# - disassemble the 6 lines of code.
+# - execute code at address specified
+#===============================================================================
+[debug-test1]
+--debug=on
+--db-bpr-port w,0x02,0x12
+--db-bpr-port r,0x02,*
+--db-setm=0xf7f0,0x3e,0x12,0xd3,0x02,0x00,0xdb,0x02,0x00,0xc3,0xf0,0xf7
+--db-dasml=0xf7f0,6
+--db-go=0xf7f0
+
+#===============================================================================
+# Some sample quickload games.  These require a quickload.zip file to be
+# opened first.  See [global-end] section.
+#
+# A cold reset in Basic is normally required between loads. i.e. by using the
+# 'ESC+PAGE DOWN' keys or the 'reset-clear' macro.
+#===============================================================================
+[kilopede]
+--qla-load=254MS.BIN,x
+[robotman]
+--qla-load=248MS.BIN,x
+[asteroids]
+--qla-load=258MS.BIN,x
+
+#===============================================================================
+# An example of how to create an OSD scheme.
+#
+# To use at start up instead of requesting the Macro name move the options
+# into the [global-start] section.
+#===============================================================================
+[osd-blue]
+--osd-scheme=user
+--osd-consize=50%,30%
+--osd-conpos=center,center
+--osd-cursor=500
+--osd-setbtnm=0x1659ab,0x1c74e0,0x000000,0x000000
+--osd-setbtnt=0x1659ab,0x1c74e0,0x98afda,0x98afda
+--osd-setdiam=0x9fb8e8,0x3a5b9b
+--osd-setdiat=0x9fb8e8,0x000000
+--osd-setwidi=0x9fb8e8,0x3a5b9b
+--osd-setwidm=0x1659ab,0x1c74e0,0x3a5b9b,0xb3c4e4
+--osd-setwidt=0x000000,0x1c74e0,0xb3c4e4,0x3a5b9b

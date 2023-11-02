@@ -1,0 +1,68 @@
+#===============================================================================
+# Aliases for disk file names.
+#
+# This file contains alias names for use with uBee512 v3.1.0 and later.  The
+# first column contains the alias name and is non case sensitive. The names
+# in the second column may be an MD5 or the actual name of a disk image, if
+# no MD5 or name is found in the second column then the alias name will be
+# used as the disk filename.
+#
+# This file is automatically placed into the root of the 'ubee512' directory
+# if not found when starting the emulator.  To stop the emulator using this
+# file use the --aliases-disks=off option.
+#
+# If the alias is not used or will be located by other methods then keep the
+# line but have no second column entry.
+#
+# The alias name must not contain any spaces.  MD5s must have a 'md5='
+# prepended to the MD5.
+#
+# TAB or space characters may be used between the columns.
+#
+# Comment lines are preceded by '#' or ';' and must be at the start of a
+# line. Blank lines are ignored.
+#
+# MD5s for disk images have limited use as the contents of the disks can
+# change requiring the MD5 in this file and the 'disks.md5' file to be
+# updated so is really only suitable for disks where the contents won't
+# change.
+#
+# disks.md5 file
+# --------------
+# For MD5s to work requires an 'disks.md5' file located in the 'ubee512'
+# directory.  This file is not included in this distribution but may be
+# obtained from the site where the disk images were sourced, alternatively
+# you can create your own up to date 'disks.md5' file.
+#
+# MD5s are not case sensitive in this or the 'disks.md5' file.
+#
+# For Windows users an md5 creation utility that creates a file in the
+# correct format can be found here:
+#
+# http://www.fourmilab.ch/md5/md5.zip
+#
+# Change to the ubee512 disk directory containing the images and run this
+# command:
+#
+# Windows:
+# md5 -l * > ..\disks.md5
+#
+# Unices:
+# md5sum * > ../disks.md5
+#===============================================================================
+256tc.dsk
+p1024k.dsk
+1024k.dsk
+p512k.dsk
+512k.dsk
+p256k.dsk
+256k.dsk
+p128k.dsk
+128k.dsk
+p64k.dsk
+64k.dsk
+56k.dsk
+boot.dsk
+2mhzdd.dsk              dreamdisk-master-40.dsk
+dd.dsk                  dreamdisk-master-40.dsk
+cfboot                  cfboot.hd1

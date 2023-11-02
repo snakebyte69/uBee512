@@ -1,0 +1,2733 @@
+#*******************************************************************************
+#                                            __                                *
+#                    __                     /\ \                               *
+#           ___ ___ /\_\    ___   _ __   ___\ \ \___     ___    ___            *
+#         /' __` __`\/\ \  /'___\/\`'__\/ __`\ \ '__`\  /'__`\ /'__`\          *
+#         /\ \/\ \/\ \ \ \/\ \__/\ \ \//\ \L\ \ \ \L\ \/\  __//\  __/          *
+#         \ \_\ \_\ \_\ \_\ \____\\ \_\\ \____/\ \_,__/\ \____\ \____\         *
+#          \/_/\/_/\/_/\/_/\/____/ \/_/ \/___/  \/___/  \/____/\/____/         *
+#                     __      __      ___ ___      __    ____                  *
+#                   /'_ `\  /'__`\  /' __` __`\  /'__`\ /',__\                 *
+#                  /\ \L\ \/\ \L\.\_/\ \/\ \/\ \/\  __//\__, `\                *
+#                  \ \____ \ \__/.\_\ \_\ \_\ \_\ \____\/\____/                *
+#                   \/___L\ \/__/\/_/\/_/\/_/\/_/\/____/\/___/                 *
+#                     /\____/                                                  *
+#                     \_/__/                                                   *
+#                                                                              *
+#           Microbee games script for use with the uBee512 emulator.           *
+#                     Copyright (C) 2007-2016 uBee MSPP                        *
+#                                                                              *
+#*******************************************************************************
+#
+# This script is provided under the 'uBee512 Tools License' contained in
+# 'license.txt' in this distribution.
+#
+# To use this script instead of the default ubee512rc start-up script copy
+# this 'games.ini.sample' file to the uBee512 home location directory as
+# 'games.ini', the sample file can be found here:
+#
+# Windows:
+# @UBEE512@\configs\games.ini.sample
+#
+# Unices:
+# /usr/local/share/ubee512/config/games.ini.sample
+#
+# Use --config=games.ini as the first option on the command line (see --help
+# for more information).
+#
+# Overview
+# --------
+# The idea behind the use of this script is that all games are contained as
+# files on the host system.  The recommended location for these games is
+# @UBEE512@\files\games.
+#
+# An entry is created for each game and settings can then be fine tuned for
+# each game, this includes such things as joystick settings, Standard and
+# Premium colour model emulation and different versions of BASIC.
+#
+# A special uBee512 UBSCRIPT.COM program on the A: image creates '.MWB' and
+# '.SUB' files dynamically to make this possible.
+#
+# Command line
+# ------------
+# This configuration file must be specified when starting a game. An alias
+# can be created to make things easier.
+#
+# Play a game:
+# >ubee512 --config=games.ini gamename.ext
+#
+# To list all the game entries:
+# >ubee512 --config=games.ini list
+#
+# To create an alias under Linux:
+# alias bee='ubee512 --config=games.ini'
+#
+# One method to create an alias under Windows:
+# Download and extract the swissfileknife ZIP file from:
+# http://sourceforge.net/projects/swissfileknife/
+#
+# >sfk alias bee = ubee512 --config=games.ini
+#
+# Then the above just becomes:
+# >bee gamename.ext
+# >bee list
+#
+# GUI Frontend
+# ------------
+# An emulator GUI front end such as 'emuControlCenter' (ECC) can be used to
+# start the games from a graphical icon for each game.  ECC has support for
+# uBee512 already configured.
+#
+# http://www.camya.com/eccblog/
+#
+# global-start entry
+# ------------------
+# The emulator A: image contains a system, 2 versions of BASIC and a few
+# other utilities. An up to date 'ubee512_script.ds40' disk image file is
+# required and this may be available for download from:
+#
+# http://www.microbee-mspp.org.au/
+#
+# This ubee512 release requires 'r2' or later image, alternatively you can
+# create your own from scratch.  The tools.txt file on the uBee512 tools
+# images describes how to do this but may be be simpler to copy the updated
+# UBSCRIPT.COM file to the existing 'r1' image.  Copy the disk image to your
+# @UBEE512@\disks directory.
+#
+# The emulator B: image is a disk image created by the emulator on start up.
+# A raw disk image with '.temp' appended tells uBee512 to create a formatted
+# disk image.  After exiting the emulator the file will remain but will be
+# erased next time the same file is used.
+#
+# The @UBEE512@ variable is built-in and contains a value set by the
+# emulator.  On Windows machines this will contain the installed path of
+# the emulator.  On Unices this contains the home account for the emulator. 
+# Using this variable makes scripts portable between different systems.
+#
+# Microworld BASIC if used by a game will default to BASIC.COM.  The
+# ubee512_script.ds40 image uses version 6.30e (Alpha+).  If a standard
+# BASIC is required then use --file-app=stdbasic to over ride.
+#
+# --model=p128k is the default model for all games unless changed.
+#
+# --parallel-port=joystick from version 4.7.0 we need to specify that the
+# emulated parallel port has a joystick connected.  This is required for any
+# games that use a real joystick. Joystick key mappings will work
+# regardless.
+#
+# --js=0 enables joystick #0
+#
+# --snd-mute=on and --video-off keeps the sound and video off until just
+# before the game is started.
+#
+# --exit-check=off allows quick exits from the emulator with no confirmation
+# checking.
+#
+# --status=-all+title clears all status options and sets title as the
+# only item to be displayed.
+#
+# --args-error=-unknown forces the emulator to ignore any unrecognised
+# arguments.  This permits a combination of configured and non-configured
+# games (except load address specified games) to be run if no game entry is
+# found and a --file-list option is also specified.
+#
+# --title="NON CONFIGURED GAME" is the default title name, each configured
+# game should over ride this value.
+#
+# global-end entry
+# ----------------
+# The --clock option is set to a very fast Z80 CPU clock frequency (MHz) to
+# speed up the booting process.  Normal speed will be re-instated just
+# before the game is run.  The speed is set in this section as selecting
+# other models sets the CPU clock emulation speed to the default value.
+#
+# Joystick buttons (Game controller)
+# ----------------------------------
+# Typical game controller button layout.  The joystick buttons can be
+# checked using the built in joystick diagnostic functions in uBee512
+# using --js=0 --modio=+joystick.
+#
+# Buttons 'S' and 'X' are actuated by pushing down on the joysticks. Buttons
+# 'A-D' are located on the front of the controller and may be marked as 1-2
+# and 1-2!
+#
+# The actual buttons available and the way they work will be dependent on
+# the controller.  Some map the analogue joystick values to act like buttons
+# 0-3 in digital mode while others may not.  uBee512 provides a way to make
+# these analogue movements look like button presses.
+#
+# Please refer to the README file for more detailed information.
+#
+#                  A (top)                      C (top)
+#                  B (bot)                      D (bot)
+#                 +-------+                    +-------+
+#                /         +------------------+         \
+#               /                                        \
+#              /     E                              K     \
+#             /      |                              |      \
+#            /    H-- --F        I      J        N-- --L    \
+#           /        |                              |        \
+#          /         G                              M         \
+#         /                  O    ANALOG    T                  \
+#        /                   |              |                   \
+#       /                 R--S--P        W--X--U                 \
+#      /                     |              |                     \
+#     /              +-+     Q    +----+    V     +-+              \
+#    /              /   \        /      \        /   \              \
+#   +              /     +------+        +------+     \              +
+#   |             /                                    \             |
+#   +            /        TOP VIEW OF A TYPICAL         \            +
+#    \          /            GAME CONTROLLER             \          /
+#      +------+                                            +------+
+#
+# The typical conventions for button associations used by games.ini.sample are:
+#
+#      Joystick (PIO A)    Button Number    (Shift function)
+#      ----------------    -------------    ----------------
+#  A : Player 1            0x04             (MUTE)
+#  B : SPARE               0x06             (FULLSCREEN)
+#  C : Player 2            0x05             (PAUSE)
+#  D :                     0x07             (SHIFT BUTTON)
+#  E : Up                  0x80/0x90        (VOLUME+)
+#  F : Right               0x81/0x91        (WINDOW+)
+#  G : Down                0x82/0x92        (VOLUME-)
+#  H : Left                0x83/0x93        (WINDOW-)
+#  I : Player 1            0x08
+#  J : Player 2            0x09
+#  K : Fire                0x00
+#  L : Fire                0x01 
+#  M : SPARE               0x02
+#  N : SPARE               0x03
+#  O : Up                  0x80/0x90        (VOLUME+)
+#  P : Right               0x81/0x91        (WINDOW+)
+#  Q : Down                0x82/0x92        (VOLUME-)
+#  R : Left                0x83/0x93        (WINDOW-)
+#  S :                     0x0a
+#  T : Fire                0x00
+#  U : Fire                0x01
+#  V : SPARE               0x02
+#  W : SPARE               0x03
+#  X : Fire                0x0b
+#
+# Note: The values of 0x8x and 0x9x are Axis and Hat values after being
+# converted to buttons numbers.  The values shown are using the default
+# base values.  Values less than 0x80 are typical button numbers returned
+# by a game controller.
+#
+#      Mapped key set A                     (Shift function)
+#      ----------------                     ----------------
+#  A : Player 1, Left fire, Left flipper    (FULLSCREEN)
+#  B : Payroll, Restart, Shield             (MUTE)
+#  C : Player 2, Right fire, Right flipper  (PAUSE) 
+#  D : SHIFT (emulator commands)            (SHIFT)
+#  E : Up, Move                             (VOLUME+) 
+#  F : Right                                (WINDOW+)
+#  G : Down, Poker handle, Release          (VOLUME-)
+#  H : Left                                 (WINDOW-)
+#  I : Player 1, Left fire, Left flipper
+#  J : Player 2, Right fire, Right flipper
+#  K : Fire, Bet, Dig, Forward, Jump
+#  L : Fire, Bet, Dig, Forward, Jump
+#  M : Bomb, Smart bomb, Credit, Hover, Thrust
+#  N : Hyperspace
+#  O : Up, Move                             (VOLUME+)
+#  P : Right                                (WINDOW+)
+#  Q : Down                                 (VOLUME-)
+#  R : Left                                 (WINDOW-)
+#  S : ENTER key
+#  T : Fire, Bet, Dig, Forward, Jump
+#  U : Fire, Bet, Dig, Forward, Jump
+#  V : 
+#  W : 
+#  X : Fire, Bet, Dig, Forward, Jump
+#
+# Same game with different configurations
+# ---------------------------------------
+# The same game may be configured as many times as required.  This may be
+# done to play the game under different colour models and BASICs, preferred
+# joystick settings, etc.  To do this only one file is required for all the
+# entries but a unique section name [gamename.ext] is required for each
+# entry.
+#
+# An example of this is the game 'robot2.bee'.  There are 2 configurations
+# for this game, the [robot2.bee] entry uses Standard colour and
+# [robot2p.bee] uses the Premium colour model but both use the same
+# 'robot2.bee' file.
+#
+# If this technique is used with ECC a dummy file for 'robot2p.bee' needs to
+# be created so that ECC can find an entry when ROMs are scanned.
+#
+# Same game source variations
+# ---------------------------
+# Various Microbee hackers have converted tapes to disk files over time. 
+# The exact same game may use a different hack method to make this possible
+# in which case the load/executable addresses may differ.  Keep this in mind
+# if a game does not appear to work.  It may just need different address
+# values.
+#
+# Games requiring multiple files
+# ------------------------------
+# Some games require more than one file to be up-loaded.  Some examples of
+# this can be found in the [hoards10.com], [ladder.com] and [trivial.mwb]
+# entries.  The [trivial.mwb] game up-loads 20 files in quick time.
+#
+# Notes
+# -----
+# Some MWB games may try to load an existing menu on completion.  A menu
+# file (M.MWB) can be uploaded with the game file rather than change the
+# BASIC program (See [dragster.mwb] example).  The menu file can be
+# substituted with a very simple one line MWB program that simply exits to
+# CP/M then uBee512 itself:
+#
+# 100 SYSTEM
+#
+# From MWB disk BASIC save this with:
+# >save "m"
+#
+# Copy this file (M.MWB) using CPM2HOST or cpmtools to @UBEE512@\files\games
+# directory.
+#
+#===============================================================================
+# ChangeLog (most recent entries are at top)
+#===============================================================================
+# 2015/07/14
+# ----------
+# - Added 'sticks' and 'sticksf' Premium 32K PCG 80x24 graphics demonstrations.
+#
+# 2015/06/24
+# ----------
+# - Kingtut would not work under the script because it depended on the IY
+#   register containing a specific value.  MSPP member 'wizged' found and
+#   fixed the game.  The kingtut.bee section also has a new load address.
+# - Added a 'targetc.bee' section which is a colourised version of 'target'
+#   by MSPP member 'wizged'.
+#
+# 2014/04/07
+# ----------
+# Thanks to MSPP member 'emujoust' for the following additions and corrections:
+# - Added new game entries: astplus.bee, breakout.bee, chomp.bee,
+#   defense.bee, donut.bee, galaxyip.bee, galinvp.bee, groobl-j.mwb,
+#   hoards11.com, hopper.bee, meteor1.bee, meteor2.bee, outhouse.bee,
+#   pendat.bee, robotf.bee, seadrag.bee and ti.bee.
+# - Fixed Eureka! was missing 1/2 pair of inverted commas making games fail
+#   to load.
+# - Fixed naming of "Microbee: Lazer" to the correct name "Microbee: Laser
+#   Blazer"
+# - Alternative "Penetrator" load address --file-load=2304 (different
+#   binary), the older binary required 256 (needs different name).
+# - Fixed Breakout @JS_RELEASE@ to @JS_FIRE@ as down on joystick also
+#   activates 'release' meaning a key conflict making it impossible to move
+#   down in Breakout.
+# - Changed "Munch" to "Munch (Ghost Muncher)" to be inline with
+#   Australasian Heritage Software Database and for clarity.
+#
+# 2013/07/09
+# ----------
+# - Added Windows 8 conditionals.
+#
+# 2010/09/07
+# ----------
+# - Major changes to make setting up the joystick easier and more flexible. 
+#   Emulator commands now make use of a Joystick shift button.
+#
+# 2010/07/01
+# ----------
+# - Added --parallel-port=joystick option.
+#
+# 2009/06/10
+# ----------
+# - Changes to create the temporary games image in the default disks
+#   location.
+#
+# 2009/04/22
+# ----------
+# - Fixed section for froger-j.bee game.
+#
+# 2008/10/13
+# ----------
+# - Changes to make use of the new scripting language options in ubee512.
+#
+# 2008/09/03
+# ----------
+# - Added mapping of joystick buttons to commands.  Allows the joystick to
+#   pause emulation, switch full screen mode, etc.
+# - Added joystick settings to all games where practical.
+# - Revised and fixed many of the game entries using the improved files-list
+#   --option.
+#
+# 2008/08/10
+# ----------
+# - First release of games.ini.sample script.
+#
+#===============================================================================
+# Global start entries
+#
+# Some common joystick key mappings are defined here but may be modified
+# later if required.  These default settings allow the emulator to be paused
+# and allow Full screen display toggle.
+#
+# Real joystick games
+# -------------------
+# The joystick buttons have been reallocated in this script to suit a
+# typical game controller.  These settings can be changed to suit the
+# joystick in use.  The Player1 and Player2 buttons have been moved to new
+# positions to avoid conflict with the JS command mappings and to follow
+# conventions described in this script.
+#
+# --js-kset=B is used to set up some joystick mapping 'COMMANDS' that are
+# intended to be used with real JS games, these are enabled by default
+# unless another --js-kset is used.
+#
+# Mapped joystick to keys
+# -----------------------
+# The other default settings are only made active if --js-kset=A is also
+# specified by the game section that requires JS buttons mapped to keys. If
+# no --js-kset=A is used then the commands mapped with --js-kset=B will be
+# active.
+#===============================================================================
+[global-start]
+
+# set the video type to be used based on the host system.
+--if-system=win
+   --if-system=w10
+      --video-type=hw
+   --if-end
+   --if-system=w8.1
+      --video-type=hw
+   --if-end
+   --if-system=w8
+      --video-type=hw
+   --if-end
+   --if-system=w7
+      --video-type=hw
+   --if-end
+   --if-system=vista
+      --video-type=hw
+   --if-end
+   --if-system=xp
+      --video-type=hw
+   --if-end
+   --if-system=w2000
+      --video-type=hw
+   --if-end
+   --if-system=me
+      --video-type=hw
+   --if-end
+   --if-system=w98
+      --video-type=hw
+   --if-end
+--if-else
+   --if-system=linux
+      --video-type=gl
+   --if-end
+   --if-system=freebsd
+      --video-type=gl
+   --if-end
+   --if-system=darwin
+      --video-type=gl
+   --if-end
+--if-end
+
+# set default model of emulation
+--model=p128k
+
+# set the monitor colour for all games, but better to use this in each game
+# section under the --title option and select the colour as desired.
+#--monitor=amber
+
+# create a variable 'games' containing the games path directory
+--varset=games=@UBEE512@\files\games
+
+# use the special boot disk containing the utilities, BASICs, etc
+-a ubee512_script.ds40
+
+# this creates a temporary disk image where up-loads will be placed
+-b ubee512_games.ds40.temp
+
+# boot up with sound muted and no video, it gets switched back on later
+--snd-mute=on --video=off
+
+# allow exiting without any confirmation
+--exit-check=off
+
+# set the types to show in the status bar
+--status=-all+title+mute
+
+# set a default title name
+--title="NON CONFIGURED GAME"
+
+# remove the unknown argument error detection
+--args-error=-unknown
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Various joystick set-up values.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# comment this out if not using the joystick shift commands.
+--varset=use_shift_commands
+
+# convert analog and hat movements to button values using these base numbers.
+--js-axisb=0x80
+--js-hatb=0x90
+
+# set the joystick SHIFT button number.
+--if-set=use_shift_commands
+   --js-shift=7
+--if-end
+
+# enable joystick emulation on the parallel port and use joystick 0.
+--parallel-port=joystick
+--js=0
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Define the joystick 'action' variables.
+#
+# Only the first two group of variables defined here are likely to need any
+# modifying to suit the user's preference.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# the values here can have more than one button associated with each action
+# and may be changed to suit the user's preference.
+--varset=JS_UP=0x80,0x90
+--varset=JS_RIGHT=0x81,0x91
+--varset=JS_DOWN=0x82,0x92
+--varset=JS_LEFT=0x83,0x93
+--varset=JS_FIRE=0,1,11
+--varset=JS_SPARE=6,7
+--varset=JS_PLAYER1=4,8
+--varset=JS_PLAYER2=5,9
+
+# some additional button variables to be associated with joystick key
+# mappings.
+--varset=JS_BOMB=2
+--varset=JS_HYPERSPACE=3
+--varset=JS_ENTERKEY=10
+
+# repeated buttons with alternative action names, these should not require
+# any changes.
+--varset=JS_MOVE=@JS_UP@
+
+--varset=JS_POKER_HANDLE=@JS_DOWN@
+--varset=JS_RELEASE=@JS_DOWN@
+
+--varset=JS_BET=@JS_FIRE@
+--varset=JS_DIG=@JS_FIRE@
+--varset=JS_FORWARD=@JS_FIRE@
+--varset=JS_LEFT_FIRE=@JS_PLAYER1@
+--varset=JS_LEFT_FLIPPER=@JS_PLAYER1@
+--varset=JS_JUMP=@JS_FIRE@
+
+--varset=JS_PAYROLL=@JS_SPARE@
+--varset=JS_RESTART=@JS_SPARE@
+--varset=JS_SHIELD=@JS_SPARE@
+
+--varset=JS_SMART_BOMB=@JS_BOMB@
+--varset=JS_CREDIT=@JS_BOMB@
+--varset=JS_HOVER=@JS_BOMB@
+--varset=JS_RIGHT_FIRE=@JS_PLAYER2@
+--varset=JS_RIGHT_FLIPPER=@JS_PLAYER2@
+--varset=JS_THRUST=@JS_BOMB@
+--varset=JS_SPARE=@JS_BOMB@
+
+# emulator command button variables, these are all set as SHIFTED buttons.
+# axisb 0x80(base)+0x100, hatb 0x90(base)+0x100, shoulder 0x04(base)+0x100
+--varset=JS_VOL_INCREASE=0x180,0x190
+--varset=JS_VOL_DECREASE=0x182,0x192
+--varset=JS_WIN_INCREASE=0x181,0x191
+--varset=JS_WIN_DECREASE=0x183,0x193
+--varset=JS_MUTE=0x104
+--varset=JS_PAUSE=0x105
+--varset=JS_FULLSCREEN=0x106
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Clear and reconfigure all the (microbee) joystick buttons. These should
+# not require any changes.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+--js-up=@JS_UP@
+--js-right=@JS_RIGHT@
+--js-down=@JS_DOWN@
+--js-left=@JS_LEFT@
+--js-fire=@JS_FIRE@
+--js-spare=@JS_SPARE@
+--js-play1=@JS_PLAYER1@
+--js-play2=@JS_PLAYER2@
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Set joystick mapped buttons to key values.
+#
+# The first set is used as the default 'key set B' values and made active. 
+# These are only intended to provide some emulator commands when using real
+# joystick emulation.
+#
+# The second set is used as the default 'key set X' values but won't be made
+# active until a --js-kset=X option is specified.
+#
+# The following sets the default values for key sets ? & B.
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+--if-set=use_shift_commands
+   --js-kkb="C_VOLU,  @JS_VOL_INCREASE@"
+   --js-kkb="C_VOLD,  @JS_VOL_DECREASE@"
+   --js-kkb="C_WINI,  @JS_WIN_INCREASE@"
+   --js-kkb="C_WIND,  @JS_WIN_DECREASE@"
+   --js-kkb="C_MUTE,  @JS_MUTE@"
+   --js-kkb="C_PAUSE, @JS_PAUSE@"
+   --js-kkb="C_FSTOG, @JS_FULLSCREEN@"
+   --js-kset=B
+--if-end
+
+--if-set=use_shift_commands
+   --js-kkb="C_VOLU,  @JS_VOL_INCREASE@"
+   --js-kkb="C_VOLD,  @JS_VOL_DECREASE@"
+   --js-kkb="C_WINI,  @JS_WIN_INCREASE@"
+   --js-kkb="C_WIND,  @JS_WIN_DECREASE@"
+   --js-kkb="C_MUTE,  @JS_MUTE@"
+   --js-kkb="C_PAUSE, @JS_PAUSE@"
+   --js-kkb="C_FSTOG, @JS_FULLSCREEN@"
+--if-end
+
+   --js-kkb="1,       @JS_PLAYER1@"
+   --js-kkb="2,       @JS_PLAYER2@"
+   --js-kkb="tab,     @JS_HYPERSPACE@"
+   --js-kkb="cr,      @JS_ENTERKEY@"
+
+#===============================================================================
+# Global end entries
+#===============================================================================
+[global-end]
+
+# make the emulator run at 500 MHz Z80 CPU speed for very fast starts
+--clock=500
+
+#===============================================================================
+# Some useful entries when using this script.
+#
+# --lcons=7 determines where the --lcon and --lconw options start to list
+# entries. Without this the starting point is 1.  This is used to skip
+# displaying entries intended for script administration.
+#
+# ubee512 will exit after running any of these sections even if other
+# sections are specified afterwards.
+#===============================================================================
+[games]
+--lcons=7
+--lconw
+
+[list]
+--lcons=7
+--lconw
+
+[listall]
+--lconw
+
+#===============================================================================
+# Games script example
+#===============================================================================
+# the name for the game entry is defined here:
+
+[example]
+
+# title of the game to appear on the status line:
+
+--title="Place the game title here"
+
+# list of files needed for the game that must be uploaded, normally only one
+# file is required. if a --file-run option is omitted then the last file
+# listed will become the file to run.
+
+--file-list=@games@\filename.bee
+
+# if the game is designed for the standard colour model use these settings:
+
+--model=128k
+--col
+--file-app=stdbasic
+
+# if the game is designed for the Premium use these settings.  These are the
+# default values so no need to specify again unless the defaults in
+# [global-start] section have been changed.
+
+--model=p128k
+--file-app=basic
+
+# set the load address for the game:
+
+--file-load=1234
+
+# if the game uses a different execute address use:
+
+--file-exec=5678
+
+#===============================================================================
+# The games, arranged in numeric-alpha order using the [filename.ext] entry.
+#
+# [games] and [list] entries will start listing from this point as an
+# --lcons=7 has been specified in those.
+#===============================================================================
+
+#**********************************************************
+#*                       3D Maze                          *
+#**********************************************************
+[3dmaze.mwb]
+--title="Microbee: 3D Maze"
+--file-list=@games@\3dmaze.mwb
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="f,     @JS_FORWARD@"
+--js-kkb="j,     @JS_HYPERSPACE@"
+--js-kset=A
+
+#**********************************************************
+#*                       Addstar                          *
+#**********************************************************
+[addstar.mwb]
+--title="Microbee: Addstar"
+--file-list=@games@\addstar.mwb
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                  Air Traffic Control                   *
+#**********************************************************
+[airtrcl.mwb]
+--title="Microbee: Air Traffic Control"
+--file-list=@games@\airtrcl.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Asteroid                         *
+#**********************************************************
+[asteroid.bee]
+--title="Microbee: Asteroid"
+--file-list=@games@\asteroid.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kkb="a,     @JS_THRUST@"
+--js-kkb="s,     @JS_SHIELD@"
+--js-kset=A
+
+#**********************************************************
+#*                    Asteroids Plus                      *
+#**********************************************************
+[astplus.bee]
+--title="Microbee: Asteroids Plus"
+--file-list=@games@\astplus.bee
+--file-load=16384
+--js-kkb="s,     @JS_BOMB@"
+--js-kset=A
+
+# Notes:
+# Has built in JS code, but needs 's' added for shield.
+# astplus.bee renamed from asteroid.bee to avoid conflict
+# with "Asteroid"
+
+#**********************************************************
+#*                       Astro                            *
+#**********************************************************
+[astro.mwb]
+--title="Microbee: Astro"
+--file-list=@games@\astro.mwb
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                 Australia Enconomy                     *
+#**********************************************************
+[austecon.mwb]
+--title="Microbee: Australia Enconomy"
+--file-list=@games@\austecon.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Blackjack                         *
+#**********************************************************
+[blackjak.mwb]
+--title="Microbee: Blackjack"
+--file-list=@games@\blackjak.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                        Bomber                          *
+#**********************************************************
+[bomber.mwb]
+--title="Microbee: Bomber"
+--file-list=@games@\bomber.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Brick Ball                        *
+#**********************************************************
+[brickbal.bee]
+--title="Microbee: Brick Ball"
+--file-list=@games@\brickbal.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                    Space Invaders                      *
+#**********************************************************
+[bspace.bee]
+--title="Microbee: Space Invaders"
+--model=128k
+--file-app=stdbasic
+--clock-def=2.0
+--file-list=@games@\bspace.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="z,     @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                        Baboon                          *
+#**********************************************************
+[baboon.mwb]
+--title="Microbee: Baboon"
+--file-list=@games@\baboon.mwb
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                        Bounce                          *
+#**********************************************************
+[bounce.mwb]
+--title="Microbee: Bounce"
+--file-list=@games@\bounce.mwb
+--js-kkb="\,     @JS_LEFT@"
+--js-kkb="/,     @JS_RIGHT@"
+--js-kset=A
+
+#**********************************************************
+#*                        Boggle                          *
+#**********************************************************
+[boggle.mwb]
+--title="Microbee: Boggle"
+--file-list=@games@\boggle.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                  Boggle (word game)                    *
+#**********************************************************
+[boggle2.mwb]
+--title="Microbee: Boggle (word game)"
+--file-list=@games@\boggle2.mwb
+
+# Notes:
+# Author uBee (wrote in ~1986)
+# Has built in JS code.
+
+#**********************************************************
+#*                     Battle Ships                       *
+#**********************************************************
+[bships.mwb]
+--title="Microbee: Battle Ships"
+--file-list=@games@\bships.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Breakout (.pre)                     *
+#**********************************************************
+[breakout.pre]
+--title="Microbee: Breakout"
+--file-list=@games@\breakout.pre
+--file-load=2304
+--js-kkb="a,     @JS_UP@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="s,     @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                    Breakout (.bee)                     *
+#**********************************************************
+[breakout.bee]
+--title="Microbee: Breakout"
+--file-list=@games@\breakout.bee
+--file-load=2304
+--js-kkb="a,     @JS_UP@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="s,     @JS_FIRE@"
+--js-kset=A
+
+# Notes:
+# Same as Breakout above but using a '.bee' extension
+
+#**********************************************************
+#*                   Cannibal Crabs                       *
+#**********************************************************
+[cancrb.mwb]
+--title="Microbee: Cannibal Crabs"
+--file-list=@games@\cancrb.mwb
+--js-kkb="q,     @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                       Cannon                           *
+#**********************************************************
+[cannon.mwb]
+--title="Microbee: Cannon"
+--file-list=@games@\cannon.mwb
+
+# Notes:
+# Source: ETI Magazine listing
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Caterpillar                         *
+#**********************************************************
+[capillar.mwb]
+--title="Microbee: Caterpillar"
+--file-list=@games@\capillar.mwb
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                      Capture                           *
+#**********************************************************
+[capture.mwb]
+--title="Microbee: Capture"
+--file-list=@games@\capture.mwb
+--js-kkb="q,     @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                   Cardiac Arrest                       *
+#**********************************************************
+[cardiac.mwb]
+--title="Microbee: Cardiac Arrest"
+--file-list=@games@\cardiac.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Catchum                          *
+#**********************************************************
+[catchum.com]
+--title="Microbee: Catchum"
+--file-list=@games@\catchum.*
+--file-run=catchum.com
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_HYPERSPACE@"
+--js-kset=A
+
+# Notes:
+# The game uses the ESC key for pausing but the emulator's
+# built in pause can be used instead.
+
+#**********************************************************
+#*              Chase Plus (Graphics demo)                *
+#**********************************************************
+[chase.mwb]
+--title="Microbee: Chase Plus (Graphics demo)"
+--file-list=@games@\chase.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                        Chess                           *
+#**********************************************************
+[chess.bee]
+--title="Microbee: Chess"
+--file-list=@games@\chess.bee
+--file-load=2304
+
+# Notes:
+# Source uBee - Converted from tape to disk.
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                     Chilly Willy                       *
+#**********************************************************
+[chilly.mwb]
+--title="Microbee: Chilly Willy"
+--file-list=@games@\chilly.mwb
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                      Chomp                             *
+#**********************************************************
+[chomp.bee]
+--title="Microbee: Chomp"
+--model=128k
+--file-list=@games@\chomp.bee
+--file-load=2304
+
+# Notes:
+# Has built in JS code.
+# Has graphical two-tone glitch if running in
+# non-monochrome.
+
+#**********************************************************
+#*                       Chopper                          *
+#**********************************************************
+[chop-j.bee]
+--title="Microbee: Chopper"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\chop-j.bee
+--file-load=2304
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                    Chopper (MWB)                       *
+#**********************************************************
+[chopper.mwb]
+--title="Microbee: Chopper (MWB)"
+--file-list=@games@\chopper.mwb
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="0,     @JS_HOVER@"
+--js-kset=A
+
+#**********************************************************
+#*                       Cluedo                           *
+#**********************************************************
+[cluedo.mwb]
+--title="Microbee: Cluedo"
+--file-list=@games@\cluedo.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Compatability                       *
+#**********************************************************
+[compat.mwb]
+--title="Microbee: Compatability"
+--file-list=@games@\compat.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Concentration                       *
+#**********************************************************
+[concent.mwb]
+--title="Microbee: Concentration"
+--file-list=@games@\concent.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                   Cosmic Fighter                       *
+#**********************************************************
+[cosmic.bee]
+--title="Microbee: Cosmic Fighter"
+--file-list=@games@\cosmic.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+# Notes:
+# This game must use Premium BASIC or sound does not work
+# correctly.
+
+
+#**********************************************************
+#*                   One Day Cricket                      *
+#**********************************************************
+[cricket.mwb]
+--title="Microbee: One Day Cricket"
+--file-list=@games@\cricket.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Depth Charge                        *
+#**********************************************************
+[d-charge.bee]
+--title="Microbee: Depth Charge"
+--file-list=@games@\d-charge.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="z,     @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                    Death Valley                        *
+#**********************************************************
+[deathval.com]
+--title="Microbee: Death Valley"
+--file-list=@games@\deathval.com
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                   Decision Maker                       *
+#**********************************************************
+[decide.mwb]
+--title="Microbee: Decision Maker"
+--file-list=@games@\decide.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                   Micro Defender                       *
+#**********************************************************
+[defender.bee]
+--title="Microbee: Micro Defender"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\defender.bee
+--file-load=1008
+--js-kkb="tab,   @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="lock,  @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kkb="p,     @JS_FIRE@"
+--js-kkb="sp,    @JS_SMART_BOMB@"
+--js-kkb="esc,   @JS_HYPERSPACE@"
+--js-kset=A
+
+# Notes:
+# This game does not init the bottom half of the display
+# correctly on a Premium model so a standard monochrome
+# model is required.
+
+#**********************************************************
+#*            Micro Defender colour (Standard)            *
+#**********************************************************
+[defend-2.bee]
+--title="Microbee: Micro Defender (Standard)"
+--model=128k
+--file-app=stdbasic
+--col
+--file-list=@games@\defend-2.bee
+--file-load=256
+
+# Notes:
+# Has built in JS code option.
+
+#**********************************************************
+#*                    Defense Command                     *
+#**********************************************************
+[defense.bee]
+--title="Microbee: Defense Command"
+--file-list=@games@\defense.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kkb="1,     @JS_BOMB@"
+--js-kset=A
+
+# Notes:
+# Bomb button functions as a smart "anti-matter bomb"
+# during gameplay. Pressing bomb button can also be used
+# to start game.
+
+#**********************************************************
+#*         Micro Defender colour (Standard + JSK)         *
+#**********************************************************
+[def2jsk.bee]
+--title="Microbee: Micro Defender (Standard + JSK)"
+--model=128k
+--file-app=stdbasic
+--col
+--file-list=@games@\defend-2.bee
+--file-load=256
+--js-kkb="tab,   @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="lock,  @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kkb="p,     @JS_FIRE@"
+--js-kkb="sp,    @JS_SMART_BOMB@"
+--js-kkb="esc,   @JS_HYPERSPACE@"
+--js-kset=A
+
+# Notes:
+# Has built in JS code option but this setup uses JS keys
+# instead to work like monochrome version.
+
+#**********************************************************
+#*            Micro Defender colour (Premium)             *
+#**********************************************************
+[defend2p.bee]
+--title="Microbee: Micro Defender (Premium)"
+--file-list=@games@\defend-2.bee
+--file-load=256
+
+# Notes:
+# Has built in JS code option.
+
+#**********************************************************
+#*                  Defender (Mytek)                      *
+#**********************************************************
+[defen-my.bee]
+--title="Microbee: Defender (Mytek)"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\defen-my.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                      Destroyer                         *
+#**********************************************************
+[destroy.mwb]
+--title="Microbee: Destroyer"
+--file-list=@games@\destroy.mwb
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                     Donut Dilemma                      *
+#**********************************************************
+[donut.bee]
+--title="Microbee: Donut Dilemma"
+--file-list=@games@\donut.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+# Notes:
+# Arrow keys also supported for up, down, left, right.
+
+#**********************************************************
+#*                       Drafts                           *
+#**********************************************************
+[drafts.mwb]
+--title="Microbee: Drafts"
+--file-list=@games@\drafts.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Dragster                          *
+#**********************************************************
+[dragster.mwb]
+--title="Microbee: Dragster"
+--file-list="@games@\m.mwb"
+--file-list="@games@\dragster.mwb"
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Droids                           *
+#**********************************************************
+[droids.mwb]
+--title="Microbee: Droids"
+--file-list=@games@\droids.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                   Earth Lander                         *
+#**********************************************************
+[earth.mwb]
+--title="Microbee: Earth Lander"
+--file-list=@games@\earth.mwb
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="a,     @JS_UP@"
+--js-kset=A
+
+# Notes:
+# The left and right are left and right thrust controls
+# so moves in the other direction.  Use [earth.mwb2]
+# for JS values that are reversed.
+
+#**********************************************************
+#*                   Earth Lander                         *
+#**********************************************************
+[earth.mwb2]
+--title="Microbee: Earth Lander"
+--file-list=@games@\earth.mwb
+--js-kkb="comma, @JS_RIGHT@"
+--js-kkb=".,     @JS_LEFT@"
+--js-kkb="a,     @JS_UP@"
+--js-kset=A
+
+# Notes:
+# Uses reversed thrust directions when using a JS.
+
+#**********************************************************
+#*                    Sequence Echo                       *
+#**********************************************************
+[echo.mwb]
+--title="Microbee: Sequence Echo"
+--file-list=@games@\echo.mwb
+
+# Notes:
+# Syntax error in line 180
+
+#**********************************************************
+#*                Eliza the Psychologist                  *
+#**********************************************************
+[eliza.bee]
+--title="Microbee: Eliza the Psychologist"
+--file-list=@games@\eliza.bee
+--file-load=2304
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Emu Joust                         *
+#**********************************************************
+[emu-j.bee]
+--title="Microbee: Emu Joust"
+--file-list=@games@\emu-j.bee
+--file-load=2304
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                        Eureka                          *
+#**********************************************************
+[eureka.bee]
+--title="Microbee: Eureka"
+--file-list=@games@\eureka.bee
+--file-load=2304
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                 Eureka (joystick)                      *
+#**********************************************************
+[eureka-j.bee]
+--title="Microbee: Eureka (joystick)"
+--file-list=@games@\eureka-j.bee
+--file-load=768
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                      Flying                            *
+#**********************************************************
+[flying.z]
+--title="Microbee: Flying"
+--file-list=@games@\flying.z
+--file-load=2304
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                        Fish                            *
+#**********************************************************
+[fish.mwb]
+--title="Microbee: Fish"
+--file-list=@games@\fish.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Fishing trip                        *
+#**********************************************************
+[fishing.mwb]
+--title="Microbee: Fishing trip"
+--file-list=@games@\fishing.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                        Flip                            *
+#**********************************************************
+[flip.com]
+--title="Microbee: Flip"
+--file-list=@games@\flip.com
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                      Frogger                           *
+#**********************************************************
+[froger-j.bee]
+--title="Microbee: Frogger"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\froger-j.bee
+--file-load=2304
+--js-kkb="l,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+# Notes:
+# Needs LOCK key on.
+# Does not appear to have any joystick code built in.
+
+#**********************************************************
+#*                      Frog Hop                          *
+#**********************************************************
+[froghop.mwb]
+--title="Microbee: Frog Hop"
+--file-list=@games@\froghop.mwb
+--js-kkb="q,     @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                   Galaxy Invasion                      *
+#**********************************************************
+[galaxy.bee]
+--title="Microbee: Galaxy Invasion"
+--file-list=@games@\galaxy.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*               Galaxy Invasion (patched)                *
+#**********************************************************
+[galaxyip.bee]
+--title="Microbee: Galaxy Invasion (patched)"
+--file-list=@games@\galaxyip.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                 Galaxy Invasion Plus                   *
+#**********************************************************
+[galinvp.bee]
+--title="Microbee: Galaxy Invasion Plus"
+--file-list=@games@\galinvp.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="f,     @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                    Galaxy Colony                       *
+#**********************************************************
+[galaxy.mwb]
+--title="Microbee: Galaxy Colony"
+--file-list=@games@\galaxy.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Goblin                           *
+#**********************************************************
+[goblin.mwb]
+--title="Microbee: Goblin"
+--file-list=@games@\goblin.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                     Gold Hunt                          *
+#**********************************************************
+[gold.mwb]
+--title="Microbee: Gold Hunt"
+--file-list=@games@\gold.mwb
+--js-kkb="i,     @JS_UP@"
+--js-kkb="k,     @JS_RIGHT@"
+--js-kkb="m,     @JS_DOWN@"
+--js-kkb="j,     @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+# Notes:
+# CAPS LOCK must be on for key and JS use.
+
+#**********************************************************
+#*                    Master Golf                         *
+#**********************************************************
+[golf.mwb]
+--title="Microbee: Master Golf"
+--file-list=@games@\golf.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                     Gridfire                           *
+#**********************************************************
+[gridfire.bee]
+--title="Microbee: Gridfire"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\gridfire.bee
+--file-load=256
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                Grooble Grab (Chalkboard)               *
+#**********************************************************
+[groobl-c.mwb]
+--title="Microbee: Grooble Grab (Chalkboard)"
+--file-list=@games@\groobl-c.mwb
+
+# Notes:
+# Requires a CHALKBOARD for input
+
+#**********************************************************
+#*                 Grooble Grab (joystick)                *
+#**********************************************************
+[groobl-j.mwb]
+--title="Microbee: Grooble Grab (joystick)"
+--file-list=@games@\groobl-j.mwb
+
+# Notes:
+# Has built in JS code.
+# Joystick not working. Working (colour) version in
+# Joystick Games (collection).
+# This version is monochrome.
+
+#**********************************************************
+#*                       Gusher                           *
+#**********************************************************
+[gusher.com]
+--title="Microbee: Gusher"
+--file-list=@games@\gusher.com
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                   Halloween Harry                      *
+#**********************************************************
+[hallowen.mwb]
+--title="Microbee: Halloween Harry"
+--file-list=@games@\hallowen.mwb
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                       Hangman                          *
+#**********************************************************
+[hangman.com]
+--title="Microbee: Hangman"
+--file-list=@games@\hangman.com
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*               Hercules Demonstration                   *
+#**********************************************************
+[herc.mwb]
+--title="Microbee: Hercules Demonstration"
+--file-list=@games@\herc.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*             Hoards of the Deep Realm v1.0              *
+#**********************************************************
+[hoards10.com]
+--title="Microbee: Hoards of the Deep Realm v1.0"
+--file-list=@games@\standard.scn
+--file-list=@games@\hoards10.com
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*             Hoards of the Deep Realm v1.1              *
+#**********************************************************
+[hoards11.com]
+--title="Microbee: Hoards of the Deep Realm v1.1"
+--file-list=@games@\standard.scn
+--file-list=@games@\hoards11.com
+
+# Notes:
+# Scripting adapted from v1.0 of Hoards.
+# Has built in JS code.
+# Crack causes graphical glitches in title screen, but
+# runs fine.
+
+#**********************************************************
+#*                      Holocaust                         *
+#**********************************************************
+[holocaus.mwb]
+--title="Microbee: Holocaust"
+--file-list=@games@\holocaus.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Hopper                           *
+#**********************************************************
+[hopper.bee]
+--title="Microbee: Hopper"
+--file-list=@games@\hopper.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+# Notes:
+# Based on the entries for Space Lanes in uBee512 games.ini
+
+#**********************************************************
+#*                     Horse Race                         *
+#**********************************************************
+[horse.mwb]
+--title="Microbee: Horse Race"
+--file-list=@games@\horse.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                  Joystick games                        *
+#**********************************************************
+[joystick.mwb]
+--title="Microbee: Joystick games"
+--file-list=@games@\m.mwb
+--file-list=@games@\joystick.mwb
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                      Justle                            *
+#**********************************************************
+[justle.mwb]
+--title="Microbee: Justle"
+--file-list=@games@\justle.mwb
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                    Killer Bees                         *
+#**********************************************************
+[killbees.mwb]
+--title="Microbee: Killer Bees"
+--file-list=@games@\killbees.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Kilopede                          *
+#**********************************************************
+[kilopede.bee]
+--title="Microbee: Kilopede"
+--model=128k
+--col
+--file-app=stdbasic
+--file-list=@games@\kilopede.bee
+--file-load=2304
+--js-kkb="x,     @JS_RIGHT@"
+--js-kkb="z,     @JS_LEFT@"
+--js-kkb="shift, @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                       Kingtut                          *
+#**********************************************************
+[kingtut.bee]
+--title="Microbee: Kingtut"
+--model=128k
+--clock-def=2.0
+--file-app=stdbasic
+--file-list=@games@\kingtut.bee
+--file-load=2304
+
+# Notes: Earlier game depended on a certain value in the
+# IY register at start up, a modified Kingtut has the
+# correct value now built in and is 14128 bytes.
+# The new section also sets the speed to 2 MHz CPU clock.
+
+#**********************************************************
+#*                King Kong (joystick)                    *
+#**********************************************************
+[kong-j.bee]
+--title="Microbee: King Kong (joystick)"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\kong-j.bee
+--file-load=2304
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                       Ladder                           *
+#**********************************************************
+[ladder.com]
+--title="Microbee: Ladder"
+--file-list=@games@\ladder.dat
+--file-list=@games@\ladder.com
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                    Laser Blazer                        *
+#**********************************************************
+[lazer.bee]
+--title="Microbee: Laser Blazer"
+--file-list=@games@\lazer.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+# Notes:
+# Game is actually called 'Laser' and not 'Lazer' but will
+# keep the same filename that has been used previously.
+
+#**********************************************************
+#*                Leaping Lunar Limmo                     *
+#**********************************************************
+[leaping.mwb]
+--title="Microbee: Leaping Lunar Limmo"
+--file-list=@games@\leaping.mwb
+--js-kkb="sp,    @JS_JUMP@"
+--js-kkb="cr,    @JS_ENTERKEY@"
+--js-kset=A
+
+#**********************************************************
+#*                    Logic Dice                          *
+#**********************************************************
+[logdie.mwb]
+--title="Microbee: Logic Dice"
+--file-list=@games@\logdie.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Story Teller                        *
+#**********************************************************
+[madlib.mwb]
+--title="Microbee: Story Teller"
+--file-list=@games@\madlib.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Marauder                          *
+#**********************************************************
+[marauder.com]
+--title="Microbee: Marauder"
+--file-list=@games@\marauder.com
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                      3D Maze                           *
+#**********************************************************
+[maze.mwb]
+--title="Microbee: 3D Maze"
+--file-list=@games@\maze.mwb
+--js-kkb="m,     @JS_MOVE@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                     Motor Bike                         *
+#**********************************************************
+[mbike.mwb]
+--title="Microbee: Motor Bike"
+--file-list=@games@\mbike.mwb
+--js-kkb="\,     @JS_RIGHT@"
+--js-kkb="a,     @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                       Memory                           *
+#**********************************************************
+[memory.mwb]
+--title="Microbee: Memory"
+--file-list=@games@\memory.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Meteor Mission                      *
+#**********************************************************
+[meteor1.bee]
+--title="Microbee: Meteor Mission"
+--file-list=@games@\meteor1.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kset=A
+
+#**********************************************************
+#*                   Meteor Mission 2                     *
+#**********************************************************
+[meteor2.bee]
+--title="Microbee: Meteor Mission 2"
+--file-list=@games@\meteor2.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                     Mind Reader                        *
+#**********************************************************
+[mindrd.mwb]
+--title="Microbee: Mind Reader"
+--file-list=@games@\mindrd.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Mine Drop                         *
+#**********************************************************
+[minedrop.bee]
+--title="Microbee: Mine Drop"
+--file-list=@games@\minedrop.bee
+--file-load=2304
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="/,     @JS_BOMB@"
+--js-kset=A
+
+#**********************************************************
+#*                    Missile Maths                       *
+#**********************************************************
+[missile.mwb]
+--title="Microbee: Missile maths"
+--file-list=@games@\missile.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*               Model Aircraft Trainer                   *
+#**********************************************************
+[modelair.mwb]
+--title="Microbee: Model Aircraft Trainer"
+--file-list=@games@\modelair.mwb
+
+# Notes:
+# Needs an extra line '295 out 1,255' to make built in JS
+# code joystick detection work.
+
+#**********************************************************
+#*                      Monopoly                          *
+#**********************************************************
+[monopoly.mwb]
+--title="Microbee: Monopoly"
+--file-list=@games@\monopoly.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                     Micro Golf                         *
+#**********************************************************
+[mpgolf.mwb]
+--title="Microbee: Micro Golf"
+--file-list=@games@\mpgolf.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                     Missile Wars                       *
+#**********************************************************
+[mslwar.bee]
+--title="Microbee: Missile Wars"
+--file-list=@games@\mslwar.bee
+--file-load=4513
+--js-kkb="q,     @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kkb="z,     @JS_LEFT_FIRE@"
+--js-kkb="sp,    @JS_RIGHT_FIRE@"
+--js-kset=A
+
+# Notes:
+# Source uBee - Converted from tape to disk.
+
+#**********************************************************
+#*                 Munch (Ghost Muncher)                  *
+#**********************************************************
+[munch.bee]
+--title="Microbee: Munch (Ghost Muncher)"
+--model=128k
+--col
+--file-app=stdbasic
+--file-list=@games@\munch.bee
+--file-load=2304
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                      3D O & X's                        *
+#**********************************************************
+[noughtpl.mwb]
+--title="Microbee: 3D O & X's"
+--file-list=@games@\noughtpl.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Othello                          *
+#**********************************************************
+[othello.com]
+--title="Microbee: Othello"
+--file-list=@games@\othello.com
+--js-kkb="e,    @JS_UP@"
+--js-kkb="d,    @JS_RIGHT@"
+--js-kkb="x,    @JS_DOWN@"
+--js-kkb="s,    @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                     Othello (MWB)                      *
+#**********************************************************
+[othello1.mwb]
+--title="Microbee: Othello (MWB)"
+--file-list=@games@\othello1.mwb
+--js-kkb="e,    @JS_UP@"
+--js-kkb="d,    @JS_RIGHT@"
+--js-kkb="x,    @JS_DOWN@"
+--js-kkb="s,    @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                       Outhouse                         *
+#**********************************************************
+[outhouse.bee]
+--title="Microbee: Outhouse"
+--file-list=@games@\outhouse.bee
+--file-load=2304
+--js-kkb="w,     @JS_UP@"
+--js-kkb="d,     @JS_RIGHT@"
+--js-kkb="s,     @JS_DOWN@"
+--js-kkb="a, 	 @JS_LEFT@"
+--js-kkb="],     @JS_FIRE@"
+--js-kkb="[,     @JS_BOMB@"
+--js-kset=A
+
+#**********************************************************
+#*                     Apple Panic                        *
+#**********************************************************
+[panic.com]
+--title="Microbee: Apple Panic"
+--file-list=@games@\panic.com
+--file-load=256
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_DIG@"
+--js-kset=A
+
+# Notes:
+# This game must be run under BASIC, the --file-load
+# option makes that happen. Should game be renamed to
+# panic.bee ?
+
+#**********************************************************
+#*              Penetrator Landscape Editor               *
+#**********************************************************
+[pendat.bee]
+--title="Microbee: Penetrator Landscape Editor"
+--file-list=@games@\pendat.bee
+--file-load=768
+
+# Notes:
+# Not suitable for joystick.
+
+#**********************************************************
+#*                      Penetrator                        *
+#**********************************************************
+[pentratj.bee]
+--title="Microbee: Penetrator"
+--file-list=@games@\pentratj.bee
+--file-load=2304
+
+# Notes:
+# --file-load may need to be set to 256 depending on
+# the binary file in use.
+# Has built in JS code.
+
+#**********************************************************
+#*                      Penetrator                        *
+#**********************************************************
+[pentj256.bee]
+--title="Microbee: Penetrator"
+--file-list=@games@\pentj256.bee
+--file-load=256
+
+# Notes:
+# Same as pentratj.bee but using the alternative binary
+# load address of 256. Requires the older binary to be
+# renamed to pentj256.bee.
+# Has built in JS code.
+
+#**********************************************************
+#*                       Pinball                          *
+#**********************************************************
+[pinball.bee]
+--title="Microbee: Pinball"
+--file-list=@games@\pinball.bee
+--file-load=2304
+--js-kkb="sp,    @JS_RELEASE@"
+--js-kkb="z,     @JS_LEFT_FLIPPER@"
+--js-kkb="/,     @JS_RIGHT_FLIPPER@"
+--js-kset=A
+
+#**********************************************************
+#*                    Pocket Puzzle                       *
+#**********************************************************
+[poketpuz.mwb]
+--title="Microbee: Pocket Puzzle"
+--file-list=@games@\poketpuz.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                        Poker                           *
+#**********************************************************
+[poker.com]
+--title="Microbee: Poker"
+--file-list=@games@\poker.com
+--js-kkb="cr,    @JS_POKER_HANDLE@"
+--js-kset=A
+
+#**********************************************************
+#*                        Poker                           *
+#**********************************************************
+[poker.mwb]
+--title="Microbee: Poker"
+--file-list=@games@\poker.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Poker Machine                       *
+#**********************************************************
+[pokermcn.mwb]
+--title="Microbee: Poker Machine"
+--file-list=@games@\pokermcn.mwb
+--js-kkb="sp,    @JS_POKER_HANDLE@"
+--js-kset=A
+
+#**********************************************************
+#*                     Prospector                         *
+#**********************************************************
+[prospect.mwb]
+--title="Microbee: Prospector"
+--file-list="@games@\m.mwb"
+--file-list=@games@\prospect.mwb
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                      Car Race                          *
+#**********************************************************
+[race.mwb]
+--title="Microbee: Car Race"
+--file-list=@games@\race.mwb
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                  Racer (joystick)                      *
+#**********************************************************
+[racer.mwb]
+--title="Microbee: Racer (joystick)"
+--file-list=@games@\racer.mwb
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                       Reeler                           *
+#**********************************************************
+[reeler.bee]
+--title="Microbee: Reeler"
+--file-list=@games@\reeler.bee
+--file-load=3584
+--js-kkb="sp,    @JS_POKER_HANDLE@"
+--js-kkb="^,     @JS_BET@"
+--js-kkb="M,     @JS_CREDIT@"
+--js-kkb="P,     @JS_PAYROLL@"
+--js-kset=A
+
+#**********************************************************
+#*                    Reef Runners                        *
+#**********************************************************
+[reefrun.bee]
+--title="Microbee: Reef Runners"
+--file-list=@games@\reefrun.bee
+--file-load=2304
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Meteor Rescue                       *
+#**********************************************************
+[rescue.bee]
+--title="Microbee: Meteor Rescue"
+--file-list=@games@\rescue.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                       Reversi                          *
+#**********************************************************
+[reversi.mwb]
+--title="Microbee: Reversi"
+--file-list=@games@\reversi.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Ricochet                         *
+#**********************************************************
+[ricochet.mwb]
+--title="Microbee: Ricochet"
+--file-list=@games@\ricochet.mwb
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                 Roach Encroachers                      *
+#**********************************************************
+[roach.mwb]
+--title="Microbee: Roach Encroacher"
+--file-list=@games@\roach.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Robot Man 2                         *
+#**********************************************************
+[robot2.bee]
+--title="Microbee: Robot Man 2 (Premium colour)"
+--file-list=@games@\robot2.bee
+--file-load=768
+
+[robot2_s.bee]
+--title="Microbee: Robot Man 2 (Standard colour)"
+--model=128k
+--col
+--file-app=stdbasic
+--file-list=@games@\robot2.bee
+--file-load=768
+
+# Notes:
+# This game has JS built in but the introductory screen
+# must be played completely for the JS to be detected and
+# used.
+
+#**********************************************************
+#*                      Robot Fire                        *
+#**********************************************************
+[robotf.bee]
+--title="Microbee: Robot Fire"
+--file-list=@games@\robotf.bee
+--file-load=1020
+--js-kkb="q,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                   Robot Man (B/W)                      *
+#**********************************************************
+[robotman.bee]
+--title="Microbee: Robot Man (B/W)"
+--file-list=@games@\robotman.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                  Sargon II - Chess                     *
+#**********************************************************
+[sargon.com]
+--title="Microbee: Sargon II - Chess"
+--file-list=@games@\sargon.com
+--file-load=256
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Scavenger                         *
+#**********************************************************
+[scavenge.com]
+--title="Microbee: Scavenger (Premium colour)"
+--file-list=@games@\scavenge.com
+
+[scavenge_s.com]
+--title="Microbee: Scavenger (Standard colour)"
+--file-list=@games@\scavenge.com
+--model=128k
+--col
+--file-app=stdbasic
+
+# Notes:
+# scavenge_s.com entry uses standard colour model
+# Has built in JS code.
+
+#**********************************************************
+#*                      Scrambler                         *
+#**********************************************************
+[scrmbler.bee]
+--title="Microbee: Scrambler"
+--model=128k
+--col
+--file-app=stdbasic
+--file-list=@games@\scrmbler.bee
+--file-load=768
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                      Sea Dragon                        *
+#**********************************************************
+[seadrag.bee]
+--title="Microbee: Sea Dragon"
+--file-list=@games@\seadrag.bee
+--file-load=2304
+--js-kkb="w,     @JS_UP@"
+--js-kkb="d,     @JS_RIGHT@"
+--js-kkb="s,     @JS_DOWN@"
+--js-kkb="a, 	 @JS_LEFT@"
+--js-kkb="],     @JS_FIRE@"
+--js-kkb="[,     @JS_BOMB@"
+--js-kset=A
+
+#**********************************************************
+#*                   Shooting Gallery                     *
+#**********************************************************
+[shootgal.mwb]
+--title="Microbee: Shooting Gallery"
+--file-list=@games@\shootgal.mwb
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                        Snake                           *
+#**********************************************************
+[snake.mwb]
+--title="Microbee: Snake"
+--file-list=@games@\snake.mwb
+--js-kkb="q,     @JS_UP@"
+--js-kkb="],     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="[,     @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                    Snark Attack                        *
+#**********************************************************
+[snark.mwb]
+--title="Microbee: Snark Attack"
+--file-list=@games@\snark.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*               Space Invaders (colour)                  *
+#**********************************************************
+[sp-inv2.bee]
+--title="Microbee: Space Invaders (colour)"
+--model=128k
+--col
+--file-app=stdbasic
+--file-list=@games@\sp-inv2.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="z,     @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                     Space Lanes                        *
+#**********************************************************
+[sp-lanes.bee]
+--title="Microbee: Space Lanes"
+--file-list=@games@\sp-lanes.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                     Space Patrol                       *
+#**********************************************************
+[spaceptl.mwb]
+--title="Microbee: Space Patrol"
+--file-list=@games@\spaceptl.mwb
+--js-kkb="sp,    @JS_JUMP@"
+--js-kkb="f,     @JS_FIRE@"
+--js-kset=A
+
+# Notes:
+# CAPS LOCK must be on for key and JS use.
+
+#**********************************************************
+#*                     Space Patrol                       *
+#**********************************************************
+[spatrol.bee]
+--title="Microbee: Space Patrol"
+--file-list=@games@\spatrol.bee
+--file-load=2304
+--js-kkb="q,     @JS_UP@"
+--js-kkb="a,     @JS_DOWN@"
+--js-kkb=".,     @JS_FIRE@"
+--js-kkb="comma, @JS_BOMB@"
+--js-kset=A
+
+#**********************************************************
+#*                     Spell Bound                        *
+#**********************************************************
+[spellb.mwb]
+--title="Microbee: Spell Bound"
+--file-list=@games@\spellb.mwb
+--js-kkb="u,     @JS_UP@"
+--js-kkb="n,     @JS_RIGHT@"
+--js-kkb="j,     @JS_DOWN@"
+--js-kkb="h,     @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+# Notes:
+# CAPS LOCK must be on for key and JS use.
+
+#**********************************************************
+#*                       Squares                          *
+#**********************************************************
+[square.mwb]
+--title="Microbee: Squares"
+--file-list=@games@\square.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                 Star Fighter action                    *
+#**********************************************************
+[star.com]
+--title="Microbee: Star Fighter action"
+--file-list=@games@\star.com
+--js-kkb=";,     @JS_RIGHT@"
+--js-kkb="k,     @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                    Star Striker                        *
+#**********************************************************
+[star-j.bee]
+--title="Microbee: Star Striker"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\star-j.bee
+--file-load=2304
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                      Subatomic                         *
+#**********************************************************
+[subatom.bee]
+--title="Microbee: Subatomic"
+--file-list=@games@\subatom.bee
+--file-load=2304
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+# Notes:
+# The game uses the 'p' key for pausing but the emulator's
+# built in pause can be used instead.
+
+#**********************************************************
+#*                     Super Golf                         *
+#**********************************************************
+[supagolf.mwb]
+--title="Microbee: Super Golf"
+--file-list=@games@\supagolf.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                 Survivor (joystick)                    *
+#**********************************************************
+[svivor-j.bee]
+--title="Microbee: Survivor (joystick)"
+--file-list=@games@\svivor-j.bee
+--file-load=2304
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                     Number Swap                        *
+#**********************************************************
+[swap.mwb]
+--title="Microbee: Number Swap"
+--file-list=@games@\swap.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Star Wars                         *
+#**********************************************************
+[s-wars.mwb]
+--title="Microbee: Star Wars"
+--file-list=@games@\s-wars.mwb
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*               Sticks 32K PCG 80x24 demo                *
+#**********************************************************
+[sticks]
+--pcg=32
+--title="Microbee: Sticks 32K PCG 80x24 demo"
+--file-list=@games@\sticks.com
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*            Sticks 32K PCG 80x24 fast demo              *
+#**********************************************************
+[sticksf]
+--pcg=32
+--clock-def=100
+--title="Microbee: Sticks 32K PCG 80x24 fast demo"
+--file-list=@games@\sticks.com
+
+# Notes:
+# Has built in JS code.
+
+#**********************************************************
+#*                  Sydney Approach                       *
+#**********************************************************
+[sydneyap.bee]
+--title="Microbee: Sydney Approach"
+--file-list=@games@\sydneyap.bee
+--file-load=256
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                     Tank Driver                        *
+#**********************************************************
+[tank.mwb]
+--title="Microbee: Tank Driver"
+--file-list=@games@\tank.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Target                           *
+#**********************************************************
+[target.bee]
+--title="Microbee: Target"
+--file-list=@games@\target.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kkb="del,   @JS_RESTART@"
+--js-kset=A
+
+#**********************************************************
+#*                  Target (in colour)                    *
+#**********************************************************
+[targetc.bee]
+--title="Microbee: Target (colour)"
+--file-list=@games@\targetc.bee
+--file-load=2304
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kkb="del,   @JS_RESTART@"
+--js-kset=A
+
+#**********************************************************
+#*                       Tennis                           *
+#**********************************************************
+[tennis.mwb]
+--title="Microbee: Tennis"
+--file-list=@games@\tennis.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                   Tandy Invaders                       *
+#**********************************************************
+[ti.bee]
+--title="Microbee: Tandy Invaders"
+--file-list=@games@\ti.bee
+--file-load=2304
+--js-kkb="x,     @JS_RIGHT@"
+--js-kkb="z, 	 @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                    Tic Tac Toe                         *
+#**********************************************************
+[tictac.com]
+--title="Microbee: Tic Tac Toe"
+--file-list=@games@\tictac.com
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                    Tic Tac Toe                         *
+#**********************************************************
+[tictac.mwb]
+--title="Microbee: Tic Tac Toe"
+--file-list=@games@\tictac.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Trains                           *
+#**********************************************************
+[trains.bee]
+--title="Microbee: Trains"
+--model=128k
+--file-app=stdbasic
+--file-list=@games@\trains.bee
+--file-load=2304
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Treazn                           *
+#**********************************************************
+[treason.mwb]
+--title="Microbee: Treazn"
+--file-list=@games@\treason.mwb
+--js-kkb="w,     @JS_UP@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A
+
+#**********************************************************
+#*                      Triangle                          *
+#**********************************************************
+[triang.mwb]
+--title="Microbee: Triangle"
+--file-list=@games@\triang.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                   Trivial Persuit                      *
+#**********************************************************
+[trivial.mwb]
+--title="Microbee: Trivial Persuit"
+--file-list=@games@\art?
+--file-list=@games@\ent?
+--file-list=@games@\geo?
+--file-list=@games@\his?
+--file-list=@games@\nat?
+--file-list=@games@\spo?
+--file-list=@games@\type.dat
+--file-list=@games@\trivial.mwb
+
+# Notes:
+# This will up-load 20 files,  the 'art?' - 'spo?' files
+# use a wildcard as there are 3 files for each.
+#
+# Files (wildcards) required are:
+# art1, art2, art3, ent1, ent2, ent3, geo1, geo2, geo3
+# his1, his2, his3, nat1, nat2, nat3, spo1, spo2, spo3
+#
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                       Z-trek                           *
+#**********************************************************
+[trs80trk.mwb]
+--title="Microbee: Z-trek"
+--file-list=@games@\trs80trk.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                        Viper                           *
+#**********************************************************
+[viper.mwb]
+--title="Microbee: Viper"
+--file-list=@games@\viper.mwb
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kset=A
+
+#**********************************************************
+#*                      Yahtzee                           *
+#**********************************************************
+[yahtze.mwb]
+--title="Microbee: Yahtzee"
+--file-list=@games@\yahtze.mwb
+
+# Notes:
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Yahtzee                           *
+#**********************************************************
+[yahtzee2.mwb]
+--title="Microbee: Yahtzee"
+--file-list=@games@\yahtzee2.mwb
+
+# Notes:
+# Source: MUGSA disk
+# Not suitable for joystick use.
+
+#**********************************************************
+#*                      Zargon II                         *
+#**********************************************************
+[zargonii.mwb]
+--title="Microbee: Zargon II"
+--file-list=@games@\zargonii.mwb
+--js-kkb="a,     @JS_UP@"
+--js-kkb=".,     @JS_RIGHT@"
+--js-kkb="z,     @JS_DOWN@"
+--js-kkb="comma, @JS_LEFT@"
+--js-kkb="sp,    @JS_FIRE@"
+--js-kset=A

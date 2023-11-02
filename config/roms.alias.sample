@@ -1,0 +1,599 @@
+#===============================================================================
+# Aliases for ROM file names.
+#
+# This file should not need altering unless ROMs are added or changed for
+# any particular model.
+#
+# This file contains alias names for use with uBee512 v3.1.0 and later.  The
+# first column contains the alias name and is non case sensitive.  The names
+# in the second column may be an MD5 or the actual name of a ROM, if no MD5
+# or name is found in the second column then the alias name will be used as
+# the ROM filename.
+#
+# The file has been configured to use the original and latest version ROMs.
+# Other ROM versions that may be used are commented out with a ';'
+# character.
+#
+# This file is automatically placed into the root of the 'ubee512' directory
+# if not found when starting the emulator.  To prevent the emulator using
+# this file use the --aliases-roms=off option.
+#
+# If the alias is not used or will be located by other methods then keep the
+# line but have no second column entry.
+#
+# The alias name must not contain any spaces.  MD5s must have a 'md5='
+# prepended to the MD5.
+#
+# TAB or space characters may be used between the columns.
+#
+# Comment lines are preceded by '#' or ';' and must be at the start of a
+# line. Blank lines are ignored.
+#
+# roms.md5.auto file
+# ------------------
+# For MD5s to work requires an 'roms.md5.auto' or 'roms.md5.user' file
+# located in the 'ubee512' directory.  From uBee512 4.5.0 a 'roms.md5.auto'
+# file is generated automatically or alternatively a customised MD5 file
+# using the file name of 'roms.md5.user' may be used instead.  The user file
+# takes precedence over 'roms.md5.auto' if it exists.  The older and now
+# obsolete 'roms.md5' file may still be used by renaming it to
+# 'roms.md5.user'
+#
+# MD5s are not case sensitive in this or the 'roms.md5.auto|user' file.
+#
+# Creating a customised roms.md5.user file
+# ----------------------------------------
+# For Windows users an md5 creation utility that creates a file in the
+# correct format can be found here:
+#
+# http://www.fourmilab.ch/md5/md5.zip
+#
+# Change to the ubee512 roms directory containing the ROMs and run this
+# command:
+#
+# Windows:
+# md5 -l * > ..\roms.md5.user
+#
+# Unices:
+# md5sum * > ../roms.md5.user
+#
+# Notes
+# -----
+# 1. Not all PAK ROM locations were shipped with ROMs so no MD5 is specified.
+# 2. DRAM models were not shipped with ROM2 or ROM3 fitted.
+# 3. ROM images still needed are marked with '***'
+# 4. PAK locations > 0 on IC and 2MHz models are external (PAK board)
+# 5. BN60 ROM will not work in std DRAM models.
+# 6. There may be other Dreamdisk version ROMs.
+#===============================================================================
+
+#===============================================================================
+# character ROMs
+#
+# CHARACTER_2K.ROM
+# ----------------
+# This ROM was found in the first 2MHz Microbees and contains only an 8x16
+# font and is the same as the first 2K of the 4K version.
+#
+# CHARACTER_4K.ROM
+# ----------------
+# This ROM is found in all Standard and Premium  models. It contains an 8x16
+# font in the first half and an 8x11 font in the second 2K half.
+#
+# CHARACTER_8K.ROM
+# ----------------
+# This ROM is found in the 256TC Telecomputer model. This is identical to
+# the 4K ROM for the first half with the second half containing foreign
+# language characters.
+#
+# CHARACTER_16K.ROM (*** ROM image is needed)
+# -----------------
+# This ROM is found in the 256TC Telecomputer model and is able to hold
+# additional fonts.
+#===============================================================================
+CHARACTER_2K.ROM        md5=8138febb8c5c88086888803039e23b31
+CHARACTER_4K.ROM        md5=7493a702a5b74a4d3d324bdd9c5ae41a
+CHARACTER_8K.ROM        md5=614654830a7252472962fc3386396e92
+CHARACTER_16K.ROM
+
+#===============================================================================
+# ROM to fallback to for 128-512K DRAM models
+#
+# The ..20ad ROM is ver bn54 (a.k.a 'rom1.bin')
+#===============================================================================
+BOOT_128K.ROM           md5=d5f97270adf74393610feb8a910220ad
+;BOOT_128K.ROM           rom1.bin
+
+#===============================================================================
+# 256tc Telecomputer boot ROMs.
+#
+# The ..ad5f ROM is ver 1.15
+# The ..1fb0 ROM is ver 1.20
+#===============================================================================
+;256TC.ROM               md5=13ddba203bd0b8228f748111421bad5f
+256TC.ROM               md5=24d6682ff7603655b0cbf77be6731fb0
+
+#===============================================================================
+# p1024k Premium plus boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+# The ..3976 ROM is ver bn60 (128K overdrive ROM)
+#===============================================================================
+;P1024K.ROM               md5=d5f97270adf74393610feb8a910220ad
+P1024K.ROM               md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+;P1024K.ROM               md5=994c5f0c59dd96c28976fbfff8523976
+
+P1024K_2.ROM
+P1024K_3.ROM
+
+#===============================================================================
+# 1024k Standard Premium plus boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+# The ..3976 ROM is ver bn60 (128K overdrive ROM)
+#===============================================================================
+;1024K.ROM               md5=d5f97270adf74393610feb8a910220ad
+1024K.ROM               md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+;1024K.ROM               md5=994c5f0c59dd96c28976fbfff8523976
+
+1024K_2.ROM
+1024K_3.ROM
+
+#===============================================================================
+# p512k Premium boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+# The ..3976 ROM is ver bn60 (128K overdrive ROM)
+#===============================================================================
+;P512K.ROM               md5=d5f97270adf74393610feb8a910220ad
+P512K.ROM               md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+;P512K.ROM               md5=994c5f0c59dd96c28976fbfff8523976
+
+P512K_2.ROM
+P512K_3.ROM
+
+#===============================================================================
+# 512k Standard boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+#===============================================================================
+;512K.ROM                md5=d5f97270adf74393610feb8a910220ad
+512K.ROM                md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+
+512K_2.ROM
+512K_3.ROM
+
+#===============================================================================
+# p256k Premium boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+# The ..3976 ROM is ver bn60 (128K overdrive ROM)
+#===============================================================================
+;P256K.ROM               md5=d5f97270adf74393610feb8a910220ad
+P256K.ROM               md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+;P256K.ROM               md5=994c5f0c59dd96c28976fbfff8523976
+
+P256K_2.ROM
+P256K_3.ROM
+
+#===============================================================================
+# 256k Standard boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+#===============================================================================
+;256K.ROM                md5=d5f97270adf74393610feb8a910220ad
+256K.ROM                md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+
+256K_2.ROM
+256K_3.ROM
+
+#===============================================================================
+# p128k Premium boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+# The ..3976 ROM is ver bn60 (128K overdrive ROM)
+#===============================================================================
+;P256K.ROM               md5=d5f97270adf74393610feb8a910220ad
+P128K.ROM               md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+;P128K.ROM               md5=994c5f0c59dd96c28976fbfff8523976
+
+P128K_2.ROM
+P128K_3.ROM
+
+#===============================================================================
+# 128k Standard boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+#===============================================================================
+;128K.ROM                md5=d5f97270adf74393610feb8a910220ad
+128K.ROM                md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+
+128K_2.ROM
+128K_3.ROM
+
+#===============================================================================
+# p64k Premium boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+# The ..f7b5 ROM is ver bn56
+#===============================================================================
+;P64K.ROM                md5=d5f97270adf74393610feb8a910220ad
+P64K.ROM                md5=b7e5c9c6aac3f1e839245f2cf260f7b5
+
+P64K_2.ROM
+P64K_3.ROM
+
+#===============================================================================
+# 64k Standard (CIAB) boot (rom1) and additional ROMs (rom2 and rom3)
+#
+# The ..20ad ROM is ver bn54
+#===============================================================================
+64K.ROM                 md5=d5f97270adf74393610feb8a910220ad
+
+64K_2.ROM
+64K_3.ROM
+
+#===============================================================================
+# 56k (APC)
+#
+# The ..3b36 ROM is Microbee's 56K ROM (more than one version ???)
+#===============================================================================
+56K.ROM                 md5=533cfaf754d70e06320ba4295a563b36
+
+#===============================================================================
+# tterm (Teleterm)
+#
+# TTERM_B.ROM - there is no ROM B part, this is occupied by 8k SRAM
+#
+# aeadb64a70eb928eddb5ea1d21be3ddc  teleterm_kernel_106.rom
+# 76199636fd3265ed73436dc6eaf8c617  teleterm_oside_107.rom
+# 06366c40f8c2aeadba1667c9c7a73e88  teleterm_test_105.rom
+# 6f1b1da7fe76b6bbc259ce9f41a547c6  teleterm_tv_407311.rom
+# 692269d466624d1e5cd2658716ab4c69  teleterm_tw_103.rom
+# 2b091ff6c4fedad2fcc5a1f319e86cb7  teleterm_wm_106.rom
+#===============================================================================
+TTERM_A.ROM             md5=aeadb64a70eb928eddb5ea1d21be3ddc
+
+TTERM_PAK0.ROM
+TTERM_PAK1.ROM          md5=6f1b1da7fe76b6bbc259ce9f41a547c6
+TTERM_PAK2.ROM          md5=692269d466624d1e5cd2658716ab4c69
+TTERM_PAK3.ROM          md5=76199636fd3265ed73436dc6eaf8c617
+TTERM_PAK4.ROM          md5=06366c40f8c2aeadba1667c9c7a73e88
+TTERM_PAK5.ROM
+TTERM_PAK6.ROM
+TTERM_PAK7.ROM
+
+TTERM_NETWORK.ROM       md5=2b091ff6c4fedad2fcc5a1f319e86cb7
+
+#===============================================================================
+# PPC85 (Premium PC85)
+#
+# 12eed96be513bd7243dc39505e9e4766  Premium BASIC v5.29e (ROM A)
+# 688b40384d7986b2753b87ed4ddd161e  Premium BASIC v5.29e (ROM B)
+# 2bc55e381fadb3f7a4a4199965f29172  Wordbee v1.3 (ROM C)
+# 48c3c3d588e49557c5731ad8476025f4  Command help (ROM E)
+# 3f43b1cc30328d910609b9cf349bff5d  BusyCalc III PC85 Menu (ROM F)
+# 676442d8ae897e180c2d96bc4afe1f74  Graphics/DB (ROM G)
+# 4c9488d15bc2c739c6850683e861db4a  Videotext v2.35 (ROM H)
+# 2fedef029ec4a693539b119f6eb86d7f  Shell (ROM I)
+# acd9633cc6154c0aebe03feada8e9a88  Telcom v3.21 (ROM D)
+#===============================================================================
+PPC85_A.ROM             md5=12eed96be513bd7243dc39505e9e4766
+PPC85_B.ROM             md5=688b40384d7986b2753b87ed4ddd161e
+
+PPC85_PAK0.ROM          md5=2bc55e381fadb3f7a4a4199965f29172
+PPC85_PAK1.ROM          md5=48c3c3d588e49557c5731ad8476025f4
+PPC85_PAK2.ROM          md5=3f43b1cc30328d910609b9cf349bff5d
+PPC85_PAK3.ROM          md5=676442d8ae897e180c2d96bc4afe1f74
+PPC85_PAK4.ROM          md5=4c9488d15bc2c739c6850683e861db4a
+PPC85_PAK5.ROM          md5=2fedef029ec4a693539b119f6eb86d7f
+
+PPC85_NETWORK.ROM       md5=acd9633cc6154c0aebe03feada8e9a88
+
+PPC85_PAK6.ROM
+PPC85_PAK7.ROM
+
+#===============================================================================
+# PC85B (Standard PC85 using 8/16K Pak ROMs)
+#
+# 046cfeda2699fbd57d0ec5d33b8cf0d0  BASIC v5.25e (ROM A)
+# 82e285ba5f164f9a8edc08c277811b81  BASIC v5.25e (ROM B)
+# 2bc55e381fadb3f7a4a4199965f29172  Wordbee v1.3 (ROM C)
+# 48c3c3d588e49557c5731ad8476025f4  Command help (ROM E)
+# 25c980280f33d218926b7d7f60614a99  BusyCalc III PC85 Menu (ROM F)
+# 676442d8ae897e180c2d96bc4afe1f74  Graphics (ROM G)
+# b90540ddea9268c5a43636ce4463edfc  Viatel v2.3a (ROM H)
+# c0e05d1471fff966c714e59556ae9fd0  Shell (ROM I)
+# a727132875957ac13b4c013fc34e163a  Telcom v3.21 (ROM D)
+#===============================================================================
+PC85B_BASIC_A.ROM       md5=046cfeda2699fbd57d0ec5d33b8cf0d0
+PC85B_BASIC_B.ROM       md5=82e285ba5f164f9a8edc08c277811b81
+
+PC85B_PAK0.ROM          md5=2bc55e381fadb3f7a4a4199965f29172
+PC85B_PAK1.ROM          md5=48c3c3d588e49557c5731ad8476025f4
+PC85B_PAK2.ROM          md5=25c980280f33d218926b7d7f60614a99
+PC85B_PAK3.ROM          md5=676442d8ae897e180c2d96bc4afe1f74
+PC85B_PAK4.ROM          md5=b90540ddea9268c5a43636ce4463edfc
+PC85B_PAK5.ROM          md5=c0e05d1471fff966c714e59556ae9fd0
+
+PC85B_NETWORK.ROM       md5=a727132875957ac13b4c013fc34e163a
+
+PC85B_PAK6.ROM
+PC85B_PAK7.ROM
+
+#===============================================================================
+# PC85 (Standard PC85 using 8K Pak ROMs)
+#
+# ac38ee467879703dd2a3d1854b859fed  BASIC v5.24e  (ROM A)
+# 170273c269ddd0832bb3a17edd6e4132  BASIC v5.24e  (ROM B)
+#
+# 046cfeda2699fbd57d0ec5d33b8cf0d0  BASIC v5.25e (ROM A)
+# 82e285ba5f164f9a8edc08c277811b81  BASIC v5.25e (ROM B)
+# 2bc55e381fadb3f7a4a4199965f29172  Wordbee v1.3 (ROM C)
+# 48c3c3d588e49557c5731ad8476025f4  Command help (ROM E)
+# 26fe05f660e3c74aef14f89bd81faac4  Shell (ROM I)
+# a727132875957ac13b4c013fc34e163a  Telcom v3.21 (ROM D)
+#===============================================================================
+PC85_BASIC_A.ROM        md5=046cfeda2699fbd57d0ec5d33b8cf0d0
+PC85_BASIC_B.ROM        md5=82e285ba5f164f9a8edc08c277811b81
+
+PC85_PAK0.ROM           md5=2bc55e381fadb3f7a4a4199965f29172
+PC85_PAK1.ROM           md5=48c3c3d588e49557c5731ad8476025f4
+PC85_PAK2.ROM
+PC85_PAK3.ROM
+PC85_PAK4.ROM
+PC85_PAK5.ROM           md5=26fe05f660e3c74aef14f89bd81faac4
+
+PC85_NETWORK.ROM        md5=a727132875957ac13b4c013fc34e163a
+
+PC85_PAK6.ROM
+PC85_PAK7.ROM
+
+#===============================================================================
+# PC85S (Swedish Standard PC85 using 8K Pak ROMs)
+#
+# ac38ee467879703dd2a3d1854b859fed  BASIC v5.24e  (ROM A)
+# 170273c269ddd0832bb3a17edd6e4132  BASIC v5.24e  (ROM B)
+# a610e10288a3d6668e102cb545ba062e  Wordbee v2.0  (ROM C)
+# 971c71a3af2cba626861928ee03ccd14  Database      (ROM E)
+# 05f65e45cda0f14d58035cb24b22dc41  Busy-calc III (ROM F)
+# 0b0756e4dbca7ccc300155a701db58b0  Graphics      (ROM G)
+# f2e3629a56ad181ab36572d5cc3e7340  Videotext     (ROM H)
+# e5014bf18060157baeaaed545cc3ddef  Shell         (ROM I)
+# 849eb8ce319d67ea17535f1180b6201e  Telcom v3.21  (ROM D)
+# dc3f63281b20b15a99702d1151a464d9  Swedish character set
+#===============================================================================
+PC85S_BASIC_A.ROM        md5=ac38ee467879703dd2a3d1854b859fed
+PC85S_BASIC_B.ROM        md5=170273c269ddd0832bb3a17edd6e4132
+
+PC85S_PAK0.ROM           md5=a610e10288a3d6668e102cb545ba062e
+PC85S_PAK1.ROM           md5=971c71a3af2cba626861928ee03ccd14
+PC85S_PAK2.ROM           md5=05f65e45cda0f14d58035cb24b22dc41
+PC85S_PAK3.ROM           md5=0b0756e4dbca7ccc300155a701db58b0
+PC85S_PAK4.ROM           md5=f2e3629a56ad181ab36572d5cc3e7340
+PC85S_PAK5.ROM           md5=e5014bf18060157baeaaed545cc3ddef
+
+PC85S_NETWORK.ROM        md5=849eb8ce319d67ea17535f1180b6201e
+
+PC85S_PAK6.ROM
+PC85S_PAK7.ROM
+
+PC85S_CHAR.ROM           md5=dc3f63281b20b15a99702d1151a464d9
+
+#===============================================================================
+# Personnal Communicator (PC) (Series 2)
+#
+# Variations in this series models may not have some ROMs installed. Using a
+# 'ubee512rc' model macro will remove certain ROMs to obtain correct
+# emulation.
+#
+# a80dd542ac560b6245f2db50c89a841b  MWB v5.22e
+# 7b13b2d10c2e93959d7a444342da2218  Wordbee v1.2
+# 15b677979a7f089d4ad5a33aad4444de  Telcom v1.0
+#===============================================================================
+PC_BASIC.ROM            md5=a80dd542ac560b6245f2db50c89a841b
+PC_BASIC_A.ROM          md5=e3a346c12f590db1acc83576a718f256
+PC_BASIC_B.ROM          md5=6cbcb1a84dd9923793aaa3d5bd8ca347
+
+PC_PAK0.ROM             md5=7b13b2d10c2e93959d7a444342da2218
+PC_PAK1.ROM
+PC_PAK2.ROM
+PC_PAK3.ROM
+PC_PAK4.ROM
+PC_PAK5.ROM
+PC_PAK6.ROM
+PC_PAK7.ROM
+
+PC_NETWORK.ROM          md5=15b677979a7f089d4ad5a33aad4444de
+
+#===============================================================================
+# IC (Series 1)
+#
+# a80dd542ac560b6245f2db50c89a841b  MWB v5.22e
+# 7b13b2d10c2e93959d7a444342da2218  Wordbee v1.2
+# 15b677979a7f089d4ad5a33aad4444de  Telcom v1.0
+#===============================================================================
+IC_BASIC.ROM            md5=a80dd542ac560b6245f2db50c89a841b
+IC_BASIC_A.ROM          md5=e3a346c12f590db1acc83576a718f256
+IC_BASIC_B.ROM          md5=6cbcb1a84dd9923793aaa3d5bd8ca347
+
+IC_PAK0.ROM             md5=7b13b2d10c2e93959d7a444342da2218
+IC_PAK1.ROM
+IC_PAK2.ROM
+IC_PAK3.ROM
+IC_PAK4.ROM
+IC_PAK5.ROM
+IC_PAK6.ROM
+IC_PAK7.ROM
+
+IC_NETWORK.ROM          md5=15b677979a7f089d4ad5a33aad4444de
+
+#===============================================================================
+# 2mhz (kit bee and 1st production)
+#
+# This model uses 4K EPROMs. There was only one PAK location and was refered
+# to as EDASM regardless of what program was used.  This consisted of 2x4K
+# EPROMs.  8 or 4K EPROMs are allowed under emulation.  If using 4K images
+# then append '_B' to the Pak number. If the base file size is 4K then the
+# '_B' image will be loaded as well.
+#
+# ce37b90b38e3af088fb05694b63240d2  MWB v5.10
+#===============================================================================
+2MHZ_BASIC.ROM          md5=ce37b90b38e3af088fb05694b63240d2
+2MHZ_BASIC_A.ROM        md5=47818ad580802e67ed8a11e53b60d635
+2MHZ_BASIC_B.ROM        md5=c8fcdbc637f56aa15f060c72a9e41e33
+2MHZ_BASIC_C.ROM        md5=6e669b2a2562f2f26dfca4006995f2b2
+2MHZ_BASIC_D.ROM        md5=5966f24c1a963fa004f74d489517ce4c
+
+2MHZ_PAK0.ROM
+2MHZ_PAK0_B.ROM
+2MHZ_PAK1.ROM
+2MHZ_PAK1_B.ROM
+2MHZ.PAK2.ROM
+2MHZ_PAK2_B.ROM
+2MHZ_PAK3.ROM
+2MHZ_PAK3_B.ROM
+2MHZ_PAK4.ROM
+2MHZ_PAK4_B.ROM
+2MHZ_PAK5.ROM
+2MHZ_PAK5_B.ROM
+2MHZ_PAK6.ROM
+2MHZ_PAK6_B.ROM
+2MHZ_PAK7.ROM
+2MHZ_PAK7_B.ROM
+
+2MHZ_NETWORK.ROM
+
+#===============================================================================
+# 2 MHz Dreamdisk
+#
+# aae8e25bc71132ef653307be71820142  Dreamdisk boot ROM v2.18.1
+#===============================================================================
+2MHZDD.ROM              md5=aae8e25bc71132ef653307be71820142
+
+#===============================================================================
+# 3.375 MHz Dreamdisk
+#
+# aae8e25bc71132ef653307be71820142  Dreamdisk boot ROM v2.18.1
+#===============================================================================
+DD.ROM                  md5=aae8e25bc71132ef653307be71820142
+
+#===============================================================================
+# Microbee HDD boot ROM
+#
+# c45452cb2981223fda043b99d468cacd  HD18.ROM
+#
+# This S60HDD18.ROM ROM is a 3rd party combination of the BN60 and HD18 boot
+# ROMs with some changes to select the WD1002-5 or Coreboard WD2793
+# controller using additional port located at 0x58.
+#
+# d25c81901b5a4cce79239ef6dfb1469b  S60HDD18.ROM
+#===============================================================================
+HD18.ROM                md5=c45452cb2981223fda043b99d468cacd  
+;S60HDD18.ROM            md5=d25c81901b5a4cce79239ef6dfb1469b
+
+#===============================================================================
+# Standard Compact Flash CB 256K ROM, the image holds all the required ROMs
+# as would be found on a DRAM and PC85 Microbee.  The DRAM ROMs must be
+# modified boot ROMs to boot from IDE.
+#
+# See CF project 'CF_Coreboard_MMU_notes.txt' for more information.
+#
+#  ROM Address  Contents  Destination  When
+#  00000-03fff  Boot A    8000-bfff    mode=0
+#  04000-07fff  Boot B    c000-ffff    mode=0 and rom_sel=0
+#  08000-09fff  Boot C    e000-ffff    mode=0 and rom_sel=1
+#  0a000-0bfff  Basic A   8000-9fff    mode=1 and prem_rom=0 
+#  0c000-0dfff  Basic B   a000-bfff    mode=1 
+#  0e000-0ffff  Basic C   8000-9fff    mode=1 and prem_rom=1
+#  10000-11fff  NET 0     e000-ffff    mode=1 and net=0
+#  12000-13fff  NET 1     e000-ffff    mode=1 and net=1
+#  14000-15fff  NET 2     e000-ffff    mode=1 and net=2
+#  16000-17fff  NET 3     e000-ffff    mode=1 and net=3
+#  18000-19fff  PAK 0     c000-dfff    mode=1 and pak=0
+#  1a000-1bfff  PAK 1     c000-dfff    mode=1 and pak=1
+#  1c000-1dfff  PAK 2     c000-dfff    mode=1 and pak=2
+#  1e000-1ffff  PAK 3     c000-dfff    mode=1 and pak=3
+#  20000-21fff  PAK 4     c000-dfff    mode=1 and pak=4
+#  22000-23fff  PAK 5     c000-dfff    mode=1 and pak=5
+#  24000-25fff  PAK 6     c000-dfff    mode=1 and pak=6
+#  26000-27fff  PAK 7     c000-dfff    mode=1 and pak=7
+#  28000-29fff  PAK 8     c000-dfff    mode=1 and pak=8
+#  2a000-2bfff  PAK 9     c000-dfff    mode=1 and pak=9
+#  2c000-2dfff  PAK A     c000-dfff    mode=1 and pak=a
+#  2e000-2ffff  PAK B     c000-dfff    mode=1 and pak=b
+#  30000-31fff  PAK C     c000-dfff    mode=1 and pak=c
+#  32000-33fff  PAK D     c000-dfff    mode=1 and pak=d
+#  34000-35fff  PAK E     c000-dfff    mode=1 and pak=e
+#  36000-37fff  PAK F     c000-dfff    mode=1 and pak=f
+#===============================================================================
+SCF.ROM
+
+#===============================================================================
+# Premium Compact Flash CB 256K ROM, the image holds all the required ROMs
+# as would be found on a DRAM and PC85 Microbee.  The DRAM ROMs must be
+# modified boot ROMs to boot from IDE.
+#
+# See notes above for the standard version.
+#===============================================================================
+PCF.ROM
+
+BN56CF.ROM              md5=60f2260d57167d8fd8d4c92d8d9a4a29
+
+#===============================================================================
+# SP0256 ROM(s) needed by the BeeTalker emulation.
+#
+# ROMs can be downloaded from: http://spatula-city.org/~im14u2c/sp0256-al2/
+# The only file required is 'al2.bin'.  Don't change the alias name(s) here! 
+# Just place the file(s) into the roms directory and it will get found.
+#
+# 54db0ac274146f8c95f8fbd7bab62cdf  sp0256_1.bin (or al2.bin)
+#===============================================================================
+sp0256_1.bin            md5=54db0ac274146f8c95f8fbd7bab62cdf
+
+#===============================================================================
+# Various other ROMs.
+#
+# d34771ba85643562b925a1e5224f22dc  chess1 (4K 1 of 2)
+# 10a3afeb75874cd05cc542eb509474ff  chess2 (4K 2 of 2)
+# 7f52ab38ab123d2262124a5a04d5d597  chess (8K)
+# 1f9a963c1c9a6c70e69959001210fd06  EDASM Editor Assembler
+# 7c7b118541049f4e57115b375293c80c  Microworld Forth v1.00
+# ca8e378a704eea520e61a75a8307feef  MyTek Forth v1.1
+# 270bcbdd65a52e0224da3bd7b0f11462  Chip8 v2.2
+# 994c5f0c59dd96c28976fbfff8523976  bn60 Premium 128K Overdrive ROM
+# 966baa0f141d50111bbd3c0a322f787f  ozlogo
+# bd7d200e3671d4cbcc3ed1f539784bcb  MWB Help (v?)
+# 15b677979a7f089d4ad5a33aad4444de  Telcom v1.0
+# 4dbc47dfe1709cf71c360b751522502d  Telcom v1.1
+# b211f434c5f4ace621db0a0829f57375  Telcom v1.2
+# a727132875957ac13b4c013fc34e163a  Telcom v3.21 (Standard PC85)
+# acd9633cc6154c0aebe03feada8e9a88  Telcom v3.21 (Premium PC85)
+# 5541ed6146dc7281f88291fbf8914f7d  Buzznet III
+# d25c81901b5a4cce79239ef6dfb1469b  S60HDD18.ROM
+#===============================================================================
+chess1                  md5=d34771ba85643562b925a1e5224f22dc
+chess2                  md5=10a3afeb75874cd05cc542eb509474ff
+chess                   md5=7f52ab38ab123d2262124a5a04d5d597
+edasm                   md5=1f9a963c1c9a6c70e69959001210fd06
+chip8                   md5=270bcbdd65a52e0224da3bd7b0f11462
+forth                   md5=ca8e378a704eea520e61a75a8307feef
+mwforth                 md5=7c7b118541049f4e57115b375293c80c
+pascal
+odrive                  md5=994c5f0c59dd96c28976fbfff8523976
+ozlogo                  md5=966baa0f141d50111bbd3c0a322f787f
+telcom10                md5=15b677979a7f089d4ad5a33aad4444de
+telcom11                md5=4dbc47dfe1709cf71c360b751522502d
+telcom12                md5=b211f434c5f4ace621db0a0829f57375
+telcom321s              md5=a727132875957ac13b4c013fc34e163a
+telcom321p              md5=acd9633cc6154c0aebe03feada8e9a88
+buzznet                 md5=5541ed6146dc7281f88291fbf8914f7d
+hdd                     md5=d25c81901b5a4cce79239ef6dfb1469b

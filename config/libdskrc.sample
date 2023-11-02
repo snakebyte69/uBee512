@@ -1,0 +1,280 @@
+[ss40s]
+description = Microbee Single density Single sided
+cylinders = 40
+heads = 1
+sectors = 18
+secbase = 1
+secsize = 128
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = Y
+multitrack = N
+skipdeleted = Y
+
+[ds40s]
+description = Microbee Single density Double sided
+cylinders = 40
+heads = 2
+sectors = 18
+secbase = 1
+secsize = 128
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = Y
+multitrack = N
+skipdeleted = Y
+
+[ss80]
+description = Microbee SS DD 80T 3.5" (CIAB)
+cylinders = 80
+heads = 1
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ds80]
+description = Microbee DS DD 80T 3.5" (Modular)
+sides = alt
+cylinders = 80
+heads = 2
+sectors = 10
+secbase = 21
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ds82]
+description = Microbee DS DD 80T 3.5" (Dreamdisk)
+sides = alt
+cylinders = 80
+heads = 2
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ds84]
+description = Microbee DS DD 80T 3.5" (PJB)
+sides = alt
+cylinders = 80
+heads = 2
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ds8b]
+description = Beeboard DS DD 80T
+sides = alt
+cylinders = 80
+heads = 2
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ds40]
+description = Microbee DS DD 40T 5.25" (SBC)
+sides = alt
+cylinders = 40
+heads = 2
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[hs350]
+description = Microbee Honeysoft 40-80T 3.5"
+cylinders = 80
+heads = 1
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[hs525]
+description = Microbee Honeysoft 40-80T 5.25"
+cylinders = 80
+heads = 1
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ds801]
+description = Microbee DS DD 80T 3.5" (Modular, No Side 1 issue!)
+sides = alt
+cylinders = 80
+heads = 2
+sectors = 10
+secbase = 21
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ds401]
+description = Microbee DS DD 40T 5.25" (SBC, No side 1 issue!)
+sides = alt
+cylinders = 40
+heads = 2
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ddds800]
+description = Microbee Dreamdisk DS DD 80T 5.25"
+sides = alt
+cylinders = 80
+heads = 2
+headmask = 1
+headflags = 128
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ddds400]
+description = Microbee Dreamdisk DS DD 40T 5.25"
+sides = alt
+cylinders = 40
+heads = 2
+headmask = 1
+headflags = 128
+sectors = 10
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[teac]
+description = Microbee TEAC 306/4/17 HDD 10MB
+sides = alt
+cylinders = 306
+heads = 4
+sectors = 17
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[mscribe]
+description = Microbee Miniscribe 612/2/17 HDD 10MB
+sides = alt
+cylinders = 612
+heads = 2
+sectors = 17
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[gbss77]
+description = greybeard's SS SD 77T 8"
+cylinders = 77
+heads = 1
+sectors = 9
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[ibm3740]
+description = IBM3740 SS SD 77T 8" 26x128 b/s
+cylinders = 77
+heads = 1
+sectors = 26
+secbase = 1
+secsize = 512
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = N
+multitrack = N
+skipdeleted = Y
+
+[nshs]
+description = North Star Horizon SD
+cylinders = 35
+heads = 1
+sectors = 10
+secbase = 1
+secsize = 256
+datarate = SD
+rwgap = 12
+fmtgap = 23
+fm = Y
+multitrack = N
+skipdeleted = Y

@@ -1,0 +1,63 @@
+#===============================================================================
+# Use this file for testing OSD scheme colours from within uBee512.
+#
+# Copy ../config/osd_scheme.ini.sample to my_scheme.ini
+#
+# Load this file into a GUI text editor, make changes to it and save, the
+# file can be kept open for further editing while testing.
+#
+# In uBee512 open the OSD console and enter the follwing option to change
+# the configuration file uBee512 should use:
+#
+# --config=my_scheme.ini
+#
+# To test the commands in the file simply enter the required macro name:
+#
+# x <ENTER>
+#
+# Make changes as needed in the editor, save and repeat the above macro. 
+# There is no need to exit uBee512 or the editor while testing.
+#
+# When the OSD scheme is complete add the values to the ubee512rc file in
+# the [global-start] section.
+#===============================================================================
+#
+# Editing scheme colours:
+#
+#                          The following options are used to modify colours in
+#                          an existing scheme, the operations are applied to
+#                          the currently selected scheme only. The OSD scheme
+#                          is broken down into 3 main sections consisting of
+#                          'buttons', dialogue' and 'widgets' with each one
+#                          broken down into further properties of 'main' and
+#                          'text'.  Each option parameter consists of 2 or 4
+#                          arguments separated with ','. The following table
+#                          describes the argument structure:
+#
+#                          c,c,c,c : BGHL, BGLL, FGHL, FGLL.
+#                          c,c     : BG,   FG.
+#                          BG      : Background colour (RGB 0x123456).
+#                          FG      : Foreground colour (RGB 0x123456).
+#                          HL      : Highlight.
+#                          LL      : Lowlight.
+#                          x       : Do not set this colour (leave as is).
+#
+#  --osd-setbtnm=c,c,c,c   OSD Button main colours.
+#  --osd-setbtnt=c,c,c,c   OSD Button text colours.
+#  --osd-setdiam=c,c       OSD Dialogue main colours.
+#  --osd-setdiat=c,c       OSD Dialogue text colours.
+#  --osd-setwidi=c,c,      OSD Widget icon colours.
+#  --osd-setwidm=c,c,c,c   OSD Widget main colours. The title box has no
+#                          BG highlight value and always uses the LL value.
+#  --osd-setwidt=c,c,c,c   OSD Widget text colours. The title box has no
+#                          BG highlight value and always uses the LL value.
+
+[x]
+--echo "Testing OSD settings for current scheme."
+--osd-setbtnm=0x1659ab,0x1c74e0,0x000000,0x000000
+--osd-setbtnt=0x1659ab,0x1c74e0,0x98afda,0x98afda
+--osd-setdiam=0x9fb8e8,0x3a5b9b
+--osd-setdiat=0x9fb8e8,0x000000
+--osd-setwidi=0x9fb8e8,0x3a5b9b
+--osd-setwidm=0x1659ab,0x1c74e0,0x3a5b9b,0xb3c4e4
+--osd-setwidt=0x000000,0x1c74e0,0xb3c4e4,0x3a5b9b
