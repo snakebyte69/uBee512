@@ -36,4 +36,4 @@ The quickstart guide can be found under [doc/QuickStart.md](doc/QuickStart.md)
 
 The compilation guide can be found under [doc/INSTALL.md](doc/INSTALL.md)
 
-This is an unoffical fork of the uBee512 source. For more information, see the Microbee Discord https://discord.gg/hSsTfsA6gy
+This is an unoffical fork of the uBee512 source. For more information, see the Microbee Programmers Discord https://discord.gg/hSsTfsA6gy
