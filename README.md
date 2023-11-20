@@ -5,6 +5,29 @@ For more information and build instructions for Windows, macOS and Linux; see th
 
 ## Build
 
+### macOS
+Copy
+- zzip/hints.h
+into
+/opt/local/include/zzip or /usr/local/include/zzip
+
+Download
+https://sourceforge.net/projects/z80ex/files/
+
+Copy
+libz80ex_dasm.1.dylib
+libz80ex_dasm.dylib
+libz80ex.1.dylib
+libz80ex.dylib
+
+and these two files 
+libz80ex_dasm.1.1.21.dylib
+libz80ex.1.1.21.dylib
+
+into
+/usr/local/lib
+
+% make
 ### Linux
 
     sudo apt install -y libsdl1.2-dev
