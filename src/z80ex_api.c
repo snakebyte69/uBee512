@@ -99,8 +99,8 @@
     #include "z80ex/z80ex.h"
     #include "z80ex/z80ex_dasm.h"
 #else
-    #include <z80ex/z80ex.h>
-    #include <z80ex/z80ex_dasm.h>
+    #include "z80ex/z80ex.h"
+    #include "z80ex/z80ex_dasm.h"
 #endif
 
 #include "z80api.h"
