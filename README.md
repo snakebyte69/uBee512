@@ -7,28 +7,28 @@ For more information and build instructions for Windows, macOS and Linux; see th
 
 # macOS
 
-## Copy
+### Copy
     zzip/hints.h
     into
     /opt/local/include/zzip or /usr/local/include/zzip
 
-## Download
+### Download
     https://sourceforge.net/projects/z80ex/files/
 
-## Copy aliases
+### Copy aliases
     libz80ex_dasm.1.dylib
     libz80ex_dasm.dylib
     libz80ex.1.dylib
     libz80ex.dylib
 
-## and these two files
+### and these two files
     libz80ex_dasm.1.1.21.dylib
     libz80ex.1.1.21.dylib
 
-## into
+### into
 /usr/local/lib
 
-## Then Build
+### Then Build
     % make
 
 # Linux
