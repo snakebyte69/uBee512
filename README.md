@@ -14,15 +14,15 @@ into
 Download
 https://sourceforge.net/projects/z80ex/files/
 
-Copy
-libz80ex_dasm.1.dylib
-libz80ex_dasm.dylib
-libz80ex.1.dylib
-libz80ex.dylib
+Copy aliases
+    libz80ex_dasm.1.dylib
+    libz80ex_dasm.dylib
+    libz80ex.1.dylib
+    libz80ex.dylib
 
-and these two files 
-libz80ex_dasm.1.1.21.dylib
-libz80ex.1.1.21.dylib
+and these two files
+    libz80ex_dasm.1.1.21.dylib
+    libz80ex.1.1.21.dylib
 
 into
 /usr/local/lib
