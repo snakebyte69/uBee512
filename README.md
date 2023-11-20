@@ -10,7 +10,7 @@ For more information and build instructions for Windows, macOS and Linux; see th
 ### Copy
     zzip/hints.h
     into
-    /opt/local/include/zzip or /usr/local/include/zzip
+    /usr/local/include/zzip
 
 ### Download
     https://sourceforge.net/projects/z80ex/files/
