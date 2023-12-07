@@ -34,10 +34,22 @@ For more information and build instructions for Windows, macOS and Linux; see th
 
 # Linux
 
-    sudo apt install -y libsdl1.2-dev
-    make
-    ./src/build/ubee512
-    cp disks/*.dsk ~/.ubee512/disks/
+    $ apt install -y libsdl1.2-dev
+    $ apt install -y libdsk-utils (maybe)
+    $ apt install -y libdsk4-dev (confirmed)
+    $ apt install -y libzzip-dev
+    - copy __hints.h from the libzzip source to /usr/include/zzip
+    $ apt install -y libz80ex-dev
+    $ apt install -y libbz2-dev
+    $ cd src
+    $ make
+    $ cd build
+    $ ./ubee512
+    - copy microbee roms into ~/.ubee512/roms/
+      - basic_5.22e.rom
+      - charrom.bin
+      - rom1.bin
+    $ cp disks/*.dsk ~/.ubee512/disks/
 
 ## Run
 
