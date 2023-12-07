@@ -38,18 +38,19 @@ For more information and build instructions for Windows, macOS and Linux; see th
     $ apt install -y libdsk-utils (maybe)
     $ apt install -y libdsk4-dev (confirmed)
     $ apt install -y libzzip-dev
-    - copy __hints.h from the libzzip source to /usr/include/zzip
+    - copy __hints.h from the libzzip source to /usr/include/zzip/
     $ apt install -y libz80ex-dev
     $ apt install -y libbz2-dev
     $ cd src
     $ make
     $ sudo make install
-        - copy microbee roms into ~/.ubee512/roms/
-          - basic_5.22e.rom
-          - charrom.bin
-          - rom1.bin
-          -  bn56.rom
+    - copy microbee roms into /usr/local/share/ubee512/roms/
+      - basic_5.22e.rom
+      - charrom.bin
+      - rom1.bin
+      - bn56.rom
     $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
+      - copy the disk you want to boot as boot.dsk
     $ ubee512 --model=ic
 
 ## Run
