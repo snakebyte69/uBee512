@@ -48,6 +48,8 @@ $ cd src
 ### MAKE ###
 $ make
 $ sudo make install
+
+### Copy ROMs and Disks ###
 - copy microbee roms into /usr/local/share/ubee512/roms/
   - basic_5.22e.rom
   - charrom.bin
