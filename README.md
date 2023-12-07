@@ -50,8 +50,7 @@ For more information and build instructions for Windows, macOS and Linux; see th
           - rom1.bin
           -  bn56.rom
     $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
-    $ cd /src/build/
-    $ ./ubee512 --model=ic
+    $ ubee512 --model=ic
 
 ## Run
 
