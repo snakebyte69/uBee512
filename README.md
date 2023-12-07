@@ -33,6 +33,16 @@ For more information and build instructions for Windows, macOS and Linux; see th
     % make
     % make install
 
+### Copy ROMs and Disks ###
+    - copy microbee roms into ~/.ubee512/roms/
+      - basic_5.22e.rom
+      - charrom.bin
+      - rom1.bin
+      - bn56.rom
+    $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
+    - copy the disk you want to boot as boot.dsk
+        e.g. microbee_cpm3_61k_ds80.dsk
+
 # Linux
 
 *** Linux Build ***
