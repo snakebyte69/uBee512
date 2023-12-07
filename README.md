@@ -70,11 +70,11 @@ For more information and build instructions for Windows, macOS and Linux; see th
     - copy the disk you want to boot as boot.dsk
         e.g. microbee_cpm3_61k_ds80.dsk
 
-### RUN ###
-Boots to Basic
+## RUN ##
+### Boots to Basic ###
     $ ubee512 --model=ic
 
-Boots a Premium 128k with Wordstar in B Drive
+### Boots a Premium 128k with Wordstar in B Drive ###
     $ ubee512 --model=p128k -a boot.dsk -b wordstar.dsk
 
 ## Run
