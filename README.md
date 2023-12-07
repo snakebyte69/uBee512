@@ -43,9 +43,9 @@ For more information and build instructions for Windows, macOS and Linux; see th
     - copy __hints.h from the libzzip source to /usr/include/zzip/
     $ apt install -y libz80ex-dev
     $ apt install -y libbz2-dev
-    $ cd src
 
 ### MAKE ###
+    $ cd src
     $ make
     $ sudo make install
 
