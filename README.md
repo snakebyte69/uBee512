@@ -43,13 +43,15 @@ For more information and build instructions for Windows, macOS and Linux; see th
     $ apt install -y libbz2-dev
     $ cd src
     $ make
-    $ cd build
-    $ ./ubee512
-    - copy microbee roms into ~/.ubee512/roms/
-      - basic_5.22e.rom
-      - charrom.bin
-      - rom1.bin
-    $ cp disks/*.dsk ~/.ubee512/disks/
+    $ sudo make install
+        - copy microbee roms into ~/.ubee512/roms/
+          - basic_5.22e.rom
+          - charrom.bin
+          - rom1.bin
+          -  bn56.rom
+    $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
+    $ cd /src/build/
+    $ ./ubee512 --model=ic
 
 ## Run
 
