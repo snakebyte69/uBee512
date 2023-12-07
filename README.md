@@ -31,6 +31,7 @@ For more information and build instructions for Windows, macOS and Linux; see th
 
 ### Then Build
     % make
+    % make install
 
 # Linux
 
