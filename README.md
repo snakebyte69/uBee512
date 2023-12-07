@@ -51,6 +51,7 @@ For more information and build instructions for Windows, macOS and Linux; see th
       - bn56.rom
     $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
       - copy the disk you want to boot as boot.dsk
+        e.g. microbee_cpm3_61k_ds80.dsk
     $ ubee512 --model=ic
 
 ## Run
