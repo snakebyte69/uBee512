@@ -34,25 +34,35 @@ For more information and build instructions for Windows, macOS and Linux; see th
 
 # Linux
 
-    $ apt install -y libsdl1.2-dev
-    $ apt install -y libdsk-utils (maybe)
-    $ apt install -y libdsk4-dev (confirmed)
-    $ apt install -y libzzip-dev
-    - copy __hints.h from the libzzip source to /usr/include/zzip/
-    $ apt install -y libz80ex-dev
-    $ apt install -y libbz2-dev
-    $ cd src
-    $ make
-    $ sudo make install
-    - copy microbee roms into /usr/local/share/ubee512/roms/
-      - basic_5.22e.rom
-      - charrom.bin
-      - rom1.bin
-      - bn56.rom
-    $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
-      - copy the disk you want to boot as boot.dsk
-        e.g. microbee_cpm3_61k_ds80.dsk
-    $ ubee512 --model=ic
+*** Linux Build ***
+### Prerequiste apps ###
+$ apt install -y libsdl1.2-dev
+$ apt install -y libdsk-utils (maybe)
+$ apt install -y libdsk4-dev (confirmed)
+$ apt install -y libzzip-dev
+- copy __hints.h from the libzzip source to /usr/include/zzip/
+$ apt install -y libz80ex-dev
+$ apt install -y libbz2-dev
+$ cd src
+
+### MAKE ###
+$ make
+$ sudo make install
+- copy microbee roms into /usr/local/share/ubee512/roms/
+  - basic_5.22e.rom
+  - charrom.bin
+  - rom1.bin
+  -  bn56.rom
+$ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
+- copy the disk you want to boot as boot.dsk
+          e.g. microbee_cpm3_61k_ds80.dsk
+
+### RUN ###
+Boots to Basic
+$ ubee512 --model=ic
+
+Boots a Premium 128k with Wordstar in B Drive
+$ ubee512 --model=p128k -a boot.dsk -b wordstar.dsk
 
 ## Run
 
