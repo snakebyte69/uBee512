@@ -1,11 +1,11 @@
-## uBee512
+# uBee512
 An emulator for the Microbee Z80 ROM, FDD and HDD based models. 
 Working towards a unified makefile for Windows, macOS and Linux. 
 For more information and build instructions for Windows, macOS and Linux; see the Microbee Programmers Discord https://discord.gg/hSsTfsA6gy
 
 ## Build
 
-# macOS
+## macOS
 
 ### Copy
     zzip/hints.h
@@ -13,8 +13,9 @@ For more information and build instructions for Windows, macOS and Linux; see th
     /usr/local/include/zzip
 
 ### Download
-    https://sourceforge.net/projects/z80ex/files/
+    https://github.com/snakebyte69/z80ex
     % make
+    % make install
 
 ### Copy aliases
     libz80ex_dasm.1.dylib
