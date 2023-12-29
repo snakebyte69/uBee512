@@ -9,7 +9,7 @@
 # REVISION HISTORY (Most recent at top)
 #===============================================================================
 #
-# # v6.0.7 - xx November 2023, Tony Sanchez
+# v6.0.7 - 22 October 2023, Tony Sanchez
 # ----------------------------
 # - Modified compiler directives to allow same code base for Make and Xcode under MacOS
 #
@@ -308,18 +308,18 @@ TOPDIR=..
 APP=ubee512
 # Append 'An' if this is a development version, don't use any '-' or '_'
 # characters as the debian packaging scripts won't work correctly.
-VERSION=6.0.7
+VERSION=6.0.8
 TITLE=uBee512
 COPYEND=2023
 
 # Set the debugging level (set to 0 to disable and strip binaries)
-OPT_DEBUG?=1
+OPT_DEBUG?=0
 
 # Set other system until a known one is detected
 OTHER_SYSTEM=1
 
 # Values passed as defines when compiling
-APPVER=\"$(VERSION)\ dev\"
+APPVER=\"$(VERSION)\"
 APPIDSTR=\"$(APP)\"
 TITLESTRING=\"$(TITLE)\ v$(VERSION)\ -\ Microbee\ emulator\"
 ICONSTRING=\"$(TITLE)\"
