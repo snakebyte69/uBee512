@@ -13,7 +13,7 @@ For more information and build instructions for Windows, macOS and Linux; see th
     /usr/local/include/zzip
 
 ### Download
-    https://sourceforge.net/projects/z80ex/files/
+    https://github.com/snakebyte69/z80ex
     % make
     % make install
 
