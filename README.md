@@ -15,6 +15,7 @@ For more information and build instructions for Windows, macOS and Linux; see th
 ### Download
     https://sourceforge.net/projects/z80ex/files/
     % make
+    % make install
 
 ### Copy aliases
     libz80ex_dasm.1.dylib
