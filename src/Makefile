@@ -313,7 +313,7 @@ TITLE=uBee512
 COPYEND=2023
 
 # Set the debugging level (set to 0 to disable and strip binaries)
-OPT_DEBUG?=0
+OPT_DEBUG?=1
 
 # Set other system until a known one is detected
 OTHER_SYSTEM=1
