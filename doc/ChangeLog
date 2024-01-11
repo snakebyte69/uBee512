@@ -1,3 +1,11 @@
+4 January 2024 - Tony Sanchez
+---------------------------------------
+uBee512 v6.1.0
+
+* Various amendments to code to allow compilation on all platforms with recent versions of GCC
+* Added Contributor section to OSD
+* Amended compiler options in Makefile to allow cross-compile of windows executable
+
 13 February 2017 - uBee
 -----------------------
 uBee512 v6.0.0

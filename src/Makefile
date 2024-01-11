@@ -2,12 +2,15 @@
 #*                              uBee512 Makefile                               *
 #*        An emulator for the Microbee Z80 ROM, FDD and HDD based models       *
 #*                                                                             *
-#*                        Copyright (C) 2007-2023 uBee                         *
+#*                        Copyright (C) 2007-2024 uBee                         *
 #*******************************************************************************
 #
 #===============================================================================
 # REVISION HISTORY (Most recent at top)
 #===============================================================================
+# v6.1.0 - 4 January 2024, Tony Sanchez
+# ----------------------------
+# - Modified win target for the MSYS2 cross-compiling environment
 #
 # v6.0.7 - 22 October 2023, Tony Sanchez
 # ----------------------------
@@ -308,9 +311,9 @@ TOPDIR=..
 APP=ubee512
 # Append 'An' if this is a development version, don't use any '-' or '_'
 # characters as the debian packaging scripts won't work correctly.
-VERSION=6.0.8
+VERSION=6.1.0
 TITLE=uBee512
-COPYEND=2023
+COPYEND=2024
 
 # Set the debugging level (set to 0 to disable and strip binaries)
 OPT_DEBUG?=0
@@ -353,7 +356,7 @@ SYSTEM?=$(shell uname -s)
 MACHINE?=$(shell uname -m)
 
 # Mingw cross-compiling prefix
-MINGW_PREFIX=i586-mingw32msvc
+MINGW_PREFIX=i686-w64-mingw32
 
 # Icon for windows use
 WICON=win32/$(APP)-logo.o
@@ -548,8 +551,11 @@ ifeq ($(SYSTEM),Darwin)
 
    DLIBS=$(USER_LIBS)
 
-   CLIBP=-L/usr/local/lib -L/usr/lib -L/opt/local/lib
-   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include -I/opt/local/include
+   #CLIBP=-L/usr/local/lib -L/usr/lib -L/opt/local/lib
+   #CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include -I/opt/local/include
+
+   CLIBP=-L/usr/local/lib -L/usr/lib
+   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include
 
    ifeq ($(OPT_LIBDSK),1)
       SLIBS+=-ldsk
@@ -725,7 +731,7 @@ ifeq ($(TOS),win)
    OPT_ZZIPLIB?=1
    OPT_Z80EMU?=1
 
-   MINGW32_PATH=/usr/$(MINGW_PREFIX)
+   MINGW32_PATH=/MINGW32
 
    SDL_LIBS=$(shell $(MINGW32_PATH)/bin/sdl-config --libs)
    SDL_CFLAGS=$(shell $(MINGW32_PATH)/bin/sdl-config --cflags)
@@ -885,12 +891,13 @@ install: makedirs
 	cp $(TOPDIR)/doc/GPL/COPYING $(DOCDIR)/GPL
 	cp $(TOPDIR)/doc/LGPL/lgpl-3.0.txt $(DOCDIR)/LGPL
 	cp $(TOPDIR)/doc/MIT/mesa-license.txt $(DOCDIR)/MIT
-	cp $(TOPDIR)/doc/ChangeLog $(DOCDIR)/
-	cp $(TOPDIR)/doc/INSTALL $(DOCDIR)/
-	cp $(TOPDIR)/doc/README $(DOCDIR)/
-	cp $(TOPDIR)/doc/AUTHORS $(DOCDIR)/
-	cp $(TOPDIR)/doc/quickstart.txt $(DOCDIR)/
-	cp $(TOPDIR)/doc/license.txt $(DOCDIR)/
+
+	cp $(TOPDIR)/doc/ChangeLog* $(DOCDIR)/
+	cp $(TOPDIR)/doc/INSTALL* $(DOCDIR)/
+	cp $(TOPDIR)/doc/README* $(DOCDIR)/
+	cp $(TOPDIR)/doc/AUTHORS* $(DOCDIR)/
+	cp $(TOPDIR)/doc/quickstart.* $(DOCDIR)/
+	cp $(TOPDIR)/doc/license.* $(DOCDIR)/
 
 	cp $(TOPDIR)/tools/cpm/src/fixturbo.pas $(TOOLSDIR)/cpm/src/
 	cp $(TOPDIR)/tools/cpm/src/cpm2host.pas $(TOOLSDIR)/cpm/src/

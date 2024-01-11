@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              options module                                *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // Provides command line, run time and file options processing including
@@ -13,7 +13,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee
+ *  Copyright (C) 2007-2024 uBee
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1018,7 +1018,7 @@ int c_argc;
 
 help_t help;
 
-#define TRY_MESG "%s: Try `%s --help' or `%s --usage' for more information.\n"
+#define TRY_MESG "%s: Try %s --help or %s --usage for more information.\n"
 
 const SDL_version *sdlv;
 

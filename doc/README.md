@@ -3,7 +3,7 @@
 # uBee512
 
 An emulator for the Microbee Z80 ROM, FDD and HDD based models.
-Copyright (C) 2007-2016 uBee
+Copyright (C) 2007-2024 uBee
 
 For contact details please see the 'Contact' section at the end of this file.
 ********************************************************************************
@@ -18,7 +18,7 @@ these are not required to be able to use the uBee512 emulator.
 
 ## uBee512 GPL
 uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
-Copyright (C) 2007-2016  uBee
+Copyright (C) 2007-2024  uBee
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ modified form without written permission from the author.
 - LibDsk by John Elliott.  LibDsk is a library intended to give transparent
   access to floppy drives and to the "disc image files" used by emulators to
   represent floppy drives.
-  http://www.seasip.demon.co.uk/Unix/LibDsk/
+  http://www.seasip.info/Unix/LibDsk/
 
 - zziplib ZIP library for ZIP archives.  zziplib is distributed under the
   MPL and LGPL licenses.
@@ -104,7 +104,7 @@ supports SDL.  From version 4.0.0 on the z80ex Z80 emulator is now compiled
 in as the default Z80 emulator.  This portable Z80 emulator is coded in 'C'
 and should work on all Endian platforms.
 
-Currently the supported platforms that have been tested on i386, x86_64 and
+Currently the supported platforms that have been tested on i386, x86_64 , arm64 and
 PPC hardware using z80ex include the following:
 
 - win32 Athlon XP 1.8GHz (2200+) 512Mb DRAM and Windows 2000.
@@ -114,37 +114,14 @@ PPC hardware using z80ex include the following:
 
 - FreeBSD Athlon AMD64 dual core (3800+) FreeBSD 6.2 using the 32 bit version.
 
-- Mac OS X (Intel) and MacOS (PPC) models G4 and G5.
+- MacOS (Intel), Mac OS X (Apple Silicon) and MacOS (PPC) models G4 and G5.
 
 ## Changes for this release
-New for this release:
-- Added --cpm3 option for use with LibDsk's RCPMFS type.
-- Added detection for LibDsk's 'rcpmfs' type.  If detected and a common
-  Microbee format is also in use then reverse skewing is employed.  This
-  allows a host directory to behave like a disk image.
-- Added optional SRAM battery backup emulation for all ROM based and the 56k
-  models.  The backups are saved to the new 'sram' directory.  Each model
-  emulated has it's own unique backup file.
-- Added --sram-backup option to enable/disable battery backup emulation.
-- Added --sram-file option to specify an alternative CMOS file to use.
-- Added --sram-load option to enable/disable loading CMOS RAM.
-- Added --sram-save option to enable/disable saving CMOS RAM.
-- Enable OpenGL support for armv7l (in Raspian Feb 2016).
-- Added usage information to README for RCPMS and SRAM Battery Backup.
 
-Changes:
-- Compiled up against the LibDsk-1.4.2 library. See the LibDsk ChangeLog.
-- Added commented out --sram-backup=off option in 'ubee512rc.sample' to
-  disable the new battery backup emulation.
-- Added 'rcpm-dsxx' and 'rcpm-ss80' macros to 'ubee512rc.sample'
-- Major changes in 'ubee512rc.sample' for ROM and 56k model macros to use
-  unique SRAM backup file names for each macro.
+* Various amendments to code to allow compilation on all platforms with recent versions of GCC
+* Added Contributor section to OSD
+* Amended compiler options in Makefile to allow cross-compile of windows executable
 
-Fixed:
-- Fixed Makefile 'r' permissions for Unices installs.
-- Fixed a warning in 'options.c' concerning 'int x'.
-- Fixed a minor bug in crtc.c.
-- Fixed 'roms.alias.sample' to closely target various ROM based models.
 
 ## Overall features
 - SRAM Battery backup emulation for ROM based and 56k models.
@@ -3041,14 +3018,16 @@ resistor to keep the PC amplifier stable.
 ## MICROEBEE          PC AUDIO OUT
  
                    o L (UNUSED)     <--+ (Recommended for unused channel)
-##                                        |
+                                       |
+TAPE-IN  o----+----o R                 |
               |                        |
               /                        / 
               \ 100 Ohms               \ 100 Ohms
               /                        /
               \                        \
-     ##          |                        |
-     
+              |                        |
+     0V  o----+----o COMMON         <--+ 
+
 
 ## Wave files from cassette
 The intention is that DGOS and Kansas City Standard (KCS) format cassette
