@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                                Tape module                                 *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // This module is used to emulate the tape out and in circuit.
@@ -18,7 +18,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee   
+ *  Copyright (C) 2007-2024 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,6 +37,9 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
+// v6.0.8 - 29 December 2023, Tony Sanchez
+// - tape_o_open() and tape_i_open() have been slightly modifed to work around strcpy buffer overrun issues
+//
 // v5.4.0 - 7 September 2011, uBee
 // - Removed 'tape_i_center' and replaced with code to test 2 levels of
 //   'tape_i_high' and 'tape_i_low', this provides a hysteresis type action
@@ -287,9 +290,12 @@ void tape_i_close (void)
 int tape_o_open (char *s, int action)
 {
  char filepath[SSIZE1];
+    
+ char banana[512];
+ strcpy(banana,s);
 
  tape_o_close();
- strcpy(tape.tapeo, s);
+ strcpy(tape.tapeo, banana);
 
  if (action == 0)
     return 0;
@@ -328,8 +334,11 @@ int tape_i_open (char *s, int action)
  int x;
  char temp[5];
  char filepath[SSIZE1];
+ char banana[512];
+ 
+ strcpy(banana,s);
 
- strcpy(tape.tapei, s);
+ strcpy(tape.tapei, banana);
  if (action == 0)
     return 0;
 

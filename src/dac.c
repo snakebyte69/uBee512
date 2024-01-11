@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                DAC parallel port audio peripheral module                   *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // This module is used to emulate an audio DAC device connected to the
@@ -13,7 +13,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee   
+ *  Copyright (C) 2007-2024 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -248,14 +248,12 @@ void dac_clock (int cpuclock)
 //   pass: uint8_t data
 // return: int
 //==============================================================================
-#ifdef DARWIN
-    static inline int dac_sample (uint8_t data)
-#else
-    inline int dac_sample (uint8_t data)
-#endif
+
+static inline int dac_sample (uint8_t data)
 {
  return data - 128;
 }
+ 
 
 //==============================================================================
 // DAC sample fixup.  Integer rounding errors can accrue to the point
@@ -265,11 +263,9 @@ void dac_clock (int cpuclock)
 //   pass: int                          sample
 // return: int
 //==============================================================================
-#ifdef DARWIN
-    static inline int dac_fixup_sample (int sample)
-#else
-    inline int dac_fixup_sample (int sample)
-#endif
+
+static inline int dac_fixup_sample (int sample)
+
 {
  return sample;
 }

@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                               Sound module                                 *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // This module is used to emulate the internal speaker using SDL.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee   
+ *  Copyright (C) 2007-2024 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -297,11 +297,10 @@ void speaker_clock(int cpuclock)
 // return: int
 //==============================================================================
 
-#ifdef DARWIN
-    static inline int speaker_sample(uint8_t data)
-#else
-    inline int speaker_sample(uint8_t data)
-#endif
+
+static inline int speaker_sample(uint8_t data)
+
+
 
 {
  // The maximum amplitude is set to be 1/3 of the absolute maximum, so that

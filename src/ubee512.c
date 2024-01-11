@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              uBee512 module                                *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // Provides init, application loop, and deinit.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee   
+ *  Copyright (C) 2007-2024 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,6 +31,12 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
+// v6.1.0 - 4 January 2024 Tony Sanchez
+// - Bumped version number up for release
+//
+// v6.0.8 - 29 December 2023, Tony Sanchez
+// - tape_o_open() and tape_i_open() in tape.c have been slightly modifed to work around strcpy buffer overrun issues
+//
 // v6.0.7 - 22 October 2023, Tony Sanchez
 // - MacOS Sonoma  : Renamed OSD option Credits to Contributors
 //
