@@ -1,7 +1,7 @@
 # uBee512 #
 - uBee : original code to v6.0.0 Copyright (C) 2007-2016
 - farthertedcrilly : Tricky Stuff - Updates to v6.1.0
-- Snake : Dumb stuff
+- Snake : The Dumb stuff
 - MikeConflake : minor updates
 
 An emulator for the Microbee Z80 ROM, FDD and HDD based models. 
