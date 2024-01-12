@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                             z80ex API module                               *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // Provides an API for z80ex Z80 emulator/disassembler.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee   
+ *  Copyright (C) 2007-2024 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -99,8 +99,8 @@
     #include "z80ex/z80ex.h"
     #include "z80ex/z80ex_dasm.h"
 #else
-    #include "z80ex/z80ex.h"
-    #include "z80ex/z80ex_dasm.h"
+    #include <z80ex/z80ex.h>
+    #include <z80ex/z80ex_dasm.h>
 #endif
 
 #include "z80api.h"

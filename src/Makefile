@@ -891,13 +891,12 @@ install: makedirs
 	cp $(TOPDIR)/doc/GPL/COPYING $(DOCDIR)/GPL
 	cp $(TOPDIR)/doc/LGPL/lgpl-3.0.txt $(DOCDIR)/LGPL
 	cp $(TOPDIR)/doc/MIT/mesa-license.txt $(DOCDIR)/MIT
-
-	cp $(TOPDIR)/doc/ChangeLog* $(DOCDIR)/
-	cp $(TOPDIR)/doc/INSTALL* $(DOCDIR)/
-	cp $(TOPDIR)/doc/README* $(DOCDIR)/
-	cp $(TOPDIR)/doc/AUTHORS* $(DOCDIR)/
-	cp $(TOPDIR)/doc/quickstart.* $(DOCDIR)/
-	cp $(TOPDIR)/doc/license.* $(DOCDIR)/
+	cp $(TOPDIR)/doc/ChangeLog $(DOCDIR)/
+	cp $(TOPDIR)/doc/INSTALL $(DOCDIR)/
+	cp $(TOPDIR)/doc/README $(DOCDIR)/
+	cp $(TOPDIR)/doc/AUTHORS $(DOCDIR)/
+	cp $(TOPDIR)/doc/quickstart.txt $(DOCDIR)/
+	cp $(TOPDIR)/doc/license.txt $(DOCDIR)/
 
 	cp $(TOPDIR)/tools/cpm/src/fixturbo.pas $(TOOLSDIR)/cpm/src/
 	cp $(TOPDIR)/tools/cpm/src/cpm2host.pas $(TOOLSDIR)/cpm/src/

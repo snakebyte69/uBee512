@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              Z80 PIO module                                *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // Emulate the Z80 PIO functionality and interrupts.
@@ -28,7 +28,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee   
+ *  Copyright (C) 2007-2024 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

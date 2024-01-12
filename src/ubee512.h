@@ -10,13 +10,13 @@
 #ifdef XCODE
     #include "SDL/SDL.h"
     #define APP "ubee512"
-    #define VERSION "6.0.7"
+    #define VERSION "6.1.0"
     #define TITLE "uBee512"
     #define APPVER VERSION
     #define APPIDSTR APP
     #define TITLESTRING TITLE "v" VERSION " - Microbee emulator"
     #define ICONSTRING TITLE
-    #define COPYENDSTRING "2023"
+    #define COPYENDSTRING "2024"
 #else
     #include <SDL.h>
 #endif

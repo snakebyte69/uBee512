@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                          hdd (WD1002-5) module                             *
 //*                                                                            *
-//*                       Copyright (C) 2007-2023 uBee                         *
+//*                       Copyright (C) 2007-2024 uBee                         *
 //******************************************************************************
 //
 // Emulates a Western Digital WD1002-5 Winchester/floppy disk controller.
@@ -25,7 +25,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2023 uBee   
+ *  Copyright (C) 2007-2024 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
