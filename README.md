@@ -2,6 +2,7 @@
 - uBee512 original to v6.0.0 - uBee
 - Updates to v6.1.0 - fathertedcrilly
 - Dumb stuff - Snake
+- Contributions by MikeConflake
 
 An emulator for the Microbee Z80 ROM, FDD and HDD based models. 
 Working towards a unified makefile for Windows, macOS and Linux. 
