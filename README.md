@@ -1,5 +1,5 @@
 # uBee512 #
-- uBee512 original to v6.0.0 - uBee
+- uBee512 original to v6.0.0 - uBee Copyright (C) 2007-2016
 - Updates to v6.1.0 - fathertedcrilly
 - Dumb stuff - Snake
 - Contributions by MikeConflake
