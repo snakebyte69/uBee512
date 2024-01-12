@@ -1,5 +1,5 @@
 # uBee512 #
-- uBee : original to v6.0.0 Copyright (C) 2007-2016
+- uBee : original code to v6.0.0 Copyright (C) 2007-2016
 - farthertedcrilly : Tricky Stuff - Updates to v6.1.0
 - Snake : Dumb stuff
 - MikeConflake : minor updates
