@@ -699,7 +699,7 @@ endif
       OPT=-O2
    endif
 
-   CC=gcc
+   CC=gcc-13
    ifeq ($(SYSTEM),Darwin)
        CFLAGS=$(DEBUG) $(OPT) $(SDL_CFLAGS) -Wall
        CLIB=$(CLIBP) -Wl $(SLIBS) $(SDL_LIBS) $(DLIBS)
