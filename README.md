@@ -41,7 +41,7 @@ For more information and support join our Social Media
 /usr/local/lib
 
 ### Then Build
-/src/
+    /src/
     % make
     % make install
 
