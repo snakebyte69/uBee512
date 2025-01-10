@@ -17,28 +17,15 @@ For more information and support join our Social Media
 
 ## macOS
 
-### Copy
-    zzip/hints.h
-    into
-    /usr/local/include/zzip
+### Homebrew packages ###
+brew install libdsk
+brew install libzzip
+brew install SDL12-compat
 
-### Download
+### Download z80ex ###
     https://github.com/snakebyte69/z80ex
     % make
     % sudo make install
-
-### Copy aliases
-    libz80ex_dasm.1.dylib
-    libz80ex_dasm.dylib
-    libz80ex.1.dylib
-    libz80ex.dylib
-
-### and these two files
-    libz80ex_dasm.1.1.21.dylib
-    libz80ex.1.1.21.dylib
-
-### into
-/usr/local/lib
 
 ### Then Build
     /src
