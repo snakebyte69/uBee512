@@ -39,7 +39,7 @@ For more information and support join our Social Media
       - rom1.bin
       - bn56.rom
     $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
-    - copy the disk you want to boot as boot.dsk
+    - copy the disk you want to boot as ###boot.dsk###
         e.g. microbee_cpm3_61k_ds80.dsk
 
 # Linux
