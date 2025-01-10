@@ -18,9 +18,9 @@ For more information and support join our Social Media
 ## macOS
 
 ### Homebrew packages ###
-brew install libdsk
-brew install libzzip
-brew install SDL12-compat
+    brew install libdsk
+    brew install libzzip
+    brew install SDL12-compat
 
 ### Download z80ex ###
     https://github.com/snakebyte69/z80ex
