@@ -25,7 +25,7 @@ For more information and support join our Social Media
 ### Download
     https://github.com/snakebyte69/z80ex
     % make
-    % make install
+    % sudo make install
 
 ### Copy aliases
     libz80ex_dasm.1.dylib
