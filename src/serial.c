@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              Serial module                                 *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // This module is used to emulate the standard serial port.  It will require
@@ -14,7 +14,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,12 +33,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.7 - 10 November 2023, Tony Sanchez
-// - MacOS Sonoma  : Now compiles MacOS changes under DARWIN preprocessor directive
-//
-// v6.0.1 - 1 September 2023, Tony Sanchez
-// - MacOS Ventura - Amended serial_open() to check length of passed parameter
-//   for serial port as null value caused a crash under Xcode 14.3.1
 // v5.7.0 - 9 March 2015, uBee
 // - Changes to serial_config() to allow 4 and 6.750 MHz clock in calculation.
 //
@@ -79,9 +73,9 @@
 #include <string.h>
 
 #ifdef MINGW
-    #include <windows.h>
-    #include <process.h>
-    #include <ctype.h>
+#include <windows.h>
+#include <process.h>
+#include <ctype.h>
 #else
 #endif
 
@@ -177,25 +171,8 @@ int serial_reset (void)
 //==============================================================================
 int serial_open (char *s, int port, int action)
 {
+ strcpy(serial.coms1, s);
 
-// v6.0.7 - 10 November 2023, Tony Sanchez
-// - MacOS Sonoma  : Now compiles MacOS changes under DARWIN preprocessor directive
-//
-// v6.0.1 - 1 September 2023, Tony Sanchez
-// - MacOS Ventura - Amended serial_open() to check length of passed parameter
-//   for serial port as null value caused a crash under Xcode 14.3.1
-
-#ifdef DARWIN
-    int s1;
-    s1 = strlen(s);
- if (s1>0)
- {
-     strcpy(serial.coms1, s);
- }
-#else
-    strcpy(serial.coms1, s);
-#endif
-    
  if (action == 0)
     return 0;
 

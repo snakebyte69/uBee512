@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                            Asynchronous module                             *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // This module is used to provide asynchronous serial support for the RS232
@@ -13,7 +13,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,10 +32,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
 // v4.7.0 - 29 June 2010, uBee
 // - Fixed async_configure() where memset(&options, sizeof(options), 0)
 //   should have been memset(&options, 0, sizeof(options)).
@@ -59,12 +55,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #ifdef MINGW
 #include <windows.h>

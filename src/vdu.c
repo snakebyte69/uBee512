@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                                 VDU module                                 *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Emulates the graphics hardware for Standard and Premium models (Alpha+)
@@ -18,7 +18,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,9 +37,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
 // v6.0.0 - 1 January 2017, K Duckmanton
 // - Microbee memory is now an array of uint8_t rather than char.
 // - Refactored this module to only redraw those parts of the screen that
@@ -184,12 +181,7 @@
 
 #include <stdio.h>
 #include <string.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #include "vdu.h"
 #include "crtc.h"

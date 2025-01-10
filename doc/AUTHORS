@@ -15,8 +15,3 @@
 * brobinson:
   - Additional debug options and changes to how debug functions. See 5.5.0
     history notes in z80debug.c.
-
-* Tony Sanchez
-   - Various amendments to code to allow compilation on all platforms with recent versions of GCC
-   - Added Contributor section to OSD
-   - Amended compiler options in Makefile to allow cross-compile of windows executable

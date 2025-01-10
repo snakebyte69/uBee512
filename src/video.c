@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                               video module                                 *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Provides SDL and OpenGL video rendering.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,9 +31,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
 // v6.0.0 - 1 January 2017, K Duckmanton
 // - Refactored this module to only redraw those parts of the screen that
 //   have been changed.
@@ -94,24 +91,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <SDL.h>
 
-#ifdef XCODE
-    #include "SDL/SDL.h"
-    #ifdef USE_OPENGL
-        #include "SDL/SDL_opengl.h"
-    #endif
-#else
-    #include <SDL.h>
-    #ifdef USE_OPENGL
-        #include <SDL/SDL_opengl.h>
-    #endif
+#ifdef USE_OPENGL
+#include <SDL/SDL_opengl.h>
 #endif
 
 #ifdef MINGW
-    #ifdef USE_OPENGL
-        #include <glext.h>
-    #endif
-    #include <windows.h>
+#ifdef USE_OPENGL
+#include <glext.h>
+#endif
+#include <windows.h>
 #else
 #endif
 

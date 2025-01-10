@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                               Sound module                                 *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // This module is used to emulate the internal speaker using SDL.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,20 +31,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.7 - 10 November 2023, Tony Sanchez
-// - MacOS Sonoma  : inline int speaker_sample() and inline int speaker_fixup_sample() 
-//   are now prefixed by static by default to allow compilation under modern versions of GCC
-//
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
-// v6.0.1 - 1 September 2023, Tony Sanchez
-// - MacOS Ventura  : Converted inline int speaker_sample() to static inline int speaker_sample()
-//   to allow compilation under Xcode 14.3.1
-// - MacOS Ventura  : Converted inline int speaker_fixup_sample() to static inline int speaker_fixup_sample()
-//   to allow compilation under Xcode 14.3.1
-//
 // v5.0.0 - 13 July 2010, K Duckmanton
 // - Removed the old speaker emulation code - the speaker module now uses the
 //   new speaker driver exclusively
@@ -113,10 +99,10 @@
 //==============================================================================
 
 #ifdef MINGW
-    #include <windows.h>
+#include <windows.h>
 #else
-    #include <sys/stat.h>
-    #include <signal.h>             // signal name macros, and the signal() prototype
+#include <sys/stat.h>
+#include <signal.h>             // signal name macros, and the signal() prototype
 #endif
 
 #include <stdio.h>
@@ -124,12 +110,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <assert.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #include "ubee512.h"
 #include "audio.h"
@@ -296,12 +277,7 @@ void speaker_clock(int cpuclock)
 //                                      zero if speaker bit clear
 // return: int
 //==============================================================================
-
-
-static inline int speaker_sample(uint8_t data)
-
-
-
+inline int speaker_sample(uint8_t data)
 {
  // The maximum amplitude is set to be 1/3 of the absolute maximum, so that
  // the speaker is as loud as the BeeThoven output.
@@ -316,13 +292,7 @@ static inline int speaker_sample(uint8_t data)
 //   pass: int                          sample
 // return: int
 //==============================================================================
-
-#ifdef DARWIN
-    static inline int speaker_fixup_sample(int sample)
-#else
-    inline int speaker_fixup_sample(int sample)
-#endif
-
+inline int speaker_fixup_sample(int sample)
 {
  if (sample >= SPEAKER_AMPLITUDE - 2)
     sample = SPEAKER_AMPLITUDE;

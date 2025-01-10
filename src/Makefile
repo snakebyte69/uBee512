@@ -2,20 +2,12 @@
 #*                              uBee512 Makefile                               *
 #*        An emulator for the Microbee Z80 ROM, FDD and HDD based models       *
 #*                                                                             *
-#*                        Copyright (C) 2007-2024 uBee                         *
+#*                        Copyright (C) 2007-2016 uBee                         *
 #*******************************************************************************
 #
 #===============================================================================
 # REVISION HISTORY (Most recent at top)
 #===============================================================================
-# v6.1.0 - 4 January 2024, Tony Sanchez
-# ----------------------------
-# - Modified win target for the MSYS2 cross-compiling environment
-#
-# v6.0.7 - 22 October 2023, Tony Sanchez
-# ----------------------------
-# - Modified compiler directives to allow same code base for Make and Xcode under MacOS
-#
 # v5.8.0 - 27 April 2015, uBee
 # ----------------------------
 # - Enable OpenGL support for armv7l (in Raspian Feb 2016).
@@ -279,24 +271,24 @@
 #
 # Determines if libdsk is built in and if static or a shared library is linked.
 # 0=not used, 1=use static, 2=use shared
-# OPT_LIBDSK?=1
+#OPT_LIBDSK?=1
 #
 # Determine if OpenGL is to be built in.
 # 0=not used, 1=use shared
-# OPT_OPENGL?=1
+#OPT_OPENGL?=1
 #
 # Determine if zziplib* libraries are to be built in and if static or a
 # shared library is linked.
 # 0=not used, 1=use static, 2=use shared
-# OPT_ZZIPLIB?=1
+#OPT_ZZIPLIB?=1
 #
 # Determines which Z80 emulator is to be used.
 # 1=z80ex, 2=other
-# OPT_Z80EMU?=1
+#OPT_Z80EMU?=1
 #
 # Determines if a static or shared library use of the Z80 emulator on. Win32
 # builds are always static.
-# OPT_Z80_STATIC=1
+#OPT_Z80_STATIC=1
 
 #===============================================================================
 # Overrides
@@ -311,9 +303,8 @@ TOPDIR=..
 APP=ubee512
 # Append 'An' if this is a development version, don't use any '-' or '_'
 # characters as the debian packaging scripts won't work correctly.
-VERSION=6.1.0
+VERSION=6.0.0
 TITLE=uBee512
-COPYEND=2024
 
 # Set the debugging level (set to 0 to disable and strip binaries)
 OPT_DEBUG?=0
@@ -326,7 +317,6 @@ APPVER=\"$(VERSION)\"
 APPIDSTR=\"$(APP)\"
 TITLESTRING=\"$(TITLE)\ v$(VERSION)\ -\ Microbee\ emulator\"
 ICONSTRING=\"$(TITLE)\"
-COPYENDSTRING=\"$(COPYEND)\"
 
 # Various compile options
 #Z80EX_OPTIONS=-DZ80EX_NO_VERSION_CODE
@@ -356,7 +346,7 @@ SYSTEM?=$(shell uname -s)
 MACHINE?=$(shell uname -m)
 
 # Mingw cross-compiling prefix
-MINGW_PREFIX=i686-w64-mingw32
+MINGW_PREFIX=i586-mingw32msvc
 
 # Icon for windows use
 WICON=win32/$(APP)-logo.o
@@ -403,8 +393,8 @@ ifeq ($(SYSTEM),Linux)
    endif
 
    # gather up all the known library and include paths
-   CLIBP=-L/usr/lib/$(GCC_DIR) -L/usr/local/lib -L/usr/lib -L/opt/local/lib
-   CINC+=$(USER_INCLUDES) -I/usr/include/$(GCC_DIR) -I/usr/local/include -I/usr/include -L/opt/local/include
+   CLIBP=-L/usr/lib/$(GCC_DIR) -L/usr/local/lib -L/usr/lib
+   CINC+=$(USER_INCLUDES) -I/usr/include/$(GCC_DIR) -I/usr/local/include -I/usr/include
 
    ifeq ($(OPT_LIBDSK),1)
       SLIBS+=-ldsk
@@ -477,8 +467,8 @@ ifeq ($(SYSTEM),FreeBSD)
 
    DLIBS=$(USER_LIBS)
 
-   CLIBP=-L/usr/local/lib -L/usr/lib -L/opt/local/lib
-   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include -I/opt/local/include
+   CLIBP=-L/usr/local/lib -L/usr/lib
+   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include
 
    ifeq ($(OPT_LIBDSK),1)
       SLIBS+=-ldsk
@@ -551,11 +541,12 @@ ifeq ($(SYSTEM),Darwin)
 
    DLIBS=$(USER_LIBS)
 
-   #CLIBP=-L/usr/local/lib -L/usr/lib -L/opt/local/lib
-   #CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include -I/opt/local/include
+#   CLIBP=-L/usr/local/lib -L/usr/lib
+#   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include
 
-   CLIBP=-L/usr/local/lib -L/usr/lib
-   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include
+   CLIBP=-L/usr/local/lib -L/usr/lib  -L/opt/homebrew/lib
+   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include -I /opt/homebrew/include
+
 
    ifeq ($(OPT_LIBDSK),1)
       SLIBS+=-ldsk
@@ -572,7 +563,7 @@ ifeq ($(SYSTEM),Darwin)
    ifeq ($(OPT_OPENGL),1)
       DLIBS+=-L/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries
       DLIBS+=-lGL
-      CINC+=-I/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers
+      CINC+=-I/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Tk.framework/Headers
       COMOPTS+=-DUSE_OPENGL
    endif
 
@@ -604,7 +595,6 @@ ifeq ($(SYSTEM),Darwin)
       DEPENDENCIES=$(OBJC:.o=.h) ./z80api.h ./parint.h Makefile
       XOBJC=$(OBJC:./%=build/%) ./build/other_api.o
    endif
-
    COMOPTS+=-DDARWIN
 
    ifeq ($(USE_LIB_LIBBZ2),1)
@@ -629,8 +619,8 @@ ifeq ($(OTHER_SYSTEM),1)
 
    DLIBS=$(USER_LIBS)
 
-   CLIBP=-L/usr/local/lib -L/usr/lib -L/opt/local/lib
-   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include -I/opt/local/include
+   CLIBP=-L/usr/local/lib -L/usr/lib
+   CINC+=$(USER_INCLUDES) -I/usr/local/include -I/usr/include
 
    ifeq ($(OPT_LIBDSK),1)
       SLIBS+=-ldsk
@@ -699,15 +689,11 @@ endif
       OPT=-O2
    endif
 
-   CC=gcc-13
-   ifeq ($(SYSTEM),Darwin)
-       CFLAGS=$(DEBUG) $(OPT) $(SDL_CFLAGS) -Wall
-       CLIB=$(CLIBP) -Wl $(SLIBS) $(SDL_LIBS) $(DLIBS)
-   else
-       CFLAGS=$(DEBUG) $(OPT) $(SDL_CFLAGS) -Wall
-       CLIB=$(CLIBP) -Wl,-Bstatic $(SLIBS) -Wl,-Bdynamic $(SDL_LIBS) $(DLIBS)
-   endif
-   CDEF+=-DAPPVER=$(APPVER) -DTITLESTRING=$(TITLESTRING) -DICONSTRING=$(ICONSTRING) -DCOPYENDSTRING=$(COPYENDSTRING)
+   CC=gcc-14
+   #CC=/usr/local/bin/x86_64-apple-darwin23-gcc-14
+   CFLAGS=$(DEBUG) $(OPT) $(SDL_CFLAGS) -Wall
+   CLIB=$(CLIBP) -Wl, $(SLIBS) -Wl, $(SDL_LIBS) $(DLIBS)
+   CDEF+=-DAPPVER=$(APPVER) -DTITLESTRING=$(TITLESTRING) -DICONSTRING=$(ICONSTRING)
    CDEF+=-DAPPIDSTR=$(APPIDSTR) $(COMOPTS)
 
 build: build/$(APP) warning
@@ -731,7 +717,7 @@ ifeq ($(TOS),win)
    OPT_ZZIPLIB?=1
    OPT_Z80EMU?=1
 
-   MINGW32_PATH=/MINGW32
+   MINGW32_PATH=/usr/$(MINGW_PREFIX)
 
    SDL_LIBS=$(shell $(MINGW32_PATH)/bin/sdl-config --libs)
    SDL_CFLAGS=$(shell $(MINGW32_PATH)/bin/sdl-config --cflags)
@@ -798,7 +784,7 @@ ifeq ($(TOS),win)
    WINDRES=$(MINGW_PREFIX)-windres
    CLIB=$(LIBS) -Wl,-Bstatic $(SLIBS) -Wl,-Bdynamic $(SDL_LIBS)
    CDEF=-D_GNU_SOURCE=1 -D_REENTRANT -DNOTWINDLL
-   CDEF+=-DAPPVER=$(APPVER) -DTITLESTRING=$(TITLESTRING) -DICONSTRING=$(ICONSTRING) -DCOPYENDSTRING=$(COPYENDSTRING)
+   CDEF+=-DAPPVER=$(APPVER) -DTITLESTRING=$(TITLESTRING) -DICONSTRING=$(ICONSTRING)
    CDEF+=-DAPPIDSTR=$(APPIDSTR) $(COMOPTS)
 
 winx: win32/$(APP).exe warning

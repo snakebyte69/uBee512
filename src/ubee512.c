@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              uBee512 module                                *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Provides init, application loop, and deinit.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,53 +31,8 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.1.0 - 4 January 2024 Tony Sanchez
-// - Bumped version number up for release
-//
-// v6.0.8 - 29 December 2023, Tony Sanchez
-// - tape_o_open() and tape_i_open() in tape.c have been slightly modifed to work around strcpy buffer overrun issues
-//
-// v6.0.7 - 22 October 2023, Tony Sanchez
-// - MacOS Sonoma  : Renamed OSD option Credits to Contributors
-//
-// v6.0.6 - 24 September 2023, Tony Sanchez
-// - MacOS Ventura  : Adding new OSD option Credits
-//
-// v6.0.5 - 23 September 2023, Tony Sanchez
-// - MacOS Ventura  : DARWIN compiler define wasn't being passed to the application as Make was not used to build it.
-//   This caused emu.system to be incorrectly set and as a result,  video_gl_window_resize() did not call video_gl_initialise_context() and video_gl_create_texture()
-//
-// v6.0.4 - 19 September 2023, Tony Sanchez
-// - MacOS Ventura  : Added compiler support for LibDisk
-//
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
-// v6.0.2 - 17 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed harcoding for include definitions for
-//   application version and title
-//
-// v6.0.1 - 1 September 2023, Tony Sanchez
-// - MacOS Ventura  : Hardcoded a number of include definitions for
-//   application version and title to allow compilation under Xcode 14.3.1
-// - MacOS Ventura - Changed fontdata[] to fontdata1[] in Uni1-VGA8.c as Xcode (14.3.1)
-//   complained about duplicate identifier in font.c
-// - MacOS Ventura - Amended serial_open() in serial.c to check length of passed parameter
-//   for serial port as null value caused a crash under Xcode 14.3.1
-// - MacOS Ventura - Change to options_getoptstr() to work around clang strict array bounds check in options.c
-// - MacOS Ventura  : Converted inline int dac_sample() to static inline int dac_sample() in dac.c
-//   to allow compilation under Xcode 14.3.1
-// - MacOS Ventura  : Converted inline int dac_fixup_sample() to static inline int dac_fixup_sample() in dac.c
-//   to allow compilation under Xcode 14.3.1
-// - MacOS Ventura  : Converted inline int speaker_sample() to static inline int speaker_sample() in sound.c
-//   to allow compilation under Xcode 14.3.1
-// - MacOS Ventura  : Converted inline int speaker_fixup_sample() to static inline int speaker_fixup_sample() in sound.c
-//   to allow compilation under Xcode 14.3.1
-//
 // v6.0.0 - 5 February 2017, uBee
 // - Added in main() a new test for 'emu.exit_warning'.
-//
 // v6.0.0 - 1 January 2017, K Duckmanton
 // - Minor changes to explicitly set the aspect ratio and Y-scale factor
 //   when the emulation is reset.  video_renderer() is now video_render() to
@@ -448,26 +403,19 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+#include <SDL.h>
 
-#ifdef XCODE
-    #include "SDL/SDL.h"
-    #ifdef USE_LIBDSK
-        #include "libdsk/libdsk.h"
-    #endif
-#else
-    #include <SDL.h>
-    #ifdef USE_LIBDSK
-        #include <libdsk.h>
-    #endif
+#ifdef USE_LIBDSK
+#include <libdsk.h>
 #endif
 
 #ifdef MINGW
-    #include <windows.h>
-    #include <conio.h>
+#include <windows.h>
+#include <conio.h>
 #else
-    #include <sys/stat.h>
-    #include <signal.h>             // signal name macros, and the signal() prototype
-    #include <errno.h>
+#include <sys/stat.h>
+#include <signal.h>             // signal name macros, and the signal() prototype
+#include <errno.h>
 #endif
 
 #include <stdint.h>
@@ -867,7 +815,7 @@ static void read_id_file (void)
         {
          file_readline(textfp, temp_str, sizeof(temp_str)-1);
          if (i == 0)
-             emu.install_files_req = (xstrverscmp(temp_str, APPVER) < 0);
+            emu.install_files_req = (xstrverscmp(temp_str, APPVER) < 0);
          else
             {
              if (strcmp(temp_str, "messages_opengl_no") == 0)
@@ -895,8 +843,8 @@ void write_id_file (void)
  textfp = fopen(userfile, "w");
  if (textfp != NULL)
     {
-        fprintf(textfp, APPVER"\n");
-        if (messages.opengl_no)
+     fprintf(textfp, APPVER"\n");
+     if (messages.opengl_no)
         fprintf(textfp, "messages_opengl_no\n");
      fclose(textfp);
     }
@@ -1150,25 +1098,24 @@ static int create_account (void)
 
      emu.roms_create_md5 = 1;  // force 'roms.md5.auto' to be regenerated
 
-        
-        xprintf("\n");
-             xprintf("==========================================================================\n");
-             xprintf("                 ~~~ uBee512 "APPVER" Microbee emulator ~~~\n\n");
-             if (dir_created)
-                xprintf("This is the first time you have run the ubee512 emulator in this account.\n");
-             else
-                {
-                 xprintf("A newer version of the emulator has been detected. Additional directories\n");
-                 xprintf("and files may have been created in your account.\n");
-                }
-             xprintf("\n");
-             xprintf("You now need to copy ROMs: charrom.bin, and either disk and/or BASIC ROMs\n");
-             xprintf("to the ROMs directory if these don't already exist:\n");
-             xprintf("%s\n", userhome_romspath);
-             xprintf("\n");
-             xprintf("Copy any required disk image(s) and make sure these are writable to:\n");
-             xprintf("%s\n", userhome_diskpath);
-             xprintf("\n");
+     xprintf("\n");
+     xprintf("==========================================================================\n");
+     xprintf("                 ~~~ uBee512 "APPVER" Microbee emulator ~~~\n\n");
+     if (dir_created)
+        xprintf("This is the first time you have run the ubee512 emulator in this account.\n");
+     else
+        {
+         xprintf("A newer version of the emulator has been detected. Additional directories\n");
+         xprintf("and files may have been created in your account.\n");
+        }
+     xprintf("\n");
+     xprintf("You now need to copy ROMs: charrom.bin, and either disk and/or BASIC ROMs\n");
+     xprintf("to the ROMs directory if these don't already exist:\n");
+     xprintf("%s\n", userhome_romspath);
+     xprintf("\n");
+     xprintf("Copy any required disk image(s) and make sure these are writable to:\n");
+     xprintf("%s\n", userhome_diskpath);
+     xprintf("\n");
 
 #ifdef USE_LIBDSK
      if (no_libdskrc)
@@ -1372,9 +1319,8 @@ static int init (void)
      return -1;
     }
 
-    
-    if (emu.verbose)
-        xprintf(TITLESTRING"\n");
+ if (emu.verbose)
+    xprintf(TITLESTRING"\n");
 
 #ifdef MINGW
 #else
@@ -2087,13 +2033,12 @@ static void application_loop (void)
 //==============================================================================
 int main (int argc, char *argv[])
 {
-
  const SDL_version *sdlv;
  char temp_str[SSIZE1];
  const char *env;
 
  int exitstatus = 0;
-    
+
  // get a copy of the default model data to work with
  memcpy(&modelx, &model_data[emu.model], sizeof(model_t));
 
@@ -2201,7 +2146,7 @@ int main (int argc, char *argv[])
  if (! exitstatus)
     {
 #if 1
-        if (strstr(APPVER, "dev"))
+     if (strstr(APPVER, "dev"))
         osd_set_dialogue(DIALOGUE_DEVMESG);
 #endif
      if ((video.type != VIDEO_GL) && (messages.opengl_no == 0))

@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                DAC parallel port audio peripheral module                   *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // This module is used to emulate an audio DAC device connected to the
@@ -13,7 +13,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,20 +32,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.7 - 10 November 2023, Tony Sanchez
-// - MacOS Sonoma  : inline int dac_sample() and inline int dac_fixup_sample() 
-//   are now prefixed by static by default to allow compilation under modern versions of GCC
-//
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
-// v6.0.1 - 1 September 2023, Tony Sanchez
-// - MacOS Ventura  : Converted inline int dac_sample() to static inline int dac_sample()
-//   to allow compilation under Xcode 14.3.1
-// - MacOS Ventura  : Converted inline int dac_fixup_sample() to static inline int dac_fixup_sample()
-//   to allow compilation under Xcode 14.3.1
-//
 // v5.0.0 - 6 August 2010, uBee
 // - Start with the latest sound.c module and modify the speaker_* code for
 //   DAC usage.  Code here uses the sound buffer management functions
@@ -64,12 +50,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <assert.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #include "parint.h"
 #include "dac.h"
@@ -248,12 +229,10 @@ void dac_clock (int cpuclock)
 //   pass: uint8_t data
 // return: int
 //==============================================================================
-
-static inline int dac_sample (uint8_t data)
+inline int dac_sample (uint8_t data)
 {
  return data - 128;
 }
- 
 
 //==============================================================================
 // DAC sample fixup.  Integer rounding errors can accrue to the point
@@ -263,9 +242,7 @@ static inline int dac_sample (uint8_t data)
 //   pass: int                          sample
 // return: int
 //==============================================================================
-
-static inline int dac_fixup_sample (int sample)
-
+inline int dac_fixup_sample (int sample)
 {
  return sample;
 }

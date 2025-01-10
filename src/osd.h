@@ -1,11 +1,5 @@
 /* OSD Header */
 
-// v6.0.7 - 22 October 2023, Tony Sanchez
-// - MacOS Sonoma  : Renamed OSD option Credits to Contributors
-//
-// v6.0.6 - 24 September 2023, Tony Sanchez
-// - MacOS Ventura  : Adding new OSD option Credits
-
 #ifndef HEADER_OSD_H
 #define HEADER_OSD_H
 
@@ -36,18 +30,17 @@
 #define OKCANCEL_BTN_OK     1
 #define OKCANCEL_BTN_CANCEL 2
 
-#define MENU_BTN_ABOUT              1
-#define MENU_BTN_CONTRIBUTORS       2
-#define MENU_BTN_CONSOLE            3
-#define MENU_BTN_OUTPUT             4
-#define MENU_BTN_FULLSCREEN         5
-#define MENU_BTN_SOUND              6
-#define MENU_BTN_VOLUMEI            7
-#define MENU_BTN_VOLUMED            8
-#define MENU_BTN_TAPE               9
-#define MENU_BTN_RESET              10
-#define MENU_BTN_POWERCYC           11
-#define MENU_BTN_EXIT               12
+#define MENU_BTN_ABOUT      1
+#define MENU_BTN_CONSOLE    2
+#define MENU_BTN_OUTPUT     3
+#define MENU_BTN_FULLSCREEN 4
+#define MENU_BTN_SOUND      5
+#define MENU_BTN_VOLUMEI    6
+#define MENU_BTN_VOLUMED    7
+#define MENU_BTN_TAPE       8
+#define MENU_BTN_RESET      9
+#define MENU_BTN_POWERCYC   10
+#define MENU_BTN_EXIT       11
 
 #define OUTPUT_BTN_NONE     1
 #define OUTPUT_BTN_OSD      2
@@ -85,23 +78,22 @@
 #define OSD_CON_BOTTOM      2004
 #define OSD_CON_MAX         2005
 
-#define DIALOGUE_NOTINUSE       0
-#define DIALOGUE_EXIT           1
-#define DIALOGUE_POWERCYC       2
-#define DIALOGUE_RESET          3
-#define DIALOGUE_DEVMESG        4
-#define DIALOGUE_OPENGL         5
-#define DIALOGUE_CONSOLE        6
-#define DIALOGUE_ABOUT          7
-#define DIALOGUE_OUTPUT         8
-#define DIALOGUE_MENU           9
-#define DIALOGUE_CONTRIBUTORS   10
+#define DIALOGUE_NOTINUSE   0
+#define DIALOGUE_EXIT       1
+#define DIALOGUE_POWERCYC   2
+#define DIALOGUE_RESET      3
+#define DIALOGUE_DEVMESG    4
+#define DIALOGUE_OPENGL     5
+#define DIALOGUE_CONSOLE    6
+#define DIALOGUE_ABOUT      7
+#define DIALOGUE_OUTPUT     8
+#define DIALOGUE_MENU       9
 
 #define DIALOGUE_PENDING_SIZE 20
 
 #define MINIMISED_BOX_WIDTH 50
 
-#define DIALOGUE_MENU_BUTTONS 12
+#define DIALOGUE_MENU_BUTTONS 11
 #define DIALOGUE_MENU_WIDTH   117
 #define DIALOGUE_OUTPUT_BUTTONS 4
 #define BUTTON_WIDTH 80

@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              Joystick module                               *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // This module is used to provide joystick support.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,10 +31,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
 // v5.0.0 - 2 August 2010, uBee
 // - Changes to joystick commands to use an optional command SHIFT button.
 //   This will allow using the same buttons for keys and commands.
@@ -90,12 +86,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #include "ubee512.h"
 #include "joystick.h"

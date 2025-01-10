@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              function module                               *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Built in functions able to be called from Z80 code.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -212,7 +212,7 @@ func_t func =
 };
 
 static const char emulator_id_str[] = APPIDSTR;  // defined in the Makefile
-static const char emulator_ver_str[] = APPVER;  // defined in the Makefile
+static const char emulator_ver_str[] = APPVER;   // defined in the Makefile
 static int emulator_id_pos;
 
 static int ubee_req;

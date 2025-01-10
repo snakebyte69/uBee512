@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              console module                                *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Provides output stream redirection and an interface for entering options
@@ -13,7 +13,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,10 +32,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
 // v5.5.0 - 21 June 2013, B.Robinson
 // - Added supporting functions console_exit_while_debugger_runs and
 //   console_resume_after_debugger_run to support new debugger
@@ -68,25 +64,16 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #ifdef MINGW
-    #include <windows.h>
-    #include <conio.h>
+#include <windows.h>
+#include <conio.h>
 #else
-    #include <fcntl.h>      // setting keyboard flags
-    #include <sys/ioctl.h>
-    #include <termios.h>
-    #ifdef DARWIN
-        #include "X11/Xlib.h"
-    #else
-        #include <X11/Xlib.h>
-    #endif
+#include <fcntl.h>      // setting keyboard flags
+#include <sys/ioctl.h>
+#include <termios.h>
+#include <X11/Xlib.h>
 #endif
 
 #include "ubee512.h"

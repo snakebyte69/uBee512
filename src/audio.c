@@ -1,7 +1,7 @@
 //******************************************************************************
 //*                                  uBee512                                   *
 //*       An emulator for the Microbee Z80 ROM, FDD and HDD based models       *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //*                                                                            *
 //*                           Audio support module                             *
 //*                Copyright (C) 2009-2010 Kalvis Duckmanton                   *
@@ -14,7 +14,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,10 +33,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
 // v5.7.0 - 13 July 2013, uBee
 // - Changed code in audio_command() for EMU_CMD_MUTE to remove call to
 //   audio_set_master_volume() as muting is now handled by changes to
@@ -67,14 +63,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <assert.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-    #include "SDL/SDL_thread.h"
-#else
-    #include <SDL.h>
-    #include <SDL_thread.h>
-#endif
+#include <SDL.h>
+#include <SDL_thread.h>
 
 #include "ubee512.h"
 #include "gui.h"

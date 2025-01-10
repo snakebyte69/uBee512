@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                         Floppy disk support module                         *
 //*                                                                            *
-//*                        Copyright (C) 2007-2024 uBee                        *
+//*                        Copyright (C) 2007-2016 uBee                        *
 //******************************************************************************
 //
 // This module implements functions to access floppy disks and/or disk images
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,10 +31,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
 // v5.8.0 - 15 November 2016, uBee
 // - Added detection for LibDsk's 'rcpmfs' type in disk_open() for use by
 //   modified disk_read() and disk_write() functions.  If detected and a
@@ -230,11 +226,7 @@
 #include <stdint.h>
 
 #ifdef USE_LIBDSK
-    #ifdef XCODE
-        #include "libdsk/libdsk.h"
-    #else
-        #include <libdsk.h>
-    #endif
+#include <libdsk.h>
 #endif
 
 #include "ubee512.h"

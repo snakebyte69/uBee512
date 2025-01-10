@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                           256TC Keyboard module                            *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Emulates the keys for the 256TC Microbee keyboard.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,10 +31,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
 // v4.6.0 - 4 May 2010, uBee
 // - Fixed bug in keytc_r() function where a 256TC model was being tested
 //   for instead of testing for models that use the TC keys (modelx.tckeys)
@@ -79,12 +75,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #include "keytc.h"
 #include "crtc.h"

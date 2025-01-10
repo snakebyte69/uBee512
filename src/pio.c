@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              Z80 PIO module                                *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Emulate the Z80 PIO functionality and interrupts.
@@ -28,7 +28,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -47,9 +47,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
 // v5.0.0 - 13 July 2010, K Duckmanton
 // - Removed all references to the 'sound' global variable and replaced them
 //   with references to the 'audio' global instead.
@@ -167,12 +164,7 @@
 #include <unistd.h>
 #include <inttypes.h>
 #include <string.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #include "pio.h"
 #include "z80api.h"

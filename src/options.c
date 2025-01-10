@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              options module                                *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Provides command line, run time and file options processing including
@@ -13,7 +13,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,20 +32,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.7 - 10 November 2023, Tony Sanchez
-// - MacOS Sonoma  : Now compiles MacOS changes under DARWIN preprocessor directive
-//
-// v6.0.4 - 19 September 2023, Tony Sanchez
-// - MacOS Ventura  : Added compiler support for LibDisk
-//
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-//
-// v6.0.1 - 1 September 2023, Tony Sanchez
-// - Change to options_getoptstr() to work around clang strict array bounds check on
-//   MacOs Ventura
-//
 // v6.0.0 - 1 January 2017, K Duckmanton
 // - Moved functions relating to pixels and pixel colours to the vdu module.
 //
@@ -55,7 +41,7 @@
 //   --sram-load and --sram-save.
 //
 // v5.7.0 - 14 December 2015, uBee
-// - Added --sram option to set SRAM size for ROM model emulation.
+// - Added --sram option to set SRAM size for ROM model emulation.   
 // - Added '+regs' and '+memr' arguments to --debug option.
 // - Added to help section about Dynamically named RAW FDD and HDD images.
 // - Changed 19200 values to 38400 in options_serial_port() and help.
@@ -440,17 +426,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <SDL.h>
 
-#ifdef XCODE
-    #include "SDL/SDL.h"
-    #ifdef USE_LIBDSK
-        #include "libdsk/libdsk.h"
-    #endif
-#else
-    #include <SDL.h>
-    #ifdef USE_LIBDSK
-        #include <libdsk.h>
-    #endif
+#ifdef USE_LIBDSK
+#include <libdsk.h>
 #endif
 
 #ifdef MINGW
@@ -1018,7 +997,7 @@ int c_argc;
 
 help_t help;
 
-#define TRY_MESG "%s: Try %s --help or %s --usage for more information.\n"
+#define TRY_MESG "%s: Try `%s --help' or `%s --usage' for more information.\n"
 
 const SDL_version *sdlv;
 
@@ -1231,9 +1210,7 @@ void options_init (void)
 #endif
 
  // set some pre-configured local environment variables
-
-options_ubee512_envvar_set("UBEE_VERSION="APPVER);
-
+ options_ubee512_envvar_set("UBEE_VERSION="APPVER);
 
  snprintf(temp_str, sizeof(temp_str), "UBEE_MODEL=%s", model_args[emu.model]);
  options_ubee512_envvar_set(temp_str);
@@ -3352,7 +3329,7 @@ static int options_ubee512_compare (char *s)
 // setenv ENVVAR value
 //
 //   pass: char *options_arg
-//         char *e_options_arg
+//         char *e_options_arg          
 //         char *e_options_q_arg        double quoted variable if any spaces
 // return: void
 //==============================================================================
@@ -4092,21 +4069,21 @@ static void options_debugging (int c)
         break;
 
      case OPT_DB_BP_MEM :
-         if (z80debug_bp_mem(e_optarg, 's', 'a') == -1)
+     	if (z80debug_bp_mem(e_optarg, 's', 'a') == -1)
            param_error_mesg();
-         break;
+     	break;
      case OPT_DB_BPCLR_MEM :
-         if (z80debug_bp_mem(e_optarg, 'c', 'a') == -1)
+     	if (z80debug_bp_mem(e_optarg, 'c', 'a') == -1)
            param_error_mesg();
-         break;
+     	break;
      case OPT_DB_BP_MEML :
-         if (z80debug_bp_mem(e_optarg, 's', 'l') == -1)
+     	if (z80debug_bp_mem(e_optarg, 's', 'l') == -1)
            param_error_mesg();
-         break;
+     	break;
      case OPT_DB_BPCLR_MEML :
-         if (z80debug_bp_mem(e_optarg, 'c', 'l') == -1)
+     	if (z80debug_bp_mem(e_optarg, 'c', 'l') == -1)
            param_error_mesg();
-         break;
+     	break;
 
      case OPT_DB_CONT :
      case OPT_CONT :
@@ -4808,7 +4785,7 @@ static void options_model (int c)
                    modelx.sn76489an = pf ? res : 0;
                    break;
                }
-           }
+           }  
         break;
      case OPT_HWFLASH :
         if (set_int_from_list(&x, flash_args) == -1)
@@ -4941,7 +4918,7 @@ static void options_model (int c)
      case OPT_SRAM_FILE :
         strncpy(memmap.filepath, e_optarg, sizeof(memmap.filepath));
         memmap.filepath[sizeof(memmap.filepath)-1] = 0;
-        break;
+        break;        
      case OPT_SRAM_LOAD :
         set_int_from_list(&memmap.load, offon_args);
         break;
@@ -4996,11 +4973,11 @@ static void options_osd (int c)
         break;
      case OPT_OSD_CON_POS :
         if (osd_set_console_position(e_optarg) == -1)
-           param_error_mesg();
+           param_error_mesg();        
         break;
      case OPT_OSD_CON_SIZE :
         if (osd_set_console_size(e_optarg) == -1)
-           param_error_mesg();
+           param_error_mesg();        
         break;
      case OPT_OSD_CURSOR_RATE :
         if (set_int_from_arg(&x, 0, 5000) == -1)
@@ -5012,7 +4989,7 @@ static void options_osd (int c)
         break;
      case OPT_OSD_SCHEME :
         if (osd_set_scheme(e_optarg) == -1)
-           param_error_mesg();
+           param_error_mesg();        
         break;
      case OPT_OSD_SET_BTN_MAIN :
      case OPT_OSD_SET_BTN_TEXT :
@@ -5195,16 +5172,16 @@ static void options_sound (int c)
         audio.mute = 1;
         xprintf("ubee512: Option `--sound=off' now sets --snd-mute=on.\n");
         break;
-     case OPT_SND_ALG1 :    /* deprecated */
+     case OPT_SND_ALG1 :	/* deprecated */
         break;
      case OPT_SND_FREQ :
         set_int_from_arg(&audio.frequency, 5512, 176400);
         break;
-     case OPT_SND_FREQADJ :    /* deprecated */
+     case OPT_SND_FREQADJ :	/* deprecated */
         break;
-     case OPT_SND_FREQLOW :    /* deprecated */
+     case OPT_SND_FREQLOW :	/* deprecated */
         break;
-     case OPT_SND_HOLDOFF :    /* deprecated */
+     case OPT_SND_HOLDOFF :	/* deprecated */
         break;
      case OPT_SND_HQ :
         audio.samples = 2048;
@@ -5217,7 +5194,7 @@ static void options_sound (int c)
         if (((int_arg & (int_arg - 1)) != 0) || (int_arg > 16384)) // check is power of 2
            param_error_mesg();
         else
-           audio.samples = int_arg;
+           audio.samples = int_arg;    
         break;
      case OPT_SND_VOLUME :
      case OPT_VOL :
@@ -5845,7 +5822,7 @@ static void options_getopt (int argc, char *argv[])
                 break;
              case OPT_GROUP_OSD : // On Screen Display (OSD)
                 options_osd(c);
-                break;
+                break;                
              case OPT_GROUP_INFORMATION : // Information output
                 options_information(c);
                 break;
@@ -5990,18 +5967,7 @@ static void options_getoptstr (const char *name, char *options)
  int finish = 0;
 
  char s[OPTIONS_SIZE];
-    
-// v6.0.7 - 10 November 2023, Tony Sanchez
-// - MacOS Sonoma  : Now compiles MacOS changes under DARWIN preprocessor directive
-//
-// v6.0.1 - 1 September 2023, Tony Sanchez
-// - Change to options_getoptstr() to work around clang strict array bounds check on
-//   MacOs Ventura
-       
-#ifdef DARWIN
-    char s1[OPTIONS_SIZE];
-#endif
-    
+
  if (! fp)
     return;
 
@@ -6014,22 +5980,9 @@ static void options_getoptstr (const char *name, char *options)
     {
      if ((s[0] == '[') && (s[l-1] == ']'))
         {
-            // v6.0.7 - 10 November 2023, Tony Sanchez
-			// - MacOS Sonoma  : Now compiles MacOS changes under DARWIN preprocessor directive
-			//
-			// v6.0.1 - 1 September 2023, Tony Sanchez
-			// - Change to options_getoptstr() to work around clang strict array bounds check on
-			//   MacOs Ventura
-            #ifdef DARWIN
-                strncpy(s1, &s[1], l-2);
-                s1[l-2] = 0;
-                finish = (strcmp(s1, name) == 0);
-            #else
-                strncpy(s, &s[1], l-2);
-                s[l-2] = 0;
-                finish = (strcmp(s, name) == 0);
-            #endif
-            
+         strncpy(s, &s[1], l-2);
+         s[l-2] = 0;
+         finish = (strcmp(s, name) == 0);
         }
     }
 

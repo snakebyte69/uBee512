@@ -1,19 +1,12 @@
 /* Floppy Disk Support Header */
 
-// v6.0.4 - 19 September 2023, Tony Sanchez
-// - MacOS Ventura  : Added compiler support for LibDisk
-
 #ifndef HEADER_DISK_H
 #define HEADER_DISK_H
 
 #include <inttypes.h>
 
 #ifdef USE_LIBDSK
-    #ifdef XCODE
-        #include "libdsk/libdsk.h"
-    #else
-        #include <libdsk.h>
-    #endif
+#include <libdsk.h>
 #endif
 
 #include "ubee512.h"

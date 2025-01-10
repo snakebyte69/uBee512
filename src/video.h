@@ -1,20 +1,10 @@
 /* VIDEO Header */
 
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-
 #ifndef HEADER_VIDEO_H
 #define HEADER_VIDEO_H
 
-#ifdef XCODE
-    #ifdef USE_OPENGL
-        #include "SDL/SDL_opengl.h"
-    #endif
-#else
-    #ifdef USE_OPENGL
-        #include <SDL/SDL_opengl.h>
-    #endif
+#ifdef USE_OPENGL
+#include <SDL/SDL_opengl.h>
 #endif
 
 // Reasonable maximum video resolution (80x25 @ 11 lines/char)

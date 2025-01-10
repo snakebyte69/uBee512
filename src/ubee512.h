@@ -3,24 +3,7 @@
 #ifndef HEADER_UBEE512_H
 #define HEADER_UBEE512_H
 
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-    #define APP "ubee512"
-    #define VERSION "6.1.0"
-    #define TITLE "uBee512"
-    #define APPVER VERSION
-    #define APPIDSTR APP
-    #define TITLESTRING TITLE "v" VERSION " - Microbee emulator"
-    #define ICONSTRING TITLE
-    #define COPYENDSTRING "2024"
-#else
-    #include <SDL.h>
-#endif
-
+#include <SDL.h>
 #include "console.h"
 #include "log.h"
 

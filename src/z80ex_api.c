@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                             z80ex API module                               *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Provides an API for z80ex Z80 emulator/disassembler.
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,9 +31,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
 // v5.7.0 - 21 July 2015, uBee
 // - Changes to read_mem_cb(), read_mem_debug_cb(), write_mem_cb() and
 //   write_mem_debug_cb() to use new define values of MEMMAP_MASK and
@@ -94,14 +91,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-
-#ifdef XCODE
-    #include "z80ex/z80ex.h"
-    #include "z80ex/z80ex_dasm.h"
-#else
-    #include <z80ex/z80ex.h>
-    #include <z80ex/z80ex_dasm.h>
-#endif
+#include <z80ex/z80ex.h>
+#include <z80ex/z80ex_dasm.h>
 
 #include "z80api.h"
 #include "z80.h"

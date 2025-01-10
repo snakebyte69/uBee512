@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                              quickload module                              *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Quickload mechanism for 8-bit systems.
@@ -23,7 +23,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,9 +42,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.4 - 19 September 2023, Tony Sanchez
-// - MacOS Ventura  : Added compiler support for LibDisk
-//
 // v5.3.0 - 7 April 2011, uBee
 // - Moved get_mwb_version() to support.c as is now also used by tapfile.c.
 // - Calls to get_mwb_version() now includes a 2nd parameter to point to a
@@ -65,15 +62,9 @@
 #include <ctype.h>
 
 #ifdef USE_ZZLIB
-    #ifdef XCODE
-        #include "zlib.h"
-        #include "zzip/memdisk.h"
-        #include "time.h"
-    #else
-        #include <zlib.h>
-        #include <zzip/memdisk.h>
-        #include <time.h>
-    #endif
+#include <zlib.h>
+#include <zzip/memdisk.h>
+#include <time.h>
 #endif
 
 #include "ubee512.h"

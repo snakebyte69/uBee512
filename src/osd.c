@@ -4,7 +4,7 @@
 //*                                                                            *
 //*                                OSD module                                  *
 //*                                                                            *
-//*                       Copyright (C) 2007-2024 uBee                         *
+//*                       Copyright (C) 2007-2016 uBee                         *
 //******************************************************************************
 //
 // Provides on screen display functions (OSD)
@@ -12,7 +12,7 @@
 //==============================================================================
 /*
  *  uBee512 - An emulator for the Microbee Z80 ROM, FDD and HDD based models.
- *  Copyright (C) 2007-2024 uBee   
+ *  Copyright (C) 2007-2016 uBee   
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,15 +31,6 @@
 //==============================================================================
 // ChangeLog (most recent entries are at top)
 //==============================================================================
-// v6.0.7 - 22 October 2023, Tony Sanchez
-// - MacOS Sonoma  : Renamed OSD option Credits to Contributors
-//
-// v6.0.6 - 24 September 2023, Tony Sanchez
-// - MacOS Ventura  : Adding new OSD option Credits
-//
-// v6.0.3 - 18 September 2023, Tony Sanchez
-// - MacOS Ventura  : Removed remaining harcoding for include definitions required for
-//   compilation under Xcode 14.3.1
 // v6.0.0 - 1 January 2017, K Duckmanton
 // - crtc.yscale is now video.yscale; video_renderer() is now video_render()
 //   to match video.c
@@ -114,15 +105,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef XCODE
-    #include "SDL/SDL.h"
-#else
-    #include <SDL.h>
-#endif
+#include <SDL.h>
 
 #ifdef MINGW
-    #include <windows.h>
+#include <windows.h>
 #else
 #endif
 
@@ -470,7 +456,7 @@ static char dialogue_about[] =
  "             Version "APPVER"\n"
  "uBee512 is an emulator for all Microbee Z80\n"
  "  ROM, Floppy and Hard drive based models.\n"
- "       (c) Copyright 2007-"COPYENDSTRING" uBee\n"
+ "       (c) Copyright 2007-2016 uBee\n"
  "\n"
  "This software is released under the GNU GPL\n"
  "license, the license is part of the original\n"
@@ -478,14 +464,6 @@ static char dialogue_about[] =
  "\n"
  "Official uBee512 distribution site is here:\n"
  "         www.microbee-mspp.org.au\n"
-};
-
-static char dialogue_contributors[] =
-{
-"Contributors:\n\n"
-"B.Robinson 2013\n"
-"K Duckmanton 2010,2017\n"
-"Tony Sanchez 2023\n"
 };
 
 static char dialogue_console[CONSOLE_SIZE+1];
@@ -502,7 +480,6 @@ static char title_console[] = "uBee512 Console";
 static char title_output[] = "uBee512 Output";
 static char title_about[] = "About uBee512";
 static char title_menu[] = "Menu";
-static char title_contributors[] = "Contributors";
 
 //==============================================================================
 // Buttons text
@@ -524,7 +501,6 @@ static char button_sound[] = "Sound";
 static char button_volumei[] = "Volume +";
 static char button_volumed[] = "Volume -";
 static char button_tape[] = "Tape (rew)";
-static char button_contributors[] = "Contributors";
 
 //==============================================================================
 // Icons/images in XPM format,  these designs were made using the icon
@@ -937,40 +913,22 @@ static mbox_t dialogues[] =
   .icon = NULL,
   .attr = MBOX_ATTR_VBTNS_LJ | MBOX_ATTR_MOUSEPOS,
   .btn[0].text = button_about,
-  .btn[2].text = button_console,
-  .btn[3].text = button_output,
-  .btn[4].text = button_fullscreen,
-  .btn[5].text = button_sound,
-  .btn[6].text = button_volumei,
-  .btn[7].text = button_volumed,
-  .btn[8].text = button_tape,
-  .btn[9].text = button_reset,
-  .btn[10].text = button_powercyc,
-  .btn[11].text = button_exit,
-  .btn[1].text = button_contributors,
-  .btn[4].attr = BOX_ATTR_NOEXIT,
+  .btn[1].text = button_console,
+  .btn[2].text = button_output,
+  .btn[3].text = button_fullscreen,
+  .btn[4].text = button_sound,
+  .btn[5].text = button_volumei,
+  .btn[6].text = button_volumed,
+  .btn[7].text = button_tape,
+  .btn[8].text = button_reset,
+  .btn[9].text = button_powercyc,
+  .btn[10].text = button_exit,
+  .btn[3].attr = BOX_ATTR_NOEXIT,
   .btn[5].attr = BOX_ATTR_NOEXIT,
   .btn[6].attr = BOX_ATTR_NOEXIT,
 //  .components = BOX_COMP_TITLE | BOX_COMP_MIN | BOX_COMP_CLOSE
   .components = BOX_COMP_TITLE | BOX_COMP_CLOSE
- },
-// DIALOGUE_CONTRIBUTORS
-    {
-        .title.text = title_contributors,
-        .main.text = dialogue_contributors,
-        .main.text_buf_count = sizeof(dialogue_contributors)-1,
-        .buttons = 1,
-        .width = 415,
-        .depth = OSD_FONT_DEPTH * 11 + 55,
-        .bwidth = BUTTON_WIDTH,
-        .bdepth = BUTTON_DEPTH,
-        .text_posx_ofs = 48,
-        .text_posy_ofs = 25,
-        .icon = information_xpm,
-        .attr = 0,
-        .btn[0].text = button_ok,
-        .components = BOX_COMP_TITLE | BOX_COMP_MIN | BOX_COMP_CLOSE
-    }
+ }
 };
 
 //==============================================================================
@@ -2252,9 +2210,6 @@ static void dialogue_action (void)
                break;
             case MENU_BTN_EXIT :
                osd_set_dialogue(DIALOGUE_EXIT);
-               break;
-            case MENU_BTN_CONTRIBUTORS :
-               osd_set_dialogue(DIALOGUE_CONTRIBUTORS);
                break;
             default :
                break;
