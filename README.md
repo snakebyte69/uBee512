@@ -27,7 +27,7 @@ For more information and support join our Social Media
     % make
     % sudo make install
 
-### Then Build
+### Then Build uBee512
     /src
     % make
     % make install
