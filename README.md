@@ -30,7 +30,7 @@ For more information and support join our Social Media
 ### Then Build uBee512 ###
     /src
     % make
-    % make install
+    % sudo make install
 
 ### Copy ROMs and Disks ###
     - copy microbee roms into ~/.ubee512/roms/
