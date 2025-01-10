@@ -7,32 +7,20 @@ For more information and build instructions for Windows, macOS and Linux; see th
 
 ## macOS
 
-### Copy
-    zzip/hints.h
-    into
-    /usr/local/include/zzip
+### Homebrew packages ###
+    brew install libdsk
+    brew install libzzip
+    brew install SDL12-compat
 
-### Download
+### Download z80ex ###
     https://github.com/snakebyte69/z80ex
     % make
-    % make install
+    % sudo make install
 
-### Copy aliases
-    libz80ex_dasm.1.dylib
-    libz80ex_dasm.dylib
-    libz80ex.1.dylib
-    libz80ex.dylib
-
-### and these two files
-    libz80ex_dasm.1.1.21.dylib
-    libz80ex.1.1.21.dylib
-
-### into
-/usr/local/lib
-
-### Then Build
+### Then Build uBee512
+    /src
     % make
-    % make install
+    % sudo make install
 
 ### Copy ROMs and Disks ###
     - copy microbee roms into ~/.ubee512/roms/
@@ -40,8 +28,10 @@ For more information and build instructions for Windows, macOS and Linux; see th
       - charrom.bin
       - rom1.bin
       - bn56.rom
+
     $ cp disks/*.dsk ~/.ubee512/disks/ (may not be needed after make install)
-    - copy the disk you want to boot as boot.dsk
+
+    - copy the disk you want to boot as "boot.dsk"
         e.g. microbee_cpm3_61k_ds80.dsk
 
 # Linux
